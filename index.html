@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0b8f96">
 <link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" media="print" onload="this.media='all'">
 <style>
 /* Layout: cyan top bar + black tab strip, one column of folding subsections.
    Palette for direct sun: pure white page, black text, saturated fills with dark text.
@@ -257,8 +257,12 @@ html.hc .field { border-bottom-color: #000; }
 html.hc .group { border-width: 4px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 
+.fatal { margin: 16px; padding: 18px 20px; border: 4px solid var(--warn); border-radius: 12px; background: #fff; color: #000; font-size: 19px; }
+.fatal h2 { color: var(--warn); margin: 0 0 8px; }
+.fatal-msg { font-family: ui-monospace, Menlo, monospace; font-size: 15px; background: #f2f2f2; padding: 8px 10px; border-radius: 6px; word-break: break-word; }
+
 </style>
-</head><body><div id="app"></div>
+</head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting the inspection app…</p></div>
 <script>
 const UAD={"RoomType":[["Bedroom","Bedroom"],["BreakfastRoom","Breakfast Room"],["Den","Den"],["DiningRoom","Dining Room"],["FamilyRoom","Family Room"],["FullBathroom","Bath - Full"],["HalfBathroom","Bath - Half"],["Kitchen","Kitchen"],["LaundryRoom","Laundry Room"],["LivingRoom","Living Room"],["Loft","Loft"],["MediaRoom","Media Room"],["Mudroom","Mudroom"],["RecreationRoom","Recreation Room"],["Sunroom","Sunroom"],["UtilityRoom","Utility Room"],["WalkInPantry","Walk-In Pantry"],["Workshop","Workshop"],["Other","Other"]],"AmenityType":[["Airstrip","Airstrip"],["Beach","Beach"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["BuildingMaintenance","Building Maintenance"],["BuiltInPool","Built-in Pool"],["BusinessCenter","Business Center"],["CaregiverServices","Caregiver Services"],["Clubhouse","Clubhouse"],["ClubMembership","Club Membership"],["CommunityPier","Community Pier"],["ConciergeServiceCoordination","Concierge Service Coordination"],["Cooling","Cooling"],["Deck","Deck"],["DoorAttendant","Door Attendant"],["ElectricVehicleChargingStation","EV Station"],["Elevator","Elevator"],["FitnessArea","Fitness Area"],["GatedCommunity","Gated Community"],["GroundsMaintenance","Grounds Maintenance"],["Heating","Heating"],["IngroundPool","Inground Pool"],["IngroundSpa","Inground Spa"],["Lobby","Lobby"],["None","None"],["OngoingCleaningServices","Ongoing Cleaning Services"],["OutdoorRidingRing","Outdoor Riding Ring"],["OutdoorShower","Outdoor Shower"],["Patio","Patio"],["Playground","Playground"],["RecreationArea","Recreation Area"],["RegistrationServices","Registration Services"],["Sauna","Sauna"],["SharedLaundryFacilities","Shared Laundry Facilities"],["ShortTermRentalServices","Short Term Rental Services"],["SportsCourt","Sports Court"],["TelevisionOrInternetServices","Television or Internet Services"],["TrashRemoval","Trash Removal"],["UnitStorage","Unit Storage"],["WaterAccess","Water Access"],["WaterFrontage","Water Frontage"],["Other","Other"],["Fence","Fence"],["IrrigationSystem","Irrigation System"],["OutdoorFireplace","Outdoor Fireplace"],["OutdoorKitchen","Outdoor Kitchen"],["Balcony","Balcony"],["Gazebo","Gazebo"],["Porch","Porch"],["Portico","Portico"],["FireSuppressionSystem","Fire Suppression System"],["IndoorFireplace","Indoor Fireplace"],["MultipleZoneHeatingVentilationAndAirConditioning","Multi-Zone HVAC"],["SmartHomeSystem","Smart Home System"],["WholeHouseVentilation","Whole House Ventilation"],["WoodStove","Wood Stove"]],"FlooringType":[["Carpet","Carpet"],["CeramicTile","Ceramic Tile"],["EngineeredWood","Engineered Wood"],["FinishedConcrete","Finished Concrete"],["Hardwood","Hardwood"],["Laminate","Laminate"],["Marble","Marble"],["SubflooringOnly","Subflooring Only"],["Vinyl","Vinyl"],["Other","Other"]],"ViewType":[["Bay","Bay"],["Canal","Canal"],["CityStreet","City Street"],["Commercial","Commercial"],["Cove","Cove"],["Creek","Creek"],["GolfCourse","Golf Course"],["Gulf","Gulf"],["HighDensityResidential","High Density Residential"],["Highway","Highway"],["Industrial","Industrial"],["Lake","Lake"],["Marsh","Marsh"],["Mountain","Mountain"],["Ocean","Ocean"],["Park","Park"],["ParkingLot","Parking Lot"],["Pastoral","Pastoral"],["Pond","Pond"],["Reservoir","Reservoir"],["Residential","Residential"],["River","River"],["School","School"],["Skyline","Skyline"],["Sound","Sound"],["TrafficWallBarriers","Traffic Wall Barriers"],["Valley","Valley"],["Woods","Woods"],["Other","Other"]],"SiteInfluenceType":[["Agricultural","Agricultural"],["Airport","Airport"],["BusyRoadway","Busy Roadway"],["CommercialArea","Commercial Area"],["GolfCourse","Golf Course"],["GreenSpace","Green Space"],["HighDensityResidential","High Density Residential"],["HighPressureGasLine","High Pressure Gas Line"],["HistoricDistrict","Historic District"],["IndustrialArea","Industrial Area"],["LocalDistributionLine","Local Distribution Line"],["OilOrGasWell","Oil or Gas Well"],["OverheadElectricPowerTransmissionLine","Overhead Electric Power Transmission Line"],["Park","Park"],["PublicTransportationHub","Public Transportation Hub"],["RailLine","Rail Line"],["Residential","Residential"],["School","School"],["StormwaterRetention","Stormwater Retention"],["BodyOfWater","Body Of Water"],["Other","Other"]],"SiteFeatureType":[["None","None"],["CoastalBarrierResourcesSystem","Coastal Barrier Resources System"],["Drainage","Drainage"],["ExcessLand","Excess Land"],["Landlocked","Landlocked"],["Landscaping","Landscaping"],["RoadFrontage","Road Frontage"],["Shape","Shape"],["SoilSuitability","Soil Suitability"],["SurplusLand","Surplus Land"],["Topography","Topography"],["Wetlands","Wetlands"],["ZeroLotLine","Zero Lot Line"],["Other","Other"]],"TopographyType":[["Flat","Flat"],["Rocky","Rocky"],["Rolling","Rolling"],["Sloping","Sloping"],["Other","Other"]],"ArchitecturalDesignCategoryType":[["AFrame","A-Frame"],["Barn","Barn"],["BiLevel","Bi-Level"],["Bungalow","Bungalow"],["CapeCod","Cape Cod"],["Chalet","Chalet"],["Colonial","Colonial"],["Contemporary","Contemporary"],["Cottage","Cottage"],["Craftsman","Craftsman"],["EarthBerm","Earth / Berm"],["Farmhouse","Farmhouse"],["GeodesicDome","Geodesic Dome"],["Georgian","Georgian"],["Log","Log"],["Mediterranean","Mediterranean"],["Modern","Modern"],["NeoEclectic","Neo-Eclectic"],["RaisedRanch","Raised Ranch"],["Rambler","Rambler"],["Ranch","Ranch"],["Southwest","Southwest"],["Spanish","Spanish"],["SplitFoyerOrEntry","Split Foyer or Entry"],["SplitLevel","Split Level"],["Stilt","Stilt"],["Traditional","Traditional"],["Tudor","Tudor"],["Victorian","Victorian"],["Other","Other"]],"WallMaterialType":[["Adobe","Adobe"],["Aluminum","Aluminum"],["Asbestos","Asbestos"],["Brick","Brick"],["CementBoard","Cement Board"],["ConcreteBlock","Concrete Block"],["EngineeredWood","Engineered Wood"],["Glass","Glass"],["Log","Log"],["PouredConcrete","Poured Concrete"],["Steel","Steel"],["Stone","Stone"],["Stucco","Stucco"],["SyntheticStone","Synthetic Stone"],["SyntheticStucco","Synthetic Stucco"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"RoofMaterialType":[["Asbestos","Asbestos"],["Asphalt","Asphalt"],["CeramicTile","Ceramic Tile"],["Clay","Clay"],["Composition","Composition"],["Concrete","Concrete"],["Copper","Copper"],["Metal","Metal"],["Rubber","Rubber"],["Slate","Slate"],["SolarShingles","Solar Shingles"],["Synthetic","Synthetic"],["TarAndGravel","Tar / Gravel"],["Wood","Wood"],["Other","Other"]],"FoundationType":[["Basement","Basement"],["CrawlSpace","Crawl Space"],["PostAndPier","Post and Pier"],["Runner","Runner"],["Slab","Slab"],["Other","Other"]],"FoundationMaterialType":[["Brick","Brick"],["ConcreteBlock","Concrete Block"],["Metal","Metal"],["PouredConcrete","Poured Concrete"],["Stone","Stone"],["Wood","Wood"],["Other","Other"]],"HeatingSystemType":[["Baseboard","Baseboard"],["Fireplace","Fireplace"],["ForcedWarmAir","Forced Warm Air"],["GravityAir","Gravity Air"],["MiniSplit","Mini Split"],["None","None"],["PassiveSolar","Passive Solar"],["Radiant","Radiant"],["Radiators","Radiators"],["Stove","Stove"],["Other","Other"]],"HeatingFuelType":[["Coal","Coal"],["Electric","Electric"],["Geothermal","Geothermal"],["NaturalGas","Natural Gas"],["Oil","Oil"],["Propane","Propane"],["Solar","Solar"],["Wood","Wood"],["Other","Other"]],"CoolingSystemType":[["Centralized","Centralized"],["Individual","Individual"],["Other","Other"]],"MechanicalSystemType":[["RadonMitigation","Radon Mitigation"],["SumpPump","Sump Pump"],["WaterHeater","Water Heater"],["WholeHouseWaterTreatment","Whole House Water Treatment"],["Other","Other"]],"CarStorageType":[["Carport","Carport"],["CommonCarport","Common Carport"],["Driveway","Driveway"],["Garage","Garage"],["OpenLot","Open Lot"],["ParkingGarage","Parking Garage"],["SharedDriveway","Shared Driveway"],["None","None"],["Other","Other"]],"CarStorageAttachmentType":[["Attached","Attached"],["BuiltIn","Built-in"],["Detached","Detached"]],"ImprovedSurfaceMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Cobblestone","Cobblestone"],["Concrete","Concrete"],["Dirt","Dirt"],["Gravel","Gravel"],["Other","Other"]],"OutbuildingType":[["Barn","Barn"],["Boathouse","Boathouse"],["Bunkhouse","Bunkhouse"],["EnclosedKennel","Enclosed Kennel"],["Greenhouse","Greenhouse"],["GuestHouse","Guest House"],["IndoorRidingArena","Indoor Riding Arena"],["ManufacturedHome","Manufactured Home"],["Office","Office"],["PoolHouse","Pool House"],["Shed","Shed"],["Silo","Silo"],["Stable","Stable"],["StandaloneADU","Standalone ADU"],["Studio","Studio"],["Workshop","Workshop"],["Other","Other"]],"FunctionalIssueType":[["CeilingHeight","Ceiling Height"],["FloorPlan","Floor Plan"],["NonConformity","Nonconformity"],["None","None"],["Overimprovement","Overimprovement"],["Underimprovement","Underimprovement"],["Other","Other"]],"DisasterMitigationFeatureType":[["EnclosedSoffits","Enclosed Soffits"],["FireResistantDecking","Fire Resistant Decking"],["FireResistantExteriorWalls","Fire Resistant Exterior Walls"],["FloodVents","Flood Vents"],["FortifiedRoof","Fortified Roof"],["FramingAnchorageOrBracing","Framing Anchorage or Bracing"],["ImpactResistantGlass","Impact Resistant Glass"],["ImpactResistantShingles","Impact Resistant Shingles"],["NoncombustiblePerimeter","Noncombustible Perimeter"],["None","None"],["StormShelter","Storm Shelter"],["StormShutters","Storm Shutters"],["WaterHeaterStrapping","Water Heater Strapping"],["Other","Other"]],"RenewableEnergyComponentType":[["Geothermal","Geothermal"],["Solar","Solar"],["WindTurbine","Wind Turbine"],["Other","Other"]],"RenewableEnergyComponentOwnershipType":[["Leased","Leased"],["Owned","Owned"],["PowerPurchaseAgreement","Power Purchase Agreement"],["Other","Other"]],"CeilingStyleType":[["Barrel","Barrel"],["Beams","Beams"],["Cathedral","Cathedral"],["Coffered","Coffered"],["Drop","Drop"],["Flat","Flat"],["Tray","Tray"],["Vaulted","Vaulted"],["Other","Other"]],"ApproximateCeilingHeightType":[["EightFeet","8 Ft."],["LessThanSevenFeet","Less than 7 feet"],["NineFeet","9 Ft."],["SevenFeet","7 Ft."],["TenFeetAndAbove","10 or more feet"],["TwoOrMoreStories","2 or more stories"]],"RoomUpdateStatusType":[["FullyUpdated","Fully Updated"],["NotUpdated","Not Updated"],["PartiallyUpdated","Partially Updated"]],"RoomUpdatedTimeframeType":[["FiveToTenYears","5-10 years"],["LessThanOneYear","Less than 1 year"],["OneToFiveYears","1-5 years"],["TenOrMoreYears","10 or more years"]],"RoomConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["TypicalWearAndTear","Typical Wear and Tear"]],"DefectComponentLabelType":[["ExteriorWallsAndTrim","Exterior Walls and Trim"],["Foundation","Foundation"],["MechanicalSystem","Mechanical System"],["Roof","Roof"],["Windows","Windows"],["Other","Other"],["Flooring","Flooring"],["WallsAndCeiling","Walls and Ceiling"]],"DefectItemRecommendedActionType":[["Completion","Completion"],["Inspection","Inspection"],["None","None"],["Repair","Repair"]],"LevelType":[["BelowGradeFive","Level B5"],["BelowGradeFour","Level B4"],["BelowGradeOne","Level B1"],["BelowGradeThree","Level B3"],["BelowGradeTwo","Level B2"],["LevelEight","Level 8"],["LevelFive","Level 5"],["LevelFour","Level 4"],["LevelNine","Level 9"],["LevelOne","Level 1"],["LevelSeven","Level 7"],["LevelSix","Level 6"],["LevelTen","Level 10"],["LevelThree","Level 3"],["LevelTwo","Level 2"]],"GradeLevelType":[["AboveGrade","Above Grade"],["FullyBelowGrade","Below Grade"],["PartiallyBelowGrade","Partially Below Grade"]],"AccessType":[["ExteriorAccessOnly","Exterior Access Only"],["InteriorAccessOnly","Interior Access Only"],["InteriorAndExteriorAccess","Interior and Exterior Access"]],"UnitOccupancyType":[["OwnerOccupied","Owner"],["Tenant","Tenant"],["Vacant","Vacant"]],"AmenityMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Composite","Composite"],["Concrete","Concrete"],["Fiberglass","Fiberglass"],["Metal","Metal"],["NaturalStone","Natural Stone"],["Pavers","Pavers"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"HazardZoneType":[["FEMASpecialFloodHazardArea","FEMA Special Flood Hazard Area"],["None","No Hazard Zone Noted"],["USGSLavaFlowZone","USGS Lava Flow Zone"],["Other","Other"]],"AccessibilityFeatureType":[["Appliances","Appliances"],["Auditory","Auditory"],["Bathtub","Bathtub"],["Cabinets","Cabinets"],["Counters","Counters"],["Doorways","Doorways"],["ElectricalSwitches","Electrical Switches"],["GrabBars","Grab Bars"],["Handrails","Handrails"],["Hardware","Hardware"],["Lighting","Lighting"],["None","None"],["Ramps","Ramps"],["Shower","Shower"],["Sink","Sink"],["Toilet","Toilet"],["Other","Other"]],"ValueMarketabilityImpactType":[["Adverse","Adverse"],["Beneficial","Beneficial"],["Neutral","Neutral"]],"ViewRangeType":[["Full","Full"],["Partial","Partial"],["Seasonal","Seasonal"],["Other","Other"]],"SiteInfluenceProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"StreetAccessType":[["Alley","Alley"],["Arterial","Arterial Street"],["Collector","Collector Street"],["CulDeSac","Cul-de-sac"],["DeadEnd","Dead End"],["Local","Local Road"],["Rural","Rural Road"],["Other","Other"]],"PropertyPrimaryEntryExitMethodType":[["PedestrianOnlyAccess","Pedestrian Only Access"],["PrivateAirstrip","Private Airstrip"],["PrivateStreet","Private Street"],["PublicStreet","Public Street"],["Waterway","Waterway"],["Other","Other"]],"ConstructionMethodType":[["Container","Container"],["Manufactured","Manufactured"],["Modular","Modular"],["OnFrameModular","On-Frame Modular"],["SiteBuilt","Site Built"],["ThreeDimensionalPrintingTechnology","3D Technology"],["Other","Other"]],"AttachmentType":[["Attached","Attached"],["Detached","Detached"]],"FrontDoorApproximateElevationRangeType":[["EightToNineFeet","8-9 Ft."],["FiveToSixFeet","5-6 Ft."],["FourToFiveFeet","4-5 Ft."],["GroundLevel","Ground Level"],["NineToTenFeet","9-10 Ft."],["OneToTwoFeet","1-2 Ft."],["SevenToEightFeet","7-8 Ft."],["SixToSevenFeet","6-7 Ft."],["TenOrMoreFeet","10 or more feet"],["ThreeToFourFeet","3-4 Ft."],["TwoToThreeFeet","2-3 Ft."],["UpToOneFoot","Up to 1 foot"]],"ImprovementComponentConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["NoFinish","No Finish"],["TypicalWearAndTear","Typical Wear and Tear"]],"OverallBathroomsUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"OverallFlooringUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"BelowGradeExteriorAccessType":[["CellarDoor","Cellar Door"],["WalkOut","Walk Out"],["WalkUp","Walk Up"],["Other","Other"]],"EnvironmentalConditionType":[["HazardousAboveGroundStorageTank","Hazardous Above Ground Storage Tank"],["HazardousSubstances","Hazardous Substances"],["Landfill","Landfill"],["None","None"],["Radon","Radon"],["SlushPit","Slush Pit"],["SoilContamination","Soil Contamination"],["SuperfundSite","Superfund Site"],["UndergroundStorageTank","Underground Storage Tank"],["WaterContamination","Water Contamination"],["Other","Other"]],"ConvertedAreaOriginalUseType":[["Garage","Garage"],["Patio","Patio"],["Porch","Porch"],["Other","Other"]],"ConvertedAreaFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"RoofEstimatedAgeRangeType":[["LessThanOneYear","Less than 1 year"],["OneToTenYears","1-10 years"],["TenToTwentyYears","10-20 years"],["TwentyOrMoreYears","20 or more years"]],"SewerSystemType":[["Cesspool","Cesspool"],["Septic","Septic"],["Other","Other"]],"WaterSourceType":[["Cistern","Cistern"],["HauledWaterHoldingTank","Hauled Water Holding Tank"],["LakeOrSpring","Lake or Spring"],["Well","Well"],["Other","Other"]],"WaterWellType":[["Artesian","Artesian"],["Drilled","Drilled"],["Dug","Dug"],["Other","Other"]],"BodyOfWaterType":[["Bay","Bay"],["Canal","Canal"],["Cove","Cove"],["Creek","Creek"],["Gulf","Gulf"],["Lake","Lake"],["Marsh","Marsh"],["Ocean","Ocean"],["Pond","Pond"],["Reservoir","Reservoir"],["River","River"],["Sound","Sound"],["Other","Other"]],"WaterfrontFeatureType":[["Beach","Beach"],["BoatLift","Boat Lift"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["Dock","Dock"],["None","None"],["Pier","Pier"],["Riprap","Riprap"],["SeawallOrBulkhead","Seawall or Bulkhead"],["Other","Other"]],"WaterAccessRightType":[["Deeded","Deeded Access"],["Permitted","By Permit"],["PrivatelyOwned","Privately Owned"],["Other","Other"]],"WaterAccessDepthType":[["DeepWater","Deep Water"],["NonNavigable","Non-Navigable"],["ShallowWater","Shallow Water"],["Other","Other"]],"BodyOfWaterProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"UnitBelowGradeFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"EncroachmentType":[["Building","Building"],["Driveway","Driveway"],["Fence","Fence"],["Overhang","Overhang"],["Other","Other"]],"EasementType":[["Conservation","Conservation"],["Drainage","Drainage"],["IngressOrEgress","Ingress / Egress"],["Utility","Utility"],["Other","Other"]],"RestrictionType":[["Age","Age"],["HistoricPreservation","Historic Preservation"],["Income","Income"],["LandUse","Land Use"],["Rental","Rental"],["SalePrice","Sale Price"],["Other","Other"]],"SiteZoningComplianceType":[["Illegal","Illegal"],["Legal","Legal"],["LegalNonConforming","Legal Nonconforming"],["NoZoning","No Zoning"]],"PropertyEstateType":[["FeeSimple","Fee Simple"],["Leasehold","Leasehold"],["Other","Other"]],"StructuralDesignType":[["Highrise","High-rise"],["Lowrise","Low-rise"],["Midrise","Mid-rise"],["RowhouseTownhouse","Rowhouse / Townhouse"],["SemiDetached","Semi-Detached"],["Other","Other"]],"SwimmingPoolFeatureType":[["Caged","Caged"],["Heated","Heated"],["Indoor","Indoor"],["Other","Other"]],"SiteDrainageReasonType":[["EvidenceOfErosion","Evidence of Erosion"],["ImproperGrading","Improper Grading"],["StandingWater","Standing Water"],["Other","Other"]]};
 
@@ -1126,9 +1130,12 @@ function newInspection(fileName, addr) {
 }
 function normalize(ins) {
   ins.data = ins.data || {}; ins.lists = ins.lists || {}; ins.photos = ins.photos || [];
+  if (!ins.data.property) ins.data.property = {};
   ins.overrides = ins.overrides || {}; ins.comments = ins.comments || {}; ins.finals = ins.finals || {};
   SECTIONS.forEach(s => { ins.data[s.id] = ins.data[s.id] || {}; });
-  Object.keys(LISTS).forEach(k => { ins.lists[k] = ins.lists[k] || []; });
+  Object.keys(LISTS).forEach(k => { ins.lists[k] = (Array.isArray(ins.lists[k]) ? ins.lists[k] : []).filter(x => x && typeof x === 'object'); ins.lists[k].forEach(x => { if (!x.id) x.id = uid(); }); });
+  if (!Array.isArray(ins.photos)) ins.photos = []; ins.photos = ins.photos.filter(x => x && x.id);
+  if (!ins.updated) ins.updated = ins.created || Date.now();
   // carry older test inspections forward
   if (ins.data.exterior.disaster && !ins.data.interview.disaster) { ins.data.interview.disaster = ins.data.exterior.disaster; delete ins.data.exterior.disaster; }
   if (ins.data.condition.eq && !ins.data.front.eq) { ins.data.front.eq = ins.data.condition.eq; ins.data.front.ec = ins.data.condition.ec; }
@@ -1575,7 +1582,9 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 /* ---------------- Home ---------------- */
 async function renderHome() {
   app.ins = null; document.title = 'UAD Field Inspection';
-  const all = (await DB.all('inspections')).map(normalize).sort((a, b) => b.updated - a.updated);
+  let raw = [];
+  try { raw = (await DB.all('inspections')) || []; } catch (e) { showFatal('Could not read saved inspections: ' + (e.message || e), 'home'); }
+  const all = raw.map(i => { try { return normalize(i); } catch (e) { i._broken = e.message || String(e); return i; } }).sort((a, b) => (b.updated || 0) - (a.updated || 0));
   const root = $('#app');
   root.innerHTML = `
   <header class="bar"><div class="bar-row"><div class="title"><b>UAD 3.6 Field Inspection</b><span>${all.length} inspection${all.length === 1 ? '' : 's'} on this iPad</span></div>
@@ -1588,7 +1597,7 @@ async function renderHome() {
       <button class="btn primary" type="submit">Start inspection</button>
     </form>
     ${!DB.persistent ? '<p class="warn-box">This browser is not letting the app save to the iPad. Open the app from its Home Screen icon so inspections are kept.</p>' : ''}
-    <div class="cards">${all.map(i => homeCard(i)).join('') || '<p class="help">No inspections yet. Start one above; everything you enter saves to this iPad as you go, with or without a signal.</p>'}</div>
+    <div class="cards">${all.map(i => safeCard(i)).join('') || '<p class="help">No inspections yet. Start one above; everything you enter saves to this iPad as you go, with or without a signal.</p>'}</div>
   </main>`;
   $('#newForm').onsubmit = async e => {
     e.preventDefault(); const a = $('#nAddr').value.trim(), f = $('#nFile').value.trim(); if (!a || !f) return;
@@ -1602,6 +1611,18 @@ async function renderHome() {
     await DB.del('inspections', id); app.confirm = null; toast('Inspection deleted'); renderHome();
   });
   $('#restoreFile').onchange = e => restoreBackup(e.target.files[0]);
+  root.querySelectorAll('[data-backup]').forEach(b => b.onclick = async () => {
+    const ins = all.find(x => x.id === b.dataset.backup); if (!ins) return;
+    app.ins = ins; try { await doExport('workfile', b); } finally { app.ins = null; }
+  });
+}
+function safeCard(i) {
+  try { if (i._broken) throw new Error(i._broken); return homeCard(i); }
+  catch (e) {
+    const name = (i.data && i.data.property && (i.data.property.fileName || i.data.property.addr)) || 'Inspection';
+    return `<div class="card"><b>${esc(name)}</b><div class="meta warn-box">Some details could not be shown (${esc(e.message || e)}). Your data is still saved.</div>
+      <div class="row"><button class="btn primary" data-open="${i.id}">Open</button><button class="btn" data-backup="${i.id}">Save backup</button></div></div>`;
+  }
 }
 function homeCard(i) {
   const issues = computeIssues(i).filter(x => !i.overrides[x.key]);
@@ -1614,12 +1635,16 @@ function homeCard(i) {
     <div class="prog" title="${pct}% of required items complete"><i style="width:${pct}%"></i></div>
     <div class="meta">${req ? req + ' required item' + (req === 1 ? '' : 's') + ' left' : 'All required items complete'}</div>
     ${confirming ? `<div class="confirm">Delete this inspection and its photos?${i.exported ? '' : ' It has NOT been exported.'} <button class="btn danger solid sm" data-delyes="${i.id}">Delete</button><button class="btn sm" data-delno="1">Keep</button></div>`
-      : `<div class="row"><button class="btn primary" data-open="${i.id}">Open</button><button class="btn danger" data-del="${i.id}">Delete</button></div>`}
+      : `<div class="row"><button class="btn primary" data-open="${i.id}">Open</button><button class="btn" data-backup="${i.id}">Save backup</button><button class="btn danger" data-del="${i.id}">Delete</button></div>`}
   </div>`;
 }
 
 /* ---------------- Inspection shell ---------------- */
 async function openInspection(id) {
+  try { await openInspection2(id); }
+  catch (e) { console.error(e); renderHome(); setTimeout(() => showFatal('Could not open this inspection: ' + (e.message || e), 'open'), 50); }
+}
+async function openInspection2(id) {
   const ins = normalize(await DB.get('inspections', id)); app.ins = ins;
   app.tab = 'property'; app.open = new Set(); app.groups = {}; app.cur = null; app.confirm = null; app.appl = null;
   const root = $('#app');
@@ -1676,6 +1701,10 @@ function ensureGroups(sec) {
 function openGroup(tab, gid) { const sec = SECTIONS.find(s => s.id === tab); if (!sec) return; ensureGroups(sec).add(gid); app.cur = gid; }
 
 function renderTab() {
+  try { renderTab2(); }
+  catch (e) { console.error(e); showFatal(e.message || e, 'tab ' + app.tab); }
+}
+function renderTab2() {
   const y = window.scrollY; refreshChrome(); const main = $('#main');
   const sec = SECTIONS.find(s => s.id === app.tab);
   if (sec) main.innerHTML = legend() + renderSection(sec) + extraPhotos(sec);
@@ -1979,16 +2008,18 @@ function bind(root) {
   root.querySelectorAll('[data-applrm]').forEach(b => b.onclick = () => { const it = itemOf(b); delete it.appl[b.dataset.applrm]; app.appl = null; save(); renderTab(); });
   root.querySelectorAll('[data-appldone]').forEach(b => b.onclick = () => { app.appl = null; renderTab(); });
   root.querySelectorAll('[data-view]').forEach(b => b.onclick = () => openViewer(b.dataset.view));
-  root.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { const id = b.dataset.toggle; const wasOpen = app.open.has(id); wasOpen ? app.open.delete(id) : app.open.add(id); saveNow(); renderTab(); if (!wasOpen) scrollToEl('item-' + id); });
+  root.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { const id = b.dataset.toggle; const wasOpen = app.open.has(id); if (wasOpen) app.shiftAt = Date.now(); wasOpen ? app.open.delete(id) : app.open.add(id); saveNow(); renderTab(); if (!wasOpen) scrollToEl('item-' + id); });
   root.querySelectorAll('[data-expand]').forEach(b => b.onclick = () => { const l = app.ins.lists[b.dataset.expand]; const all = l.every(x => app.open.has(x.id)); l.forEach(x => all ? app.open.delete(x.id) : app.open.add(x.id)); renderTab(); });
-  root.querySelectorAll('[data-add]').forEach(b => b.onclick = () => addItem(b.dataset.add, b.dataset.kind));
+  root.querySelectorAll('[data-add]').forEach(b => b.onclick = () => { if (Date.now() - (app.shiftAt || 0) < 700) return; addItem(b.dataset.add, b.dataset.kind); });
   root.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { app.confirm = 'rm:' + b.dataset.rm; renderTab(); });
   root.querySelectorAll('[data-rmno]').forEach(b => b.onclick = () => { app.confirm = null; renderTab(); });
   root.querySelectorAll('[data-rmyes]').forEach(b => b.onclick = async () => {
     const key = b.dataset.rmlist, id = b.dataset.rmyes; const ins = app.ins;
-    const gone = ins.photos.filter(p => p.list === key && p.item === id); for (const p of gone) await DB.del('photos', p.id);
+    const gone = ins.photos.filter(p => p.list === key && p.item === id);
     ins.photos = ins.photos.filter(p => !(p.list === key && p.item === id)); ins.lists[key] = ins.lists[key].filter(x => x.id !== id);
-    app.confirm = null; await saveNow(); toast('Removed'); renderTab();
+    app.open.delete(id); if (app.appl && app.appl.startsWith(id + ':')) app.appl = null;
+    app.confirm = null; app.shiftAt = Date.now(); renderTab(); toast('Removed'); await saveNow();
+    for (const p of gone) { try { await DB.del('photos', p.id); thumbCache.delete(p.id); } catch (e) {} }
   });
   root.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { const [tab, anchor, item, group] = b.dataset.go.split('|'); if (item) app.open.add(item); goTab(tab, anchor, group || null); });
   root.querySelectorAll('[data-ovr]').forEach(b => b.onclick = () => { app.ovrOpen = b.dataset.ovr; renderTab(); const i = $('#ovrText'); if (i) i.focus(); });
@@ -2607,11 +2638,33 @@ function crsNotes(ins) {
 }
 
 /* ---------------- Boot ---------------- */
+function showFatal(msg, where) {
+  const root = document.getElementById('app'); if (!root || document.getElementById('fatal')) return;
+  const box = document.createElement('div'); box.id = 'fatal'; box.className = 'fatal';
+  box.innerHTML = `<h2>Something went wrong</h2><p>Your inspections are still saved on this iPad. <b>Do not delete the app icon</b> – that would erase them.</p>
+    <p class="fatal-msg">${esc(String(msg || 'Unknown error'))}${where ? ' · ' + esc(where) : ''}</p>
+    <div class="row"><button class="btn primary" id="fatalHome">Go to my inspections</button><button class="btn" id="fatalReload">Reload app</button></div>
+    <p class="help">Take a screenshot of this box and send it to Claude.</p>`;
+  root.prepend(box); window.scrollTo(0, 0);
+  box.querySelector('#fatalHome').onclick = async () => { try { await saveNow(); } catch (e) {} box.remove(); renderHome(); };
+  box.querySelector('#fatalReload').onclick = () => location.reload();
+}
+window.addEventListener('error', e => { if (!e.message || e.message === 'Script error.' || /ResizeObserver/.test(e.message)) return; showFatal(e.message, (e.filename ? 'line ' + e.lineno : '')); });
+window.addEventListener('unhandledrejection', e => showFatal(e.reason && (e.reason.message || e.reason), 'promise'));
+
 (async function boot() {
-  hcInit();
-  await DB.ready;
-  try { if (navigator.storage && navigator.storage.persist) await navigator.storage.persist(); } catch (e) {}
+  try { hcInit(); } catch (e) {}
   try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claude|anthropic/.test(location.host)) navigator.serviceWorker.register('sw.js'); } catch (e) {}
+  const msg = document.getElementById('bootMsg'); if (msg) msg.textContent = 'Opening saved inspections…';
+  // never wait forever on storage
+  const ok = await Promise.race([DB.ready, new Promise(r => setTimeout(() => r('timeout'), 8000))]);
+  if (ok === 'timeout') {
+    $('#app').innerHTML = `<div class="fatal"><h2>The iPad's storage is not responding</h2><p>Your inspections are still saved. <b>Do not delete the app icon.</b></p>
+      <p>Close the app fully (swipe up and flick it away), wait 10 seconds and open it again. If this keeps happening, restart the iPad.</p>
+      <div class="row"><button class="btn primary" onclick="location.reload()">Try again</button></div></div>`;
+    return;
+  }
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
   renderHome();
 })();
 
