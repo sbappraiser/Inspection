@@ -1142,6 +1142,15 @@ function normalize(ins) {
   if (typeof ins.data.site.hazard === 'string') ins.data.site.hazard = [ins.data.site.hazard];
   if (!ins.lists.kitchens.length) ins.lists.kitchens.push({ id: uid(), level: 'LevelOne' });
   if (!ins.data.property.state) ins.data.property.state = 'CA';
+  // field types changed between versions (e.g. single choice -> multiple): repair stored values to match
+  const fix = (f, d) => {
+    if (!d || !f || !f.k) return; const v = d[f.k]; if (v === undefined || v === null) return;
+    if (f.t === 'multi' && !Array.isArray(v)) d[f.k] = v === '' ? [] : [v];
+    else if ((f.t === 'one' || f.t === 'sel') && Array.isArray(v)) d[f.k] = v.length ? v[0] : undefined;
+    else if (f.t === 'appliances' && (typeof v !== 'object' || Array.isArray(v))) d[f.k] = {};
+  };
+  SECTIONS.forEach(sec => sec.groups.forEach(g => g.fields.forEach(f => { if (!f.link) fix(f, ins.data[sec.id]); })));
+  Object.keys(LISTS).forEach(k => ins.lists[k].forEach(it => LISTS[k].fields.forEach(f => fix(f, it))));
   return ins;
 }
 const insTitle = ins => ins.data.property.fileName || 'Untitled';
@@ -1326,7 +1335,7 @@ function parseCRS(lines) {
    dropped lowest-priority-first until the combined text fits the UAD limit. */
 
 const lc = s => String(s || '').toLowerCase();
-function listJoin(a) { a = a.filter(Boolean); if (a.length <= 1) return a.join(''); return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+function listJoin(a) { a = (Array.isArray(a) ? a : (a == null || a === '' ? [] : [a])).filter(Boolean).map(String); if (a.length <= 1) return a.join(''); return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
 function F(secId, k) { for (const s of SECTIONS) if (s.id === secId) for (const g of s.groups) for (const f of g.fields) if (f.k === k) return f; return null; }
 function L(listKey, k) { return LISTS[listKey].fields.find(f => f.k === k); }
 function sv(ins, secId, k) { const f = F(secId, k); const d = ins.data[(f && f.link) || secId]; const v = d[k]; return f ? valText(f, v, d) : v; }
