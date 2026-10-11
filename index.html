@@ -77,7 +77,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 14px 16px 140px; }
 .lg.warn:disabled { background: var(--lime); color: #000; }
 
 /* ---------- Folding subsections ---------- */
-.group { background: var(--bg); border: var(--bw) solid var(--line); border-radius: var(--r); margin-bottom: 14px; overflow: hidden; scroll-margin-top: 140px; }
+.group { background: var(--bg); border: var(--bw) solid var(--line); border-radius: var(--r); margin-bottom: 14px; overflow: clip; scroll-margin-top: 140px; }
 .ghead { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--soft); border: 0; text-align: left; font-weight: 700; color: #000; min-height: 64px; }
 .ghead.static { background: #000; color: #fff; }
 .group.open > .ghead { background: #000; color: #fff; }
@@ -260,6 +260,19 @@ html.hc .group { border-width: 4px; }
 .fatal { margin: 16px; padding: 18px 20px; border: 4px solid var(--warn); border-radius: 12px; background: #fff; color: #000; font-size: 19px; }
 .fatal h2 { color: var(--warn); margin: 0 0 8px; }
 .fatal-msg { font-family: ui-monospace, Menlo, monospace; font-size: 15px; background: #f2f2f2; padding: 8px 10px; border-radius: 6px; word-break: break-word; }
+
+.rename { display: flex; gap: 8px; align-items: center; flex: 1; flex-wrap: wrap; }
+.rename .txt { flex: 1; min-width: 200px; }
+
+.review { display: grid; gap: 0; border: 2px solid #000; border-radius: 8px; overflow: hidden; }
+.rv-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid #bbb; flex-wrap: wrap; background: #fff; }
+.rv-row:last-child { border-bottom: 0; }
+.rv-l { font-weight: 700; min-width: 190px; }
+.rv-v { flex: 1; min-width: 160px; }
+.rv-v.empty { color: var(--warn); font-weight: 700; }
+
+/* keep the open room's name in view while scrolling through it */
+.item.open > .item-head { position: sticky; top: calc(var(--barh, 120px) + env(safe-area-inset-top, 0px)); z-index: 6; border-bottom: 3px solid #000; }
 
 </style>
 </head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting the inspection app…</p></div>
@@ -615,6 +628,51 @@ function bathAutoName(it, i, list) {
   return (it.kind === 'HalfBathroom' ? 'Half Bath ' : 'Bath ') + n;
 }
 
+/* ---------------- Interview helpers ---------------- */
+// Year pickers count back from the current year, so the list stays current every year
+function yearOpts(from, remodel) {
+  const now = new Date().getFullYear(); const out = [];
+  for (let y = now; y >= from; y--) out.push([String(y), String(y)]);
+  out.push(['Before ' + from, 'Before ' + from]);
+  if (remodel) out.push(['Original', 'Original / never remodeled']);
+  out.push(['Unknown', 'Unknown']); return out;
+}
+const saleOn = d => d.saleStatus === 'Listed for Sale' || d.saleStatus === 'In Escrow';
+// Rooms counted in the room total: main living rooms only (no entries, foyers, pantries, nooks, halls, utility spaces)
+const COUNT_ROOMS = ['Living Room','Great Room','Family Room','Dining Room','Den','Office','Study','Library','Recreation Room','Game Room','Media Room','Theater','Music Room / Studio','Art Studio','Gym','Sunroom','Loft','Bonus Room'];
+function reviewItems(ins, rows) {
+  return rows.map(([label, sec, k]) => {
+    const { f, g } = findFieldIn(sec, k); const d = ins.data[sec] || {};
+    if (!f || !isShown(f, d, ins)) return null;
+    const value = valText(f, d[k], d); if (!value && !isReq(f, d, ins)) return null; // skip optional items left blank
+    return { label, value, go: `${sec}|f-${sec}-${k}||${g ? g.id : ''}` };
+  }).filter(Boolean);
+}
+function findFieldIn(secId, k) { const sec = SECTIONS.find(s => s.id === secId); if (sec) for (const g of sec.groups) for (const f of g.fields) if (f.k === k) return { f, g }; return {}; }
+function pubrecItems(ins) {
+  const c = ins.data.property.crs || {}; const L = ins.lists; const n = v => v ? Number(v).toLocaleString() : '—';
+  const fb = L.baths.filter(b => b.kind === 'FullBathroom').length, hb = L.baths.filter(b => b.kind === 'HalfBathroom').length;
+  return [
+    { label: 'Living area (sq. ft.)', value: `Assessor ${n(c.sqftAssessor || c.sqft)} · MLS ${n(c.sqftMls)}` },
+    { label: 'Year built', value: `Assessor ${c.yearBuilt || '—'} · MLS ${c.yearBuiltMls || '—'}` },
+    { label: 'Bedrooms', value: `Assessor ${c.beds || '—'} · MLS ${c.bedsMls || '—'} · Your count ${L.bedrooms.length}` },
+    { label: 'Baths', value: `Assessor ${c.baths || '—'} · MLS ${c.bathsMls || '—'} · Your count ${fb} full${hb ? ', ' + hb + ' half' : ''}` },
+  ].concat(c.rooms || c.roomsMls ? [{ label: 'Total rooms', value: `Assessor ${c.rooms || '—'} · MLS ${c.roomsMls || '—'}` }] : []);
+}
+function countItems(ins) {
+  const L = ins.lists; const main = L.rooms.filter(r => COUNT_ROOMS.includes(r.type));
+  const beds = L.bedrooms.length, fb = L.baths.filter(b => b.kind === 'FullBathroom').length, hb = L.baths.filter(b => b.kind === 'HalfBathroom').length;
+  const kit = Math.min(1, L.kitchens.length); const total = main.length + kit + beds;
+  const out = [
+    { label: 'Dwelling – total rooms', value: `${total}  (${main.length} main room${main.length === 1 ? '' : 's'}${main.length ? ': ' + main.map(r => r.label || r.type).join(', ') : ''}; ${kit} kitchen; ${beds} bedroom${beds === 1 ? '' : 's'})`, go: 'interior|grp-rooms||rooms' },
+    { label: 'Dwelling – bedrooms', value: String(beds), go: 'interior|grp-beds||beds' },
+    { label: 'Dwelling – baths', value: `${fb} full${hb ? ', ' + hb + ' half' : ''}`, go: 'interior|grp-baths||baths' },
+  ];
+  L.adus.forEach((a, i) => out.push({ label: LISTS.adus.name(a, i), value: `${a.beds || 0} bedroom${a.beds === 1 ? '' : 's'}, ${a.fullBaths || 0} full bath${a.fullBaths === 1 ? '' : 's'}${a.halfBaths ? ', ' + a.halfBaths + ' half' : ''}${a.kitchen ? ', ' + a.kitchen.toLowerCase() : ''}`, go: 'buildings|item-' + a.id + '|' + a.id + '|adu' }));
+  L.outbuildings.filter(o => o.living).forEach((o, i) => out.push({ label: LISTS.outbuildings.name(o, i), value: `${o.beds || 0} bedroom${o.beds === 1 ? '' : 's'}, ${o.fullBaths || 0} full bath${o.fullBaths === 1 ? '' : 's'}${o.halfBaths ? ', ' + o.halfBaths + ' half' : ''}`, go: 'buildings|item-' + o.id + '|' + o.id + '|outb' }));
+  return out;
+}
+
 /* ---------------- Sections (tabs) in walk-through order ---------------- */
 const VIEW_OPTS = (() => { const all = U('ViewType').filter(([c]) => !['Bay','Canal','Cove','Gulf','River','Sound'].includes(c)); return [...order(all, ['Residential','Ocean','Skyline','Mountain']).slice(0, 4), ['Garden Setting','Garden Setting'], ...order(all, ['Residential','Ocean','Skyline','Mountain']).slice(4)]; })();
 
@@ -622,6 +680,11 @@ const SECTIONS = [
   { id: 'property', title: 'Property', groups: [
     { id: 'crs', title: 'Public record (CRS Data)', fields: [
       { k: 'crsLoad', l: 'Load a CRS Property Report (PDF) before you leave the office', t: 'crs' },
+    ]},
+    { id: 'pubrec', title: 'Public record vs. MLS', showGroup: (d, ins) => !!(ins && ins.data.property.crs), fields: [
+      { k: 'pubRev', l: 'From the CRS report (verify; usually not accurate)', t: 'review', items: pubrecItems },
+      { k: 'measuredGla', l: 'Your measured living area (sq. ft.) for the comment – optional', t: 'num', help: 'Leave blank to fill it in SFREP. The comment will say "the appraiser\'s measured gross living area".' },
+      { k: 'pubCmt', l: 'Add the public record / MLS explanation to the Unit Interior commentary', t: 'yn' },
     ]},
     { id: 'assign', title: 'Address & assignment', fields: [
       { k: 'fileName', l: 'File name', t: 'text', req: true },
@@ -979,39 +1042,87 @@ const SECTIONS = [
   ]},
 
   { id: 'interview', title: 'Interview', groups: [
-    { id: 'who', title: 'Interview', fields: [
-      { k: 'who', l: 'Interview source', t: 'multi', req: true, o: opts('Owner','Borrower','Agent','Occupant','Other') },
-      { k: 'whoName', l: 'Name(s)', t: 'text' },
-      { k: 'date', l: 'Interview date', t: 'date', req: true },
-      { k: 'confirmed', l: 'Confirmed with interviewee', t: 'multi', o: opts('Bedroom / bath count','Room uses','Year built','Additions permitted','ADU / guest house permitted','Known defects','Pending repairs','Sale / listing status','Personal property included','Solar ownership','HOA') },
+    { id: 'updates', title: 'Updates, remodels & repairs', fields: [
+      { k: 'kitYear', l: 'Kitchen remodeled (year)', t: 'sel', o: () => yearOpts(2000, true) },
+      { k: 'kitScope', l: 'Kitchen work', t: 'one', o: REMODEL, show: d => !!d.kitYear && !['Unknown'].includes(d.kitYear) },
+      { k: 'bathYear', l: 'Bathroom(s) remodeled (year)', t: 'sel', o: () => yearOpts(2000, true) },
+      { k: 'bathScope', l: 'Bathroom work', t: 'one', o: REMODEL, show: d => !!d.bathYear && !['Unknown'].includes(d.bathYear) },
+      { k: 'roofYear', l: 'Roof installed / replaced (year)', t: 'sel', o: () => yearOpts(1980, false) },
+      { k: 'recent15', l: 'Replaced or remodeled within the last 15 years', t: 'multi', o: opts('HVAC / Furnace','Air Conditioning','Water Heater','Plumbing / Repipe','Sewer Lateral','Electrical / Panel','Windows','Exterior Doors','Interior Doors','Flooring','Interior Paint','Exterior Paint','Stucco / Siding','Insulation','Garage Door','Driveway / Hardscape','Landscaping','Fencing / Gates','Pool / Spa Equipment','Appliances','Foundation Work','Gutters') },
+      { k: 'repairs', l: 'Major repairs (what, when)', t: 'note' },
+      { k: 'planned', l: 'Planned or needed repairs', t: 'note' },
     ]},
     { id: 'disaster', title: 'Disaster mitigation', fields: [
       { k: 'disaster', l: 'Disaster mitigation features (all that apply)', t: 'multi', req: true, o: noneFirst(UN('DisasterMitigationFeatureType')), uad: 'DisasterMitigationFeatureType', fid: '5.000' },
       { k: 'disasterNote', l: 'Disaster mitigation notes', t: 'note', show: d => (d.disaster || []).some(x => x !== 'None') },
     ]},
-    { id: 'updates', title: 'Updates, remodels & repairs', fields: [
-      { k: 'kitYear', l: 'Kitchen remodel / update year', t: 'text', help: 'Year or "Unknown"' },
-      { k: 'kitScope', l: 'Kitchen work', t: 'one', o: REMODEL },
-      { k: 'bathYear', l: 'Bathroom(s) remodel / update year', t: 'text' },
-      { k: 'bathScope', l: 'Bathroom work', t: 'one', o: REMODEL },
-      { k: 'roofYear', l: 'Roof installed / replaced', t: 'text', help: 'Year or "Unknown"' },
-      { k: 'hvacYear', l: 'HVAC installed / replaced', t: 'text' },
-      { k: 'whYear', l: 'Water heater installed', t: 'text' },
-      { k: 'plumbYear', l: 'Plumbing / repipe year', t: 'text' },
-      { k: 'elecYear', l: 'Electrical / panel upgrade year', t: 'text' },
-      { k: 'winYear', l: 'Windows replaced year', t: 'text' },
-      { k: 'floorYear', l: 'Flooring replaced year', t: 'text' },
-      { k: 'paintYear', l: 'Interior / exterior paint year', t: 'text' },
-      { k: 'additions', l: 'Additions / conversions (with permit status)', t: 'note' },
-      { k: 'repairs', l: 'Major repairs (what, when, cost)', t: 'note' },
-      { k: 'planned', l: 'Planned or needed repairs', t: 'note' },
-    ]},
-    { id: 'sysConf', title: 'Systems & utilities confirmed', fields: [
-      { k: 'sys', l: 'Systems & utilities', t: 'multi', o: opts('Heating Type','Cooling Type','Soft Water','Filtration','Security System','Recirculating Hot Water','Insulated Windows','Public Sewer','Septic','Water Well','Public Water','Private Water','Automatic Irrigation','Smart Home System','Generator','Backup Battery System','Electric Car Charger','Built-in Speakers','LED Recessed Lighting','Custom Lighting Fixtures','Green / Efficiency Items','Owned Solar','Leased Solar') },
+    { id: 'sysConf', title: 'Systems confirmed', fields: [
+      { k: 'sysRev', l: 'What you entered on the Systems tab', t: 'review', items: ins => reviewItems(ins, [
+        ['Heating', 'systems', 'heat'], ['Heating fuel', 'systems', 'heatFuel'], ['Cooling', 'systems', 'cool'], ['HVAC zones', 'systems', 'heatZones'],
+        ['Water heater', 'systems', 'wh'], ['Number of water heaters', 'systems', 'whCount'], ['Recirculating pump', 'systems', 'whRecirc'],
+        ['Mechanical / water systems', 'systems', 'mech'], ['Renewable energy', 'systems', 'renew'], ['Solar ownership', 'systems', 'solarOwn'],
+        ['Efficiency items', 'systems', 'eff'], ['Smart home', 'systems', 'smart'], ['Security', 'systems', 'security'], ['Technology', 'systems', 'tech']]) },
+      { k: 'sysOk', l: 'Systems confirmed with interviewee', t: 'yn' },
+      { k: 'sys', l: 'Other systems mentioned', t: 'multi', o: opts('Soft Water','Water Filtration','Recirculating Hot Water','Radiant Floor Heat','Whole House Fan','Fire Sprinklers','Central Vacuum','Elevator','Generator','Backup Battery System','EV Charger','Built-in Speakers','LED Recessed Lighting','Custom Lighting Fixtures','Automatic Irrigation','Owned Solar','Leased Solar') },
       { k: 'solarInfo', l: 'Owned solar: year purchased, cost, kilowatts', t: 'text', show: d => (d.sys || []).includes('Owned Solar') },
-      { k: 'wellInfo', l: 'Water well: shared / private and use', t: 'text', show: d => (d.sys || []).includes('Water Well') },
-      { k: 'otherSys', l: 'Other systems & components', t: 'note' },
-      { k: 'asked', l: 'Anything else the owner mentioned', t: 'note' },
+      { k: 'otherSys', l: 'Systems notes', t: 'note' },
+    ]},
+    { id: 'utilConf', title: 'Utilities confirmed', fields: [
+      { k: 'utilRev', l: 'What you entered on the Site tab', t: 'review', items: ins => reviewItems(ins, [
+        ['Electricity', 'site', 'elec'], ['Gas', 'site', 'gas'], ['Water', 'site', 'waterUtil'], ['Sanitary sewer', 'site', 'sewer'], ['Private wastewater', 'site', 'sewerType']])
+        .concat(ins.lists.adus.map((a, i) => ({ label: LISTS.adus.name(a, i) + ' – separately metered', value: a.metered === undefined ? '' : (a.metered ? 'Yes' : 'No'), go: 'buildings|item-' + a.id + '|' + a.id + '|adu' })))
+        .concat(ins.lists.outbuildings.filter(o => (o.util || []).length).map((o, i) => ({ label: LISTS.outbuildings.name(o, i) + ' – utilities', value: valText(LISTS.outbuildings.fields.find(f => f.k === 'util'), o.util, o), go: 'buildings|item-' + o.id + '|' + o.id + '|outb' }))) },
+      { k: 'utilOk', l: 'Utilities confirmed with interviewee', t: 'yn' },
+      { k: 'utilMore', l: 'Utility details', t: 'multi', o: opts('Water Well – Private','Water Well – Shared','Mutual Water Company','Propane Tank – Owned','Propane Tank – Leased','Septic Recently Pumped / Inspected','Sewer Lateral Replaced','Underground Utilities','Fiber Internet Available') },
+      { k: 'wellInfo', l: 'Water well: shared / private, use, testing', t: 'text', show: d => (d.utilMore || []).some(x => x.startsWith('Water Well')) },
+      { k: 'utilNote', l: 'Utilities notes', t: 'note' },
+    ]},
+    { id: 'confirm', title: 'Confirmed with interviewee', fields: [
+      { k: 'countRev', l: 'Room, bedroom & bath counts', t: 'review', items: countItems },
+      { k: 'countsOk', l: 'Counts confirmed with interviewee', t: 'yn' },
+      { k: 'addPermit', l: 'Additions permitted?', t: 'one', o: opts('Yes','No','No Additions','Unknown') },
+      { k: 'additions', l: 'Additions comment', t: 'note', show: d => d.addPermit === 'No' || d.addPermit === 'Unknown' || (!d.addPermit && !!d.additions), req: d => d.addPermit === 'No' },
+      { k: 'knownDef', l: 'Known defects?', t: 'yn' },
+      { k: 'knownDefNote', l: 'Known defects comment', t: 'note', show: d => d.knownDef === true, req: d => d.knownDef === true },
+      { k: 'saleStatus', l: 'Sale / listing status', t: 'one', o: opts('Not Listed','Listed for Sale','In Escrow','Recently Sold','Unknown') },
+      { k: 'listPrice', l: 'List price', t: 'money', show: saleOn },
+      { k: 'salePrice', l: 'Contract / sale price', t: 'money', show: d => d.saleStatus === 'In Escrow' || d.saleStatus === 'Recently Sold' },
+      { k: 'offers', l: 'Offers received', t: 'count', show: saleOn },
+      { k: 'multiOffers', l: 'Multiple offers?', t: 'yn', show: saleOn },
+      { k: 'priceRed', l: 'Price reductions?', t: 'yn', show: saleOn },
+      { k: 'priceRedNote', l: 'Price reductions (dates / amounts)', t: 'text', show: d => saleOn(d) && d.priceRed === true },
+      { k: 'conc', l: 'Concessions or credits?', t: 'yn', show: saleOn },
+      { k: 'concNote', l: 'Concessions / credits (amount, what for)', t: 'text', show: d => saleOn(d) && d.conc === true },
+      { k: 'persProp', l: 'Personal property included?', t: 'yn', show: saleOn },
+      { k: 'persPropNote', l: 'Personal property (what, value)', t: 'text', show: d => saleOn(d) && d.persProp === true },
+      { k: 'terms', l: 'Special terms', t: 'multi', show: saleOn, o: opts('None','Lease Back','Seller Financing','Contingent on Buyer’s Sale','1031 Exchange','As-Is','Short Sale','REO / Bank Owned','Trust / Probate','Relocation','Non-Arm’s Length','Other') },
+      { k: 'termsNote', l: 'Sale / listing notes', t: 'note', show: saleOn },
+      { k: 'priorRev', l: 'Public record (CRS)', t: 'review', show: (d, ins) => !!(ins && ins.data.property.crs && (ins.data.property.crs.sales || []).length), items: ins => { const ss = ins.data.property.crs.sales || []; const txt = s => [s.date, s.amount || 'no price shown', s.instrument, s.buyer ? 'to ' + s.buyer : ''].filter(Boolean).join(' · ');
+        const out = [{ label: 'Most recent recorded transfer', value: txt(ss[0]) }]; const priced = ss.find(s => s.amount);
+        if (priced && priced !== ss[0]) out.push({ label: 'Most recent sale with a price', value: txt(priced) }); return out; } },
+      { k: 'priorDate', l: 'Owner’s purchase date', t: 'date' },
+      { k: 'priorPrice', l: 'Owner’s purchase price', t: 'money' },
+      { k: 'hoa', l: 'HOA?', t: 'yn' },
+      { k: 'hoaDev', l: 'Development name', t: 'text', show: d => d.hoa === true },
+      { k: 'hoaName', l: 'HOA name', t: 'text', show: d => d.hoa === true },
+      { k: 'hoaContact', l: 'HOA contact name', t: 'text', show: d => d.hoa === true },
+      { k: 'hoaPhone', l: 'HOA contact phone', t: 'text', show: d => d.hoa === true },
+      { k: 'hoaFee', l: 'HOA dues ($)', t: 'money', show: d => d.hoa === true },
+      { k: 'hoaFreq', l: 'Dues paid', t: 'one', o: opts('Monthly','Quarterly','Annually'), show: d => d.hoa === true },
+      { k: 'hoaSpecial', l: 'Special assessments?', t: 'yn', show: d => d.hoa === true },
+      { k: 'hoaSpecialNote', l: 'Special assessments (amount, purpose)', t: 'text', show: d => d.hoa === true && d.hoaSpecial === true },
+      { k: 'hoaLit', l: 'Pending litigation?', t: 'yn', show: d => d.hoa === true },
+      { k: 'hoaLitNote', l: 'Pending litigation (details)', t: 'text', show: d => d.hoa === true && d.hoaLit === true },
+      { k: 'rented', l: 'Rented?', t: 'yn' },
+      { k: 'rentType', l: 'Rental type', t: 'multi', o: opts('1-Year Lease','Month-to-Month','Seasonal','Short-Term Rental','Vacation Rental'), show: d => d.rented === true },
+      { k: 'rentAmt', l: 'Monthly rent ($)', t: 'money', show: d => d.rented === true },
+      { k: 'furnished', l: 'Furnished?', t: 'yn', show: d => d.rented === true },
+      { k: 'rentUtil', l: 'Utilities included?', t: 'yn', show: d => d.rented === true },
+      { k: 'rentNote', l: 'Rental notes', t: 'text', show: d => d.rented === true },
+      { k: 'who', l: 'Interview source', t: 'multi', req: true, o: opts('Owner','Borrower','Agent','Occupant','Other') },
+      { k: 'whoName', l: 'Name(s)', t: 'text' },
+      { k: 'date', l: 'Interview date', t: 'date', req: true },
+      { k: 'asked', l: 'Anything else the interviewee mentioned', t: 'note' },
     ]},
   ]},
 
@@ -1142,6 +1253,12 @@ function normalize(ins) {
   if (typeof ins.data.site.hazard === 'string') ins.data.site.hazard = [ins.data.site.hazard];
   if (!ins.lists.kitchens.length) ins.lists.kitchens.push({ id: uid(), level: 'LevelOne' });
   if (!ins.data.property.state) ins.data.property.state = 'CA';
+  // v3 interview: old per-item "year" boxes become the 15-year checklist; free-typed years become picker values
+  { const iv = ins.data.interview; const now = new Date().getFullYear();
+    const map = { hvacYear: 'HVAC / Furnace', whYear: 'Water Heater', plumbYear: 'Plumbing / Repipe', elecYear: 'Electrical / Panel', winYear: 'Windows', floorYear: 'Flooring', paintYear: 'Interior Paint' };
+    Object.entries(map).forEach(([k, lab]) => { const y = parseInt(String(iv[k] || '').match(/\d{4}/) || '', 10); if (y && now - y <= 15) { iv.recent15 = iv.recent15 || []; if (!iv.recent15.includes(lab)) iv.recent15.push(lab); } if (iv[k] !== undefined) { iv.oldYears = (iv.oldYears ? iv.oldYears + '; ' : '') + lab + ': ' + iv[k]; delete iv[k]; } });
+    ['kitYear', 'bathYear', 'roofYear'].forEach(k => { if (iv[k] !== undefined && typeof iv[k] !== 'string') iv[k] = String(iv[k]); const m = String(iv[k] || '').match(/^\s*(\d{4})\s*$/); if (iv[k] && !m && !/^(Before|Original|Unknown)/.test(iv[k])) { iv.oldYears = (iv.oldYears ? iv.oldYears + '; ' : '') + k + ': ' + iv[k]; delete iv[k]; } else if (m) iv[k] = m[1]; });
+    if (iv.oldYears) { iv.asked = [iv.asked, 'Earlier year entries: ' + iv.oldYears].filter(Boolean).join('\n'); delete iv.oldYears; } }
   // field types changed between versions (e.g. single choice -> multiple): repair stored values to match
   const fix = (f, d) => {
     if (!d || !f || !f.k) return; const v = d[f.k]; if (v === undefined || v === null) return;
@@ -1291,6 +1408,9 @@ function parseCRS(lines) {
   const yb = afterAll('Year Built'); c.yearBuilt = (yb[0] || '').replace(/[^\d]/g, ''); c.yearBuiltMls = (yb[1] || '').replace(/[^\d]/g, '');
   const bd = afterAll('Bedrooms'); c.beds = bd[0] || ''; c.bedsMls = bd[1] || '';
   const ba = afterAll('Total Bathrooms'); c.baths = ba[0] || ''; c.bathsMls = ba[1] || '';
+  const isq = afterAll('Improvement Sq. Ft'); c.sqftAssessor = (isq[0] || '').replace(/[^\d]/g, ''); c.sqftMls = (isq[1] || '').replace(/[^\d]/g, '');
+  if (!c.sqftAssessor && c.sqft) c.sqftAssessor = c.sqft;
+  const tr = afterAll('Total Rooms'); c.rooms = (tr[0] || '').replace(/[^\d]/g, ''); c.roomsMls = (tr[1] || '').replace(/[^\d]/g, '');
   c.lotSf = after('Lot Square Feet').replace(/[^\d]/g, '');
   c.acres = after('Acreage');
   const ll = after('Latitude/Longitude').replace(/°/g, ''); const llm = ll.match(/(-?\d+\.\d+)\s*\/\s*(-?\d+\.\d+)/); if (llm) { c.lat = llm[1]; c.lng = llm[2]; }
@@ -1422,6 +1542,14 @@ const GEN = {
   },
   interior(ins) {
     const d = ins.data.interior, out = []; const L2 = ins.lists;
+    { const c = ins.data.property.crs, p = ins.data.property;
+      if (c && p.pubCmt !== false) {
+        const n = v => v ? Number(v).toLocaleString() : '';
+        const part = (src, sq, beds, baths, yr) => { const b = [sq && n(sq) + ' sq. ft.', beds && beds + ' bedrooms', baths && baths + ' baths'].filter(Boolean); if (!b.length && !yr) return ''; return src + ' ' + (b.length ? listJoin(b) + (yr ? ', built in ' + yr : '') : 'a year built of ' + yr); };
+        const a = part('Public records show', c.sqftAssessor || c.sqft, c.beds, c.baths, c.yearBuilt), m = part('MLS data shows', c.sqftMls, c.bedsMls, c.bathsMls, c.yearBuiltMls);
+        const fb = L2.baths.filter(b => b.kind === 'FullBathroom').length, hb = L2.baths.filter(b => b.kind === 'HalfBathroom').length;
+        if (a || m) out.push(S(`${[a, m].filter(Boolean).join('; ')}. Public record and MLS data are often inaccurate and may include other buildings; MLS data may be dated if the property has not been listed recently, and may include ADUs and/or outbuildings. The appraiser therefore relied on ${p.measuredGla ? 'the measured gross living area of ' + n(p.measuredGla) + ' sq. ft.' : 'the appraiser\'s measured gross living area'} and the room count observed at inspection (${L2.bedrooms.length} bedroom${L2.bedrooms.length === 1 ? '' : 's'}, ${fb} full${hb ? ' and ' + hb + ' half' : ''} bath${fb + hb === 1 ? '' : 's'})`, 1));
+      } }
     const beds = L2.bedrooms.length, fb = L2.baths.filter(b => b.kind === 'FullBathroom').length, hb = L2.baths.filter(b => b.kind === 'HalfBathroom').length;
     out.push(S(`The dwelling has ${beds} bedroom${beds === 1 ? '' : 's'}, ${fb} full bath${fb === 1 ? '' : 's'}${hb ? ' and ' + hb + ' half bath' + (hb === 1 ? '' : 's') : ''} on ${L2.levels.length} level${L2.levels.length === 1 ? '' : 's'}`, 1));
     const rooms = L2.rooms.map((r, i) => lc(LISTS.rooms.name(r, i))); if (rooms.length) out.push(S(`Rooms include ${listJoin(rooms)}`, 2));
@@ -1507,12 +1635,18 @@ const GEN = {
     const c = ins.data.condition, iv = ins.data.interview, out = [];
     if (c.oq || c.oc) out.push(S(`Overall ${c.oq || ''} quality and ${c.oc || ''} condition`.replace(/ +/g, ' '), 1));
     if (c.overallUpd) out.push(S(`The dwelling is ${lc(c.overallUpd)}`, 1));
-    const yrs = [['kitchen', iv.kitYear, iv.kitScope], ['bathrooms', iv.bathYear, iv.bathScope]].filter(x => x[1] || x[2]);
-    yrs.forEach(([n, y, sc]) => out.push(S(`The ${n} ${sc ? 'were ' + lc(sc).replace('updated', 'updated') : 'were updated'}${y ? ' in ' + y : ''}, per ${listJoin((iv.who || []).map(lc)) || 'the interviewee'}`, 1)));
-    const sys = [['roof', iv.roofYear], ['HVAC', iv.hvacYear], ['water heater', iv.whYear], ['plumbing', iv.plumbYear], ['electrical', iv.elecYear], ['windows', iv.winYear], ['flooring', iv.floorYear], ['paint', iv.paintYear]].filter(x => x[1]);
-    if (sys.length) out.push(S(`Reported component ages: ${sys.map(x => x[0] + ' ' + x[1]).join('; ')}`, 2));
+    const per = listJoin((iv.who || []).map(lc)) || 'the interviewee';
+    [['kitchen', iv.kitYear, iv.kitScope], ['bathrooms', iv.bathYear, iv.bathScope]].forEach(([n, y, sc]) => {
+      const verb = n === 'kitchen' ? 'was' : 'were';
+      if (/^\d{4}$/.test(y || '')) out.push(S(`The ${n} ${verb} ${sc ? lc(sc) : 'remodeled'} in ${y}, per ${per}`, 1));
+      else if (/^Before/.test(y || '')) out.push(S(`The ${n} ${verb} ${sc ? lc(sc) : 'remodeled'} ${lc(y)}, per ${per}`, 2));
+      else if (y === 'Original') out.push(S(`The ${n} ${verb} reported as original`, 2));
+    });
+    if (/^\d{4}$/.test(iv.roofYear || '')) out.push(S(`The roof was installed or replaced in ${iv.roofYear}, per ${per}`, 2));
+    if ((iv.recent15 || []).length) out.push(S(`Replaced or remodeled within the last 15 years, per ${per}: ${listJoin(iv.recent15)}`, 2));
     if (iv.repairs) out.push(S(`Reported repairs: ${iv.repairs}`, 2));
-    if (iv.additions) out.push(S(`Additions / conversions: ${iv.additions}`, 2));
+    if (iv.addPermit === 'No' && iv.additions) out.push(S(`Unpermitted additions reported: ${iv.additions}`, 2));
+    else if (!iv.addPermit && iv.additions) out.push(S(`Additions / conversions: ${iv.additions}`, 2));
     return out;
   },
 };
@@ -1748,7 +1882,7 @@ function groupIssues(sec, g, ins = app.ins) { return computeIssues(ins).filter(x
 function ensureGroups(sec) {
   if (app.groups[sec.id]) return app.groups[sec.id];
   const set = new Set(); const vis = sec.groups.filter(g => groupShown(g, sec, app.ins));
-  const first = (sec.id === 'property' && !app.ins.data.property.crs) ? vis[0] : (vis.find(g => groupIssues(sec, g).length) || vis[0]);
+  const first = vis[0]; // first visit to a tab: start at its first subsection
   if (first) { set.add(first.id); app.cur = first.id; }
   app.groups[sec.id] = set; return set;
 }
@@ -1767,6 +1901,7 @@ function renderTab2() {
   else if (app.tab === 'attention') main.innerHTML = renderAttention();
   else if (app.tab === 'export') main.innerHTML = renderExport();
   bind(main); fillThumbs(main); window.scrollTo(0, y);
+  const bar = $('.bar'); if (bar) document.documentElement.style.setProperty('--barh', bar.offsetHeight + 'px');
 }
 function hcInit() { let on = false; try { on = localStorage.getItem('hc') === '1'; } catch (e) {} document.documentElement.classList.toggle('hc', on); }
 function hcToggle() { const on = !document.documentElement.classList.contains('hc'); document.documentElement.classList.toggle('hc', on); try { localStorage.setItem('hc', on ? '1' : '0'); } catch (e) {} document.querySelectorAll('.hc-btn').forEach(b => b.setAttribute('aria-pressed', on)); }
@@ -1803,7 +1938,7 @@ function renderSection(sec) {
   return vis.map((g, gi) => {
     const open = openSet.has(g.id); const miss = groupIssues(sec, g).length;
     const n = g.list ? ins.lists[g.list].length : 0;
-    const started = g.fields.some(f => !['calc', 'info', 'crs'].includes(f.t) && !isEmpty(secData(ins, sec.id, f)[f.k])) || n > 0;
+    const started = g.fields.some(f => !['calc', 'info', 'crs', 'review'].includes(f.t) && !isEmpty(secData(ins, sec.id, f)[f.k])) || n > 0;
     const status = miss ? `<span class="gstat miss">${miss} missing</span>` : (started || !g.fields.some(f => isReq(f, secData(ins, sec.id, f), ins)) ? '<span class="gstat ok">Done ✓</span>' : '');
     let body = '';
     if (open) {
@@ -1832,13 +1967,14 @@ function renderField(f, d, ctx) {
   let nph = 0;
   if (f.t === 'photo') { nph = photosInSlot(ins, { sec: ctx.sec, field: f.k }).length; filled = nph > 0; }
   else if (f.t === 'calc') { v = f.calc(ins); filled = true; }
+  else if (f.t === 'review') filled = true;
   else if (f.t === 'appliances') filled = v && Object.keys(v).length > 0;
   else filled = !isEmpty(v);
   const over = f.lim && typeof v === 'string' && v.length > f.lim;
   const missing = (req && !filled) || over;
   const o = ['one', 'multi', 'sel'].includes(f.t) ? optsOf(f, d) : [];
-  const wide = ['multi', 'note', 'photo', 'appliances'].includes(f.t) || (f.t === 'one' && o.length > 4) || (f.t === 'calc' && typeof v === 'string');
-  const tag = f.t === 'photo' ? (req ? 'Required photo' : f.recommended ? 'Suggested photo' : 'Photo') : f.t === 'calc' ? 'Auto' : (req ? 'Required' : 'Optional');
+  const wide = ['multi', 'note', 'photo', 'appliances', 'review'].includes(f.t) || (f.t === 'one' && o.length > 4) || (f.t === 'calc' && typeof v === 'string');
+  const tag = f.t === 'photo' ? (req ? 'Required photo' : f.recommended ? 'Suggested photo' : 'Photo') : f.t === 'calc' || f.t === 'review' ? 'Auto' : (req ? 'Required' : 'Optional');
   let html = `<div class="field ${req ? 'req' : ''} ${missing ? 'missing' : ''} ${wide ? 'wide' : ''}" id="${id}">
     <div class="flabel"><span class="tag">${tag}</span><span class="lab">${esc(f.l)}</span>${f.fid ? `<span class="fid">${esc(f.fid)}</span>` : ''}${f.t === 'photo' ? photoCount(nph) : ''}</div>
     ${f.help ? `<div class="help">${esc(f.help)}</div>` : ''}`;
@@ -1860,6 +1996,8 @@ function renderField(f, d, ctx) {
       if (f.lim) html += `<div class="limit ${over ? 'over' : ''}" data-limit="${f.lim}">${(v || '').length} / ${f.lim}</div>`; break;
     case 'count':
       html += `<div class="stepper"><button ${attr} data-step="-1" aria-label="Decrease">−</button><output>${v ?? '–'}</output><button ${attr} data-step="1" aria-label="Increase">+</button></div>`; break;
+    case 'review': { const items = f.items(ins) || [];
+      html += items.length ? `<div class="review">${items.map(x => `<div class="rv-row"><span class="rv-l">${esc(x.label)}</span><span class="rv-v ${x.value ? '' : 'empty'}">${esc(x.value || 'Not entered')}</span>${x.go ? `<button class="btn sm" data-go="${esc(x.go)}">Change ›</button>` : ''}</div>`).join('')}</div>` : '<div class="calc-text">Nothing entered yet.</div>'; break; }
     case 'calc': html += typeof v === 'string' ? `<div class="calc-text">${esc(v)}</div>` : `<div class="calc">${esc(Number(v || 0).toLocaleString())}</div>`; break;
     case 'appliances': html += applianceWidget(d, ctx, f); break;
     case 'photo': html += photoSlot({ sec: ctx.sec, field: f.k, label: f.l, cat: f.cat, required: req }); break;
@@ -1919,7 +2057,7 @@ async function loadCRS(file) {
     if (!c.addr && !c.apn) throw new Error('This does not look like a CRS Property Report.');
     c.file = file.name; c.loadedAt = new Date().toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
     const p = app.ins.data.property, fr = app.ins.data.front, si = app.ins.data.site;
-    p.crs = c;
+    p.crs = c; if (p.pubCmt === undefined) p.pubCmt = true;
     if (c.addr) p.addr = titleCase(c.addr);
     if (c.city) { const m = CITIES.find(x => x[0].toLowerCase() === c.city.toLowerCase()); if (m) { p.city = m[0]; delete p.cityOther; } else { p.city = 'Other'; p.cityOther = titleCase(c.city); } }
     if (c.state) p.state = c.state;
@@ -1953,18 +2091,21 @@ function renderList(key) {
     const miss = itemIssues(key, it, i).filter(x => x.sev === 'Required' || x.sev === 'Photo').length;
     const conf = app.confirm === 'rm:' + it.id;
     const nph = ins.photos.filter(p => p.list === key && p.item === it.id).length;
-    const fixed = def.keepFirst && i === 0;
+    const fixed = def.keepFirst && i === 0; const canRename = def.fields.some(f => f.k === 'label');
     return `<div class="item ${open ? 'open' : ''}" id="item-${it.id}">
-      <div class="item-head"><button class="name" data-toggle="${it.id}" aria-expanded="${open}">${open ? '▾' : '▸'} ${esc(name)}<small>${nph} photo${nph === 1 ? '' : 's'}</small></button>
+      <div class="item-head">${app.renaming === it.id
+          ? `<form class="rename" data-renameform="${it.id}" data-list="${key}"><input class="txt" id="rename-${it.id}" value="${esc(name)}" aria-label="Name" autocomplete="off"><button class="btn sm primary" type="submit">Save name</button><button class="btn sm" type="button" data-renameno="1">Cancel</button></form>`
+          : `<button class="name" data-toggle="${it.id}" aria-expanded="${open}">${open ? '▾' : '▸'} ${esc(name)}<small>${nph} photo${nph === 1 ? '' : 's'}</small></button>
         <span class="badge ${miss ? '' : 'ok'}">${miss ? miss + ' missing' : 'Complete'}</span>
-        ${fixed ? '' : `<button class="btn sm danger" data-rm="${it.id}" data-rmlist="${key}">Remove</button>`}</div>
+        ${canRename ? `<button class="btn sm" data-rename="${it.id}">Rename</button>` : ''}
+        ${fixed ? '' : `<button class="btn sm danger" data-rm="${it.id}" data-rmlist="${key}">Remove</button>`}`}</div>
       ${conf ? `<div class="confirm">Remove ${esc(name)}${nph ? ' and its ' + nph + ' photo' + (nph > 1 ? 's' : '') : ''}? <button class="btn danger solid sm" data-rmyes="${it.id}" data-rmlist="${key}">Remove</button><button class="btn sm" data-rmno="1">Cancel</button></div>` : ''}
       ${open ? `<div class="item-body"><div class="fields two">${def.fields.map(f => renderField(f, it, { list: key, item: it.id })).join('')}
         ${itemPhotos(key, it, i)}${qualityPreview(key, it)}</div>
         <div class="gfoot"><button class="btn sm done" data-toggle="${it.id}">Done with ${esc(name)} ▴</button></div></div>` : ''}
     </div>`;
   }).join('');
-  return `<div class="list-items">${items}</div><div class="add-row"><button class="btn primary" data-add="${key}">+ ${esc(def.addLabel)}</button>
+  return `<div class="list-items">${items}</div><div class="add-row" id="add-${key}"><button class="btn primary" data-add="${key}">+ ${esc(def.addLabel)}</button>
     ${key === 'baths' ? '<button class="btn primary" data-add="baths" data-kind="HalfBathroom">+ Add half bath</button>' : ''}
     ${list.length > 1 ? `<button class="btn sm" data-expand="${key}">${list.every(x => app.open.has(x.id)) ? 'Collapse all' : 'Expand all'}</button>` : ''}</div>`;
 }
@@ -2062,9 +2203,18 @@ function bind(root) {
   root.querySelectorAll('[data-applrm]').forEach(b => b.onclick = () => { const it = itemOf(b); delete it.appl[b.dataset.applrm]; app.appl = null; save(); renderTab(); });
   root.querySelectorAll('[data-appldone]').forEach(b => b.onclick = () => { app.appl = null; renderTab(); });
   root.querySelectorAll('[data-view]').forEach(b => b.onclick = () => openViewer(b.dataset.view));
-  root.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { const id = b.dataset.toggle; const wasOpen = app.open.has(id); if (wasOpen) app.shiftAt = Date.now(); wasOpen ? app.open.delete(id) : app.open.add(id); saveNow(); renderTab(); if (!wasOpen) scrollToEl('item-' + id); });
+  root.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { const id = b.dataset.toggle; const wasOpen = app.open.has(id); if (wasOpen) app.shiftAt = Date.now(); wasOpen ? app.open.delete(id) : app.open.add(id); saveNow(); renderTab();
+    if (!wasOpen) scrollToEl('item-' + id);
+    else if (b.closest('.gfoot')) { const key = Object.keys(app.ins.lists).find(k => app.ins.lists[k].some(x => x.id === id)); const add = key && document.getElementById('add-' + key); if (add) { const top = add.getBoundingClientRect().top + window.scrollY - window.innerHeight / 2; window.scrollTo(0, Math.max(0, top)); add.classList.add('flash'); setTimeout(() => add.classList.remove('flash'), 1600); } } });
   root.querySelectorAll('[data-expand]').forEach(b => b.onclick = () => { const l = app.ins.lists[b.dataset.expand]; const all = l.every(x => app.open.has(x.id)); l.forEach(x => all ? app.open.delete(x.id) : app.open.add(x.id)); renderTab(); });
   root.querySelectorAll('[data-add]').forEach(b => b.onclick = () => { if (Date.now() - (app.shiftAt || 0) < 700) return; addItem(b.dataset.add, b.dataset.kind); });
+  root.querySelectorAll('[data-rename]').forEach(b => b.onclick = () => { app.renaming = b.dataset.rename; renderTab(); const i = document.getElementById('rename-' + app.renaming); if (i) { i.focus(); i.select(); } });
+  root.querySelectorAll('[data-renameno]').forEach(b => b.onclick = () => { app.renaming = null; renderTab(); });
+  root.querySelectorAll('[data-renameform]').forEach(f => f.onsubmit = e => {
+    e.preventDefault(); const it = app.ins.lists[f.dataset.list].find(x => x.id === f.dataset.renameform);
+    const v = f.querySelector('input').value.trim(); if (it) { if (v) it.label = v; else delete it.label; }
+    app.renaming = null; save(); renderTab(); toast(v ? 'Renamed to ' + v : 'Name reset');
+  });
   root.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { app.confirm = 'rm:' + b.dataset.rm; renderTab(); });
   root.querySelectorAll('[data-rmno]').forEach(b => b.onclick = () => { app.confirm = null; renderTab(); });
   root.querySelectorAll('[data-rmyes]').forEach(b => b.onclick = async () => {
@@ -2198,7 +2348,7 @@ function computeIssues(ins) {
     if (!groupShown(g, sec, ins)) return;
     g.fields.forEach(f => {
       if (f.link) return;
-      const d = ins.data[sec.id]; if (!isShown(f, d, ins) || ['calc', 'info', 'crs'].includes(f.t)) return;
+      const d = ins.data[sec.id]; if (!isShown(f, d, ins) || ['calc', 'info', 'crs', 'review'].includes(f.t)) return;
       const req = isReq(f, d, ins);
       if (f.t === 'photo') {
         const has = photosInSlot(ins, { sec: sec.id, field: f.k }).length > 0;
@@ -2295,7 +2445,7 @@ function photoFileNames(ins) {
 function notesHTML(ins, names) {
   const issues = computeIssues(ins);
   const row = (l, v) => v ? `<tr><th>${esc(l)}</th><td>${esc(v)}</td></tr>` : '';
-  const fieldRows = (fields, d) => fields.filter(f => !['photo', 'info', 'crs'].includes(f.t) && isShown(f, d, ins)).map(f => row(f.l, f.t === 'calc' ? String(f.calc(ins)) : valText(f, d[f.k], d))).join('');
+  const fieldRows = (fields, d) => fields.filter(f => !['photo', 'info', 'crs'].includes(f.t) && isShown(f, d, ins)).map(f => row(f.l, f.t === 'calc' ? String(f.calc(ins)) : f.t === 'review' ? (f.items(ins) || []).map(i => i.label + ': ' + (i.value || '—')).join('; ') : valText(f, d[f.k], d))).join('');
   const pics = list => list.length ? `<div class="pics">${list.map(p => `<figure><img src="Photos/${encodeURI(names.get(p.id))}" alt=""><figcaption>${esc(p.label)}</figcaption></figure>`).join('')}</div>` : '';
   let body = '';
   SECTIONS.forEach(sec => {
