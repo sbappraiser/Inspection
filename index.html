@@ -329,10 +329,11 @@ const TIMEFRAME = order(UN('RoomUpdatedTimeframeType'), ['LessThanOneYear','OneT
 const CEIL_H = order(UN('ApproximateCeilingHeightType'), ['LessThanSevenFeet','SevenFeet','EightFeet','NineFeet','TenFeetAndAbove','TwoOrMoreStories']);
 const CEIL_S = opts(['Flat','Flat'],['Vaulted','Vaulted'],['Cathedral','Cathedral'],['Beams','Beams'],['Coffered','Coffered'],['Tray','Tray'],['Barrel','Barrel'],['Drop','Drop'],
   'Groin Vaulted','Coved','Paneled','Copper','Decorative','Mural','Tongue & Groove Flat','Tongue & Groove Wood Beam','Tongue & Groove Vaulted','Tower',['Other','Other']);
-const FLOORING = opts('Tile','Stone Tile','Stone Slab',['Hardwood','Hardwood'],['EngineeredWood','Engineered Wood'],'Bamboo',['Laminate','Laminate'],'LVP','Vinyl Tile','Vinyl Sheet',['Carpet','Carpet'],['FinishedConcrete','Finished Concrete'],'Plywood','None',['Other','Other']);
-const COUNTERS = opts('Stone Slab','Tile','Corian / Solid Surface','Butcher Block','Concrete','Stainless Steel','Porcelain Slab','Laminate','Other');
-const CABINETS = opts('Custom Built','Semi-Custom','Stock','Solid Wood','Painted Wood','Stained Wood','Matched Grain Laminate','Lacquer / High Gloss','Thermofoil','Laminate','MDF','Metal','Glass Front','Inset','Frameless (Full Overlay)','Other');
-const BATH_MAT = opts('Stone Tile','Stone Slab','Tile','Corian','Glass Tile','Acrylic / Fiberglass','Cast Iron','Enameled Steel','Copper','Concrete','Other');
+const FLOORING = opts('Tile','Stone Tile','Stone Slab',['Hardwood','Hardwood'],['EngineeredWood','Engineered Wood'],'Bamboo',['Laminate','Laminate'],'LVP','Vinyl Tile','Vinyl Sheet',['Carpet','Carpet'],['FinishedConcrete','Finished Concrete'],'Plywood','None',['Microcement / Plaster','Other','Other']);
+const COUNTERS = opts('Stone Slab','Tile','Corian / Solid Surface','Butcher Block','Concrete','Stainless Steel','Porcelain Slab','Laminate','Microcement / Plaster','Other');
+const CABINETS = opts('Custom Built','Semi-Custom','Stock','Solid Wood','Painted Wood','Stained Wood','Matched Grain Laminate','Lacquer / High Gloss','Thermofoil','Laminate','MDF','Metal','Glass Front','Inset','Frameless (Full Overlay)','Slab / Flat Panel','Shaker','Raised Panel','White Oak','Rift-sawn Oak','Walnut','Panel-ready Appliance Fronts','Other');
+const FIXTURE_FIN = opts('Polished Chrome','Brushed Nickel','Polished Nickel','Stainless','Unlacquered Brass','Brushed Brass / Gold','Matte Black','Oil-rubbed Bronze','Mixed Metals');
+const BATH_MAT = opts('Stone Tile','Stone Slab','Tile','Corian','Glass Tile','Acrylic / Fiberglass','Cast Iron','Enameled Steel','Copper','Concrete','Waterproof Plaster (Tadelakt / Microcement)','Other');
 const REMODEL = opts('Gutted and Remodeled','Remodeled','Updated','Partially Updated','Older Remodel','Dated','Original','New Construction');
 const BRANDS = ['Wolf','Viking','Miele','Sub-Zero','Thermador','Dacor','Bosch','GE Profile','GE Monogram','GE Café','KitchenAid','La Cornue','Bertazzoni','Gaggenau','JennAir','Fisher & Paykel','Sharp','LG','Samsung','Maytag','Kenmore','Frigidaire','Whirlpool','Asko','BlueStar','O\'Keefe & Merritt','Other'];
 /* Kitchen appliances: tap one, pick brand (and quantity where it applies), it folds closed */
@@ -549,7 +550,7 @@ const LISTS = {
       { k: 'label', l: 'Name', t: 'text', help: 'Bath 1 is the primary bath' },
       { k: 'level', l: 'Level', t: 'one', req: true, o: LEVELS_ALL, uad: 'LevelType' },
       { k: 'flooring', l: 'Flooring', t: 'multi', o: FLOORING },
-      { k: 'vanity', l: 'Vanity', t: 'multi', o: opts('Built-in','Pedestal','Floating','Furniture Style','Console','Dual Sinks','Makeup Vanity','Vessel Sinks') },
+      { k: 'vanity', l: 'Vanity', t: 'multi', o: opts('Built-in','Pedestal','Floating','Furniture Style','Console','Dual Sinks','Makeup Vanity','Wall-hung','Built-in Plaster / Concrete','Live Edge / Natural Wood','Trough Sink','Integrated Sink','Vessel Sinks') },
       { k: 'vanQty', l: 'Vanity quantity', t: 'count' },
       { k: 'vanMat', l: 'Vanity material', t: 'multi', o: CABINETS },
       { k: 'counter', l: 'Counter material', t: 'multi', o: COUNTERS },
@@ -559,7 +560,8 @@ const LISTS = {
       { k: 'tubShowerMat', l: 'Tub / shower surround material', t: 'multi', o: BATH_MAT, show: it => it.tubShower === true },
       { k: 'shower', l: 'Separate shower', t: 'yn', show: it => it.kind === 'FullBathroom' },
       { k: 'showerMat', l: 'Shower material', t: 'multi', o: BATH_MAT, show: it => it.shower === true },
-      { k: 'feat', l: 'Features', t: 'multi', o: opts('Frameless Glass','Steam Shower','Rain Shower Head','Multiple Shower Heads','Body Sprays','Jetted Tub','Heated Floors','Towel Warmer','Bidet','Smart Toilet','Water Closet','Wainscoting','Window','Walk-in Closet Access','Wheelchair Accessible','Grab Bars','Linen Closet','Exhaust Fan') },
+      { k: 'finish', l: 'Fixture finish', t: 'multi', o: FIXTURE_FIN },
+      { k: 'feat', l: 'Features', t: 'multi', o: opts('Frameless Glass','Steam Shower','Rain Shower Head','Multiple Shower Heads','Body Sprays','Jetted Tub','Heated Floors','Towel Warmer','Bidet','Smart Toilet','Water Closet','Wainscoting','Window','Walk-in Closet Access','Curbless / Walk-in Shower','Wet Room (open shower and tub)','Built-in Shower Bench','Shower Niche','Handheld Shower','Thermostatic Valve','Freestanding Soaking Tub','Floor-mounted Tub Filler','Wall-mount Faucets','Bidet Seat','Waterproof Plaster Walls','Wheelchair Accessible','Grab Bars','Linen Closet','Exhaust Fan') },
       { k: 'upd', l: 'Update status', t: 'one', req: true, o: UPDATE, uad: 'RoomUpdateStatusType' },
       { k: 'time', l: 'Update time frame', t: 'one', o: TIMEFRAME, show: it => it.upd && it.upd !== 'NotUpdated', req: it => it.upd && it.upd !== 'NotUpdated', uad: 'RoomUpdatedTimeframeType' },
       { k: 'condStat', l: 'Condition status', t: 'one', req: true, o: COND_STATUS, uad: 'RoomConditionStatusType' },
@@ -584,7 +586,8 @@ const LISTS = {
       { k: 'appl', l: 'Appliances (tap one, pick the brand)', t: 'appliances' },
       { k: 'islands', l: 'Islands', t: 'count' },
       { k: 'islandSeat', l: 'Island bar seating', t: 'yn', show: it => (it.islands || 0) > 0 },
-      { k: 'amen', l: 'Amenities', t: 'multi', o: opts('Waterfall Counter Edge','Peninsula','Breakfast Bar','Eat-in Area','Pantry','Walk-in Pantry','Butler\'s Pantry','Cabinet Organizers / Pull-outs','Under-cabinet Lighting','Pendant Lighting','Prep Sink','Farmhouse Sink','Double Sink','Desk Area','Glass-front Cabinets','Open Shelving','Tile Backsplash','Slab Backsplash') },
+      { k: 'finish', l: 'Fixture finish', t: 'multi', o: FIXTURE_FIN },
+      { k: 'amen', l: 'Amenities', t: 'multi', o: opts('Waterfall Counter Edge','Peninsula','Breakfast Bar','Eat-in Area','Dual Waterfall Island','Mitered Counter Edge','Floating Shelves','No Upper Cabinets','Full-height Cabinet Wall','Panel-ready / Integrated Appliances','Plaster Range Hood','Pantry','Walk-in Pantry','Butler\'s Pantry','Cabinet Organizers / Pull-outs','Under-cabinet Lighting','Pendant Lighting','Prep Sink','Farmhouse Sink','Double Sink','Desk Area','Glass-front Cabinets','Open Shelving','Tile Backsplash','Slab Backsplash') },
       { k: 'remodel', l: 'Remodel status (your notes)', t: 'one', o: REMODEL },
       { k: 'upd', l: 'Update status', t: 'one', req: true, o: UPDATE, uad: 'RoomUpdateStatusType' },
       { k: 'time', l: 'Update time frame', t: 'one', o: TIMEFRAME, show: it => it.upd && it.upd !== 'NotUpdated', req: it => it.upd && it.upd !== 'NotUpdated', uad: 'RoomUpdatedTimeframeType' },
@@ -804,7 +807,7 @@ const SECTIONS = [
       { k: 'foundType', l: 'Foundation type', t: 'multi', req: true, o: U('FoundationType'), uad: 'FoundationType' },
       { k: 'foundMat', l: 'Foundation material', t: 'multi', req: true, o: U('FoundationMaterialType'), uad: 'FoundationMaterialType' },
       { k: 'foundCond', l: 'Foundation condition', t: 'one', req: true, o: COMP_COND, uad: 'ImprovementComponentConditionStatusType' },
-      { k: 'extFeat', l: 'Exterior features', t: 'multi', o: opts('Front Porch','Covered Entry','Courtyard Entry','Balcony','Shutters','Columns','Exterior Lighting','Exterior Speakers','Solar Panels Visible','Chimney') },
+      { k: 'extFeat', l: 'Exterior features', t: 'multi', o: opts('Front Porch','Covered Entry','Courtyard Entry','Balcony','Shutters','Columns','Exterior Lighting','Exterior Speakers','Solar Panels Visible','Palapa / Thatch Shade','Cable / Wire Mesh Rails','Exposed Rafter Tails','Chimney') },
       { k: 'converted', l: 'Converted area (garage, porch, patio)?', t: 'yn', req: true, uad: 'ConvertedAreaExistsIndicator', fid: '8.012' },
       { k: 'convFrom', l: 'Converted from', t: 'one', o: U('ConvertedAreaOriginalUseType'), show: d => d.converted === true, req: d => d.converted === true, uad: 'ConvertedAreaOriginalUseType' },
       { k: 'convSim', l: 'Converted area vs. rest of living area', t: 'one', o: UN('ConvertedAreaFinishComparisonType'), show: d => d.converted === true, req: d => d.converted === true, uad: 'ConvertedAreaFinishComparisonType' },
@@ -973,7 +976,7 @@ const SECTIONS = [
       { k: 'bathUpd', l: 'Overall bathrooms update status', t: 'one', req: true, o: UN('OverallBathroomsUpdateStatusType'), uad: 'OverallBathroomsUpdateStatusType' },
     ]},
     { id: 'feat', title: 'Interior features, windows & doors', fields: [
-      { k: 'intFeat', l: 'Interior features', t: 'multi', o: opts('Ceiling Fans','Wallpaper','Wood Paneling','Built-in Shelving','Built-in Hutch','Built-in Desk','Crown Molding','Wainscoting','Skylights','Solatubes','Clerestory Windows','Pocket Doors','Recessed LED Lighting','Custom Light Fixtures','Chandeliers','Dimmers','Elevator','Dumbwaiter','Laundry Chute','Wine Storage','Wine Cellar','Safe Room','Hidden Room','Radiant Floors','Fire Sprinklers') },
+      { k: 'intFeat', l: 'Interior features', t: 'multi', o: opts('Ceiling Fans','Plaster Walls (Venetian / Lime / Tadelakt)','Exposed Beams','Wood Plank Ceilings','Wallpaper','Wood Paneling','Built-in Shelving','Built-in Hutch','Built-in Desk','Crown Molding','Wainscoting','Skylights','Solatubes','Clerestory Windows','Pocket Doors','Recessed LED Lighting','Custom Light Fixtures','Chandeliers','Dimmers','Elevator','Dumbwaiter','Laundry Chute','Wine Storage','Wine Cellar','Safe Room','Hidden Room','Radiant Floors','Fire Sprinklers') },
       { k: 'fireplaces', l: 'Fireplaces', t: 'count' },
       { k: 'fpType', l: 'Fireplace type', t: 'multi', show: d => (d.fireplaces || 0) > 0, o: opts('Wood Burning','Gas','Gas Insert','Electric','Pellet Stove','Wood Stove','See-through') },
       { k: 'winCover', l: 'Window coverings', t: 'multi', o: opts('None','Drapes','Curtains','Plantation Shutters','Blinds','Wood Blinds','Automatic / Motorized Shades','Roman Shades','Roller Shades','Blackout Shades','Solar Shades','Sheers') },
@@ -1516,6 +1519,7 @@ function kitchenText(k, name) {
   const ap = applDetail(k); if (ap.length) p.push(listJoin(ap));
   if (k.islands) p.push(`${k.islands > 1 ? k.islands + ' islands' : 'an island'}${k.islandSeat ? ' with bar seating' : ''}`);
   const am = mats(k.amen).filter(x => x !== 'waterfall counter edge'); if (am.length) p.push(listJoin(am));
+  const fn = mats(k.finish); if (fn.length) p.push(`${listJoin(fn)} fixtures`);
   const fl = mats(k.flooring, FLOORING); if (fl.length) p.push(`${listJoin(fl)} flooring`);
   return p.length ? `${cap(name)}: ${p.join('; ')}` : '';
 }
@@ -1528,6 +1532,7 @@ function bathText(b, name) {
   if (b.tubShower) p.push(`tub/shower with ${listJoin(mats(b.tubShowerMat)) || 'tile'} surround`);
   if (b.shower) p.push(`${mats(b.showerMat).length ? listJoin(mats(b.showerMat)) + ' ' : ''}shower${(b.feat || []).includes('Frameless Glass') ? ' with frameless glass' : ''}`);
   const f = mats(b.feat).filter(x => x !== 'frameless glass' || !b.shower); if (f.length) p.push(listJoin(f));
+  const fn = mats(b.finish); if (fn.length) p.push(`${listJoin(fn)} fixtures`);
   const fl = mats(b.flooring, FLOORING); if (fl.length) p.push(`${listJoin(fl)} flooring`);
   return p.length ? `${cap(name)}: ${p.join('; ')}` : '';
 }
