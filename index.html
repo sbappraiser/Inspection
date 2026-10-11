@@ -428,26 +428,6 @@ const LISTS = {
     photo: { label: it => labelOf(LISTS.waterFeatures.fields[0].o, it.type) || 'Pool', cat: 'SubjectPropertyAmenitiesExhibit', recommended: true },
   },
 
-  blanketLoans: {
-    title: 'Blanket financing (co-op underlying mortgages)', addLabel: 'Add a blanket loan',
-    name: (it, i) => (it.lien ? ({ FirstLien: '1st', SecondLien: '2nd', ThirdLien: '3rd', FourthLien: '4th' }[it.lien] + ' lien') : 'Blanket loan ' + (i + 1)) + (it.loc === true ? ' (line of credit)' : ''),
-    fields: [
-      { k: 'lien', l: 'Lien position', t: 'one', req: true, o: opts(['FirstLien','1st'],['SecondLien','2nd'],['ThirdLien','3rd'],['FourthLien','4th']), uad: 'LienPriorityType', fid: '18.028' },
-      { k: 'loc', l: 'Line of credit?', t: 'yn', req: true, uad: 'LineOfCreditIndicator' },
-      { k: 'upb', l: 'Unpaid principal balance', t: 'money', show: it => it.loc === false, req: it => it.loc === false, uad: 'UPBAmount', fid: '18.029' },
-      { k: 'drawn', l: 'Line of credit – amount drawn', t: 'money', show: it => it.loc === true, req: it => it.loc === true, uad: 'LineOfCreditDrawnAmount', fid: '18.030' },
-      { k: 'max', l: 'Line of credit – maximum', t: 'money', show: it => it.loc === true, req: it => it.loc === true, uad: 'LineOfCreditMaximumAmount', fid: '18.030' },
-      { k: 'balloon', l: 'Balloon mortgage?', t: 'yn', req: true, uad: 'BalloonIndicator', fid: '18.031' },
-      { k: 'term', l: 'Remaining term (months)', t: 'num', req: true, uad: 'LoanRemainingMaturityTermMonthsCount', fid: '18.032' },
-      { k: 'payKnown', l: 'Monthly payment available?', t: 'yn', req: true, uad: 'PaymentAmountAvailableIndicator', fid: '18.033' },
-      { k: 'pay', l: 'Monthly payment', t: 'money', show: it => it.payKnown === true, req: it => it.payKnown === true, uad: 'TotalPaymentAmount' },
-      { k: 'rateKnown', l: 'Interest rate available?', t: 'yn', req: true, uad: 'InterestRateAvailableIndicator', fid: '18.034' },
-      { k: 'rate', l: 'Interest rate (%)', t: 'num', show: it => it.rateKnown === true, req: it => it.rateKnown === true, uad: 'CurrentInterestRatePercent' },
-      { k: 'amort', l: 'Amortization', t: 'one', req: true, o: opts(['Fixed','Fixed'],['AdjustableRate','Adjustable'],['Other','Other']), uad: 'AmortizationType', fid: '18.035' },
-      { k: 'amortOther', l: 'Describe amortization', t: 'text', show: it => it.amort === 'Other', req: it => it.amort === 'Other' },
-      { k: 'note', l: 'Notes', t: 'note' },
-    ],
-  },
   eas: {
     title: 'Extraordinary assumptions & hypothetical conditions', addLabel: 'Add an assumption',
     name: (it, i) => (it.type === 'HC' ? 'Hypothetical condition' : 'Extraordinary assumption') + (it.topic ? ' – ' + it.topic : ' ' + (i + 1)),
@@ -826,9 +806,8 @@ const SECTIONS = [
     ]},
   ]},
 
-  { id: 'project', title: 'Project / HOA', showTab: ins => IS_HOA(ins), groups: [
-    { id: 'projSee', title: 'Project – what you see on site', fields: [
-      { k: 'pudOnly', t: 'info', l: 'PUD (not a condo or co-op): only HOA dues, utilities included, common amenities, legal action, developer control, special assessments and tax abatements are required.', show: (d, ins) => IS_PUD(ins) && !IS_PROJ(ins) },
+  { id: 'project', title: 'Project / HOA', showTab: ins => IS_HOA(ins) || (ins && ins.data.interview.hoa === true), groups: [
+    { id: 'projSee', title: 'Project – what you see on site', showGroup: (d, ins) => IS_HOA(ins), fields: [
       { k: 'projName', l: 'Project name', t: 'text', lim: 100, req: (d, ins) => IS_PROJ(ins), uad: 'ProjectName', fid: '18.004' },
       { k: 'photoProj', l: 'Project / building exterior', t: 'photo', cat: 'ProjectExhibit', recommended: true },
       { k: 'photoProj2', l: 'Project entry / lobby', t: 'photo', cat: 'ProjectExhibit' },
@@ -858,74 +837,21 @@ const SECTIONS = [
       { k: 'stories', t: 'info', l: 'Floors in building, structure design, floor number and corner unit are on the Property, Front and Interior tabs.', show: (d, ins) => IS_PROJ(ins) },
       { k: 'projNote', l: 'Project notes (workfile)', t: 'note' },
     ]},
-    { id: 'projHOA', title: 'HOA / questionnaire (ask or verify)', fields: [
-      { k: 'dataSrc', l: 'Project data source(s)', t: 'multi', req: (d, ins) => IS_PROJ(ins), o: PROJ_SRC, uad: 'DataSourceType', fid: '18.005' },
-      { k: 'dataSrcOther', l: 'Describe other data source', t: 'text', lim: 33, show: d => (d.dataSrc || []).includes('Other'), req: d => (d.dataSrc || []).includes('Other') },
-      { k: 'hoaName', l: 'HOA / management company', t: 'text' },
-      { k: 'hoaContact', l: 'Contact (name, phone, email)', t: 'text' },
-      { k: 'unitsTotal', l: 'Total units', t: 'num', req: (d, ins) => IS_PROJ(ins), uad: 'ProjectDwellingUnitCount', fid: '18.006' },
-      { k: 'unitsSold', l: 'Units sold', t: 'num', req: (d, ins) => IS_PROJ(ins), uad: 'ProjectDwellingUnitsSoldCount', fid: '18.007' },
-      { k: 'unitsForSale', l: 'Units for sale', t: 'num', req: (d, ins) => IS_PROJ(ins), uad: 'ProjectDwellingUnitsForSaleCount', fid: '18.008' },
-      { k: 'unitsRented', l: 'Units rented', t: 'num', req: (d, ins) => IS_PROJ(ins), uad: 'ProjectDwellingUnitsRentedCount', fid: '18.009' },
-      { k: 'rentedEst', l: 'Units rented is an estimate', t: 'yn', req: (d, ins) => IS_PROJ(ins), uad: 'ProjectDwellingUnitsRentedEstimateIndicator' },
-      { k: 'rentedEstWhy', l: 'Why is units rented estimated?', t: 'note', lim: 300, show: d => d.rentedEst === true, req: d => d.rentedEst === true, uad: 'ProjectDwellingUnitsRentedEstimateDescription', fid: '18.010' },
-      { k: 'strAllowed', l: 'Short-term rentals allowed by the CC&Rs / city?', t: 'one', o: opts('Yes','No','Restricted (minimum stay)','Unknown') },
-      { k: 'dues', l: 'HOA / co-op dues – monthly ($)', t: 'money', req: true, uad: 'AssociationChargeAmount', fid: '18.011', help: 'Enter 0 if there are none.' },
-      { k: 'duesUtil', l: 'Utilities included in the dues', t: 'multi', req: true, o: opts(['None','None'],['Electricity','Electricity'],['Gas','Gas'],['SanitarySewer','Sanitary Sewer'],['Water','Water'],['Other','Other']), uad: 'AssociationChargeIncludesUtilityType', fid: '18.013' },
-      { k: 'duesUtilOther', l: 'Other utility included', t: 'text', lim: 33, show: d => (d.duesUtil || []).includes('Other'), req: d => (d.duesUtil || []).includes('Other') },
-      { k: 'duesIncl', l: 'Dues also cover (for your comments)', t: 'multi', o: opts('Master Insurance Policy','Earthquake Insurance','Roof','Exterior Maintenance','Exterior Paint','Landscaping','Trash','Cable / Internet','Security / Gate','Pool / Spa','Reserves','Management','Pest Control','Common Area Utilities','Elevator','Doorman / Concierge') },
-      { k: 'specAssess', l: 'Special assessment', t: 'one', req: true, o: opts(['None','None'],['Existing','Existing'],['Proposed','Proposed']), uad: 'AssociationSpecialAssessmentStatusType', fid: '18.072' },
-      { k: 'specAmt', l: 'Special assessment – balance attributable to the unit ($)', t: 'money', show: d => ['Existing','Proposed'].includes(d.specAssess), req: d => d.specAssess === 'Existing', uad: 'AssociationChargeBalanceAmount' },
-      { k: 'specDesc', l: 'Special assessment – purpose and term', t: 'text', show: d => ['Existing','Proposed'].includes(d.specAssess) },
-      { k: 'transferFee', l: 'Ownership transfer fee', t: 'yn', req: (d, ins) => IS_PROJ(ins), show: (d, ins) => IS_PROJ(ins), uad: 'OwnershipTransferFeeIndicator', fid: '18.071' },
-      { k: 'transferAmt', l: 'Transfer fee amount ($)', t: 'money', show: (d, ins) => IS_PROJ(ins) && d.transferFee === true, req: (d, ins) => IS_PROJ(ins) && d.transferFee === true, uad: 'AssociationChargeAmount' },
-      { k: 'legalAction', l: 'Known legal action (HOA or project)', t: 'yn', req: true, uad: 'LegalActionIndicator', fid: '18.070' },
-      { k: 'devControl', l: 'Developer / sponsor still controls the HOA', t: 'yn', req: true, uad: 'ProjectDeveloperOrSponsorControlsProjectManagementIndicator', fid: '18.064' },
-      { k: 'groundRent', l: 'Ground rent (project)', t: 'yn', req: (d, ins) => IS_PROJ(ins), show: (d, ins) => IS_PROJ(ins), uad: 'ProjectAnalysisGroundRentIndicator', fid: '18.019' },
-      { k: 'grAmt', l: 'Ground rent – annual amount ($)', t: 'money', show: (d, ins) => IS_PROJ(ins) && d.groundRent === true, req: (d, ins) => IS_PROJ(ins) && d.groundRent === true, uad: 'ProjectAnalysisGroundRentAmount', fid: '18.020' },
-      { k: 'grExp', l: 'Ground rent – expires', t: 'month', show: (d, ins) => IS_PROJ(ins) && d.groundRent === true, req: (d, ins) => IS_PROJ(ins) && d.groundRent === true, uad: 'ProjectAnalysisGroundRentExpirationDate', fid: '18.021' },
-      { k: 'grDesc', l: 'Ground rent – description', t: 'note', lim: 500, show: (d, ins) => IS_PROJ(ins) && d.groundRent === true, uad: 'ProjectAnalysisGroundRentDescription', fid: '18.022' },
-      { k: 'converted', l: 'Converted to condo / co-op in the past 3 years', t: 'yn', req: (d, ins) => IS_PROJ(ins), show: (d, ins) => IS_PROJ(ins), uad: 'ProjectConversionIndicator', fid: '18.018' },
-      { k: 'convFrom', l: 'Prior use', t: 'one', o: opts(['Apartment','Apartment'],['CommercialBuilding','Commercial Building'],['HotelOrMotel','Hotel / Motel'],['House','House'],['IndustrialBuilding','Industrial Building'],['Other','Other']), show: (d, ins) => IS_PROJ(ins) && d.converted === true, req: (d, ins) => IS_PROJ(ins) && d.converted === true, uad: 'ProjectConversionOriginalUseType', fid: '18.066' },
-      { k: 'convOther', l: 'Describe prior use', t: 'text', lim: 33, show: (d, ins) => IS_PROJ(ins) && d.converted === true && d.convFrom === 'Other', req: (d, ins) => IS_PROJ(ins) && d.converted === true && d.convFrom === 'Other' },
-      { k: 'singleUnits', l: 'Most units owned by one entity (incl. developer/sponsor)', t: 'num', show: (d, ins) => IS_CONDO(ins), req: (d, ins) => IS_CONDO(ins), uad: 'SingleEntityGreatestNumberOfUnitsCount', fid: '18.067', help: 'Cannot be 0 – enter 1 if no one owns more than one unit.' },
-      { k: 'singleShares', l: 'Most shares owned by one entity', t: 'num', show: (d, ins) => IS_COOP(ins), req: (d, ins) => IS_COOP(ins), uad: 'SingleEntityGreatestNumberOfSharesCount', fid: '18.068' },
-      { k: 'taxAbate', l: 'Unit tax abatement or exemption', t: 'yn', req: true, uad: 'PropertyTaxAbatementsOrExemptionsIndicator', fid: '18.073' },
-      { k: 'taxAbAmt', l: 'Abatement / exemption – annual amount ($)', t: 'money', show: d => d.taxAbate === true, uad: 'TaxAbatementsOrExemptionsAnnualAmount' },
-      { k: 'taxAbExp', l: 'Abatement / exemption – expires', t: 'month', show: d => d.taxAbate === true, uad: 'TaxAbatementsOrExemptionsExpirationDate' },
-      { k: 'rentRestrict', l: 'Other restrictions (age, rental cap, pets, resale price)', t: 'text' },
+    { id: 'projHOA', title: 'HOA – ask the owner', fields: [
+      { k: 'hoaInfo', t: 'info', l: 'Only what the owner can tell you today. Unit counts, budget, questionnaire, legal and co-op items come from the HOA documents and are entered in SFREP when you receive them.' },
+      { k: 'hoaName', l: 'HOA / management company', t: 'text', req: d => d.hoaNoContact !== true },
+      { k: 'hoaContactName', l: 'HOA contact name', t: 'text', req: d => d.hoaNoContact !== true },
+      { k: 'hoaPhone', l: 'HOA contact phone', t: 'text', req: d => d.hoaNoContact !== true && !d.hoaEmail, help: 'Phone or email is enough.' },
+      { k: 'hoaEmail', l: 'HOA contact email', t: 'text' },
+      { k: 'hoaNoContact', l: 'Owner does not have the HOA contact', t: 'yn', help: 'Marks the contact as not available so it is not counted as missing. Follow up from the MLS or title.' },
+      { k: 'dues', l: 'HOA dues ($), per owner', t: 'money', uad: 'AssociationChargeAmount', fid: '18.011', help: 'Leave blank if the owner does not know.' },
+      { k: 'duesFreq', l: 'Dues are paid', t: 'one', o: opts('Monthly','Quarterly','Semi-annually','Annually'), show: d => d.dues !== undefined, help: 'Sent to SFREP as a monthly amount.' },
+      { k: 'duesUtil', l: 'Utilities included in the dues, per owner', t: 'multi', o: opts(['None','None'],['Electricity','Electricity'],['Gas','Gas'],['SanitarySewer','Sanitary Sewer'],['Water','Water'],['Other','Other']), uad: 'AssociationChargeIncludesUtilityType', fid: '18.013' },
+      { k: 'duesUtilOther', l: 'Other utility included', t: 'text', lim: 33, show: d => (d.duesUtil || []).includes('Other') },
+      { k: 'duesIncl', l: 'Dues also cover, per owner', t: 'multi', o: opts('Master Insurance Policy','Earthquake Insurance','Roof','Exterior Maintenance','Exterior Paint','Landscaping','Trash','Cable / Internet','Security / Gate','Pool / Spa','Reserves','Management','Pest Control','Common Area Utilities','Elevator','Doorman / Concierge') },
+      { k: 'specAssess', l: 'Special assessment the owner knows of', t: 'one', o: opts(['None','None known'],['Existing','Existing'],['Proposed','Proposed'],['Unknown','Owner not sure']), uad: 'AssociationSpecialAssessmentStatusType' },
+      { k: 'specDesc', l: 'Special assessment – what the owner said (purpose, amount)', t: 'text', show: d => ['Existing','Proposed'].includes(d.specAssess) },
       { k: 'hoaNote', l: 'HOA notes (workfile)', t: 'note' },
-    ]},
-    { id: 'coop', title: 'Cooperative information', showGroup: (d, ins) => IS_COOP(ins), fields: [
-      { k: 'sharesTotal', l: 'Shares issued and outstanding', t: 'num', req: (d, ins) => IS_COOP(ins), uad: 'ProjectTotalSharesIssuedAndOutstandingCount', fid: '18.023' },
-      { k: 'sharesUnit', l: 'Shares attributable to the subject', t: 'num', req: (d, ins) => IS_COOP(ins), uad: 'PropertyCooperativeSharesCount', fid: '18.024' },
-      { k: 'leaseExp', l: 'Proprietary lease expires', t: 'month', req: (d, ins) => IS_COOP(ins), uad: 'CooperativeProprietaryLeaseExpirationDate', fid: '18.025' },
-      { k: 'blanket', l: 'Project blanket financing', t: 'yn', req: (d, ins) => IS_COOP(ins), uad: 'ProjectBlanketFinancingIndicator', fid: '18.026' },
-      { k: 'proRata', l: 'Pro-rata share (%)', t: 'calc', calc: ins => { const d = ins.data.project; return d.sharesTotal && d.sharesUnit ? (d.sharesUnit / d.sharesTotal * 100).toFixed(4) + ' %' : 'Enter both share counts'; }, uad: 'ProRataSharePercent', fid: '18.027' },
-      { k: 'locShare', l: 'Line of credit pro-rata share is based on', t: 'one', o: opts(['Drawn','Amount drawn'],['Maximum','Maximum']), show: (d, ins) => d.blanket === true && (ins.lists.blanketLoans || []).some(x => x.loc === true), fid: '26.008' },
-    ], list: 'blanketLoans', listShow: d => d.blanket === true },
-    { id: 'projImpact', title: 'Project factors – impact on value / marketability', fields: [
-      { k: 'impInfo', t: 'info', l: 'Only the factors that apply are shown. A comment is required for Adverse or Beneficial, and always for incomplete projects, conversions, legal action, transfer fees and special assessments.' },
-      { k: 'impDev', l: 'Developer control – impact', t: 'one', o: IMPACT, show: d => d.devControl === true, req: d => d.devControl === true },
-      { k: 'cmtDev', l: 'Developer control – comment', t: 'note', lim: 1000, show: d => d.devControl === true, req: d => d.devControl === true && ['Adverse','Beneficial'].includes(d.impDev), fid: '18.084' },
-      { k: 'impInc', l: 'Incomplete project – impact', t: 'one', o: IMPACT, show: d => d.projComplete === false, req: d => d.projComplete === false },
-      { k: 'cmtInc', l: 'Incomplete project – comment', t: 'note', lim: 1000, show: d => d.projComplete === false, req: d => d.projComplete === false, fid: '18.085' },
-      { k: 'impConv', l: 'Conversion – impact', t: 'one', o: IMPACT, show: d => d.converted === true, req: d => d.converted === true },
-      { k: 'cmtConv', l: 'Conversion – comment', t: 'note', lim: 1000, show: d => d.converted === true, req: d => d.converted === true, fid: '18.086' },
-      { k: 'impSingle', l: 'Single-entity ownership – impact', t: 'one', o: IMPACT, show: (d, ins) => IS_PROJ(ins), req: (d, ins) => IS_PROJ(ins), fid: '18.077' },
-      { k: 'cmtSingle', l: 'Single-entity ownership – comment', t: 'note', lim: 1000, show: (d, ins) => IS_PROJ(ins), req: (d, ins) => IS_PROJ(ins) && ['Adverse','Beneficial'].includes(d.impSingle), fid: '18.087' },
-      { k: 'impComm', l: 'Commercial space – impact', t: 'one', o: IMPACT, show: d => d.commercial === true, req: d => d.commercial === true },
-      { k: 'cmtComm', l: 'Commercial space – comment', t: 'note', lim: 1000, show: d => d.commercial === true, req: d => d.commercial === true && ['Adverse','Beneficial'].includes(d.impComm), fid: '18.089' },
-      { k: 'impLegal', l: 'Legal action – impact', t: 'one', o: IMPACT, show: d => d.legalAction === true, req: d => d.legalAction === true },
-      { k: 'cmtLegal', l: 'Legal action – comment', t: 'note', lim: 1000, show: d => d.legalAction === true, req: d => d.legalAction === true, fid: '18.090' },
-      { k: 'impFee', l: 'Transfer fee – impact', t: 'one', o: IMPACT, show: (d, ins) => IS_PROJ(ins) && d.transferFee === true, req: (d, ins) => IS_PROJ(ins) && d.transferFee === true },
-      { k: 'cmtFee', l: 'Transfer fee – comment', t: 'note', lim: 1000, show: (d, ins) => IS_PROJ(ins) && d.transferFee === true, req: (d, ins) => IS_PROJ(ins) && d.transferFee === true, fid: '18.091' },
-      { k: 'impSpec', l: 'Special assessment – impact', t: 'one', o: IMPACT, show: d => ['Existing','Proposed'].includes(d.specAssess), req: d => ['Existing','Proposed'].includes(d.specAssess) },
-      { k: 'cmtSpec', l: 'Special assessment – comment', t: 'note', lim: 1000, show: d => ['Existing','Proposed'].includes(d.specAssess), req: d => ['Existing','Proposed'].includes(d.specAssess), fid: '18.092' },
-      { k: 'impTax', l: 'Tax abatement – impact', t: 'one', o: IMPACT, show: d => d.taxAbate === true, req: d => d.taxAbate === true },
-      { k: 'cmtTax', l: 'Tax abatement – comment', t: 'note', lim: 1000, show: d => d.taxAbate === true, req: d => d.taxAbate === true && ['Adverse','Beneficial'].includes(d.impTax), fid: '18.093' },
-      { k: 'projFactors', l: 'Project factors – additional comment (optional)', t: 'note', lim: 2500, fid: '18.094' },
-      { k: 'projCmt', l: 'Project commentary (common elements, parking, amenities)', t: 'note', lim: 2500, help: 'Leave blank to use the generated comment on the Summaries tab.' },
     ]},
   ]},
 
@@ -1347,17 +1273,8 @@ const SECTIONS = [
         if (priced && priced !== ss[0]) out.push({ label: 'Most recent sale with a price', value: txt(priced) }); return out; } },
       { k: 'priorDate', l: 'Owner’s purchase date', t: 'date' },
       { k: 'priorPrice', l: 'Owner’s purchase price', t: 'money' },
-      { k: 'hoa', l: 'HOA?', t: 'yn' },
-      { k: 'hoaDev', l: 'Development name', t: 'text', show: d => d.hoa === true },
-      { k: 'hoaName', l: 'HOA name', t: 'text', show: d => d.hoa === true },
-      { k: 'hoaContact', l: 'HOA contact name', t: 'text', show: d => d.hoa === true },
-      { k: 'hoaPhone', l: 'HOA contact phone', t: 'text', show: d => d.hoa === true },
-      { k: 'hoaFee', l: 'HOA dues ($)', t: 'money', show: d => d.hoa === true },
-      { k: 'hoaFreq', l: 'Dues paid', t: 'one', o: opts('Monthly','Quarterly','Annually'), show: d => d.hoa === true },
-      { k: 'hoaSpecial', l: 'Special assessments?', t: 'yn', show: d => d.hoa === true },
-      { k: 'hoaSpecialNote', l: 'Special assessments (amount, purpose)', t: 'text', show: d => d.hoa === true && d.hoaSpecial === true },
-      { k: 'hoaLit', l: 'Pending litigation?', t: 'yn', show: d => d.hoa === true },
-      { k: 'hoaLitNote', l: 'Pending litigation (details)', t: 'text', show: d => d.hoa === true && d.hoaLit === true },
+      { k: 'hoa', l: 'HOA or road association?', t: 'yn', show: (d, ins) => !IS_HOA(ins), help: 'Yes opens the Project / HOA tab for the contact and dues.' },
+      { k: 'hoaGo', t: 'info', l: 'HOA contact, dues and special assessments are on the Project / HOA tab.', show: (d, ins) => IS_HOA(ins) || d.hoa === true },
       { k: 'rented', l: 'Rented?', t: 'yn' },
       { k: 'rentType', l: 'Rental type', t: 'multi', o: opts('1-Year Lease','Month-to-Month','Seasonal','Short-Term Rental','Vacation Rental'), show: d => d.rented === true },
       { k: 'rentAmt', l: 'Monthly rent ($)', t: 'money', show: d => d.rented === true },
@@ -1497,6 +1414,14 @@ function normalize(ins) {
   if (!ins.updated) ins.updated = ins.created || Date.now();
   // carry older test inspections forward
   if (ins.data.exterior.disaster && !ins.data.interview.disaster) { ins.data.interview.disaster = ins.data.exterior.disaster; delete ins.data.exterior.disaster; }
+  { const iv = ins.data.interview, pj = ins.data.project;   // v5: interview HOA block moved to the Project / HOA tab
+    if (iv && pj && (iv.hoaName || iv.hoaContact || iv.hoaPhone || iv.hoaFee !== undefined || iv.hoaDev) && !pj._hoaMoved) {
+      if (iv.hoaDev && !pj.projName) pj.projName = iv.hoaDev; if (iv.hoaName && !pj.hoaName) pj.hoaName = iv.hoaName;
+      if (iv.hoaContact && !pj.hoaContactName) pj.hoaContactName = iv.hoaContact; if (iv.hoaPhone && !pj.hoaPhone) pj.hoaPhone = iv.hoaPhone;
+      if (iv.hoaFee !== undefined && pj.dues === undefined) { pj.dues = iv.hoaFee; pj.duesFreq = iv.hoaFreq || 'Monthly'; }
+      if (iv.hoaSpecial === true && !pj.specAssess) { pj.specAssess = 'Existing'; pj.specDesc = iv.hoaSpecialNote; } else if (iv.hoaSpecial === false && !pj.specAssess) pj.specAssess = 'None';
+      if (iv.hoaLit) pj.hoaNote = [pj.hoaNote, 'Owner reported pending litigation' + (iv.hoaLitNote ? ': ' + iv.hoaLitNote : '')].filter(Boolean).join('\n');
+      pj._hoaMoved = true; } }
   if (ins.data.condition.eq && !ins.data.front.eq) { ins.data.front.eq = ins.data.condition.eq; ins.data.front.ec = ins.data.condition.ec; }
   if (typeof ins.data.site.hazard === 'string') ins.data.site.hazard = [ins.data.site.hazard];
   if (!ins.lists.kitchens.length) ins.lists.kitchens.push({ id: uid(), level: 'LevelOne' });
@@ -2024,22 +1949,18 @@ const GEN = {
     const kind = IS_COOP(ins) ? 'cooperative' : IS_PROJ(ins) ? 'condominium' : 'planned unit development';
     const des = P0.attach === 'Attached' && P0.structDesign ? lc(labelOf(F('property', 'structDesign').o, P0.structDesign)).replace(/ \(.*\)/, '') + ' ' : '';
     const unitDesc = [RISE(ins) && ins.data.interior.floorNum ? `floor ${ins.data.interior.floorNum}` : '', RISE(ins) && ins.data.interior.corner ? 'corner' : ''].filter(Boolean).join(' ');
-    out.push(S(`The subject is ${unitDesc ? 'a ' + unitDesc + ' unit' : 'located'} in ${J.projName || 'the project'}, a ${J.unitsTotal ? J.unitsTotal + '-unit ' : ''}${des}${kind}${P0.condotel ? ' operated with a hotel-style rental program (condotel)' : ''}`, 1));
+    out.push(S(`The subject is ${unitDesc ? 'a ' + unitDesc + ' unit' : 'located'} in ${J.projName ? J.projName + ', a' : 'a'} ${des}${kind}${P0.condotel ? ' operated with a hotel-style rental program (condotel)' : ''}`, 1));
     const am = (J.projAmen || []).filter(x => x !== 'None').map(x => x === 'Other' ? (J.projAmenOther || 'other amenities') : labelOf(PROJ_AMEN, x)).map(lc);
     const common = (J.projCommon || []).map(lc);
     if (am.length || common.length) out.push(S(`Common elements include ${listJoin([...new Set([...am, ...common])])}`, 2));
     const cond = { 'Well Kept': 'Common elements appear adequately maintained', 'Typical Wear and Tear': 'Common elements show typical wear and tear', 'Deferred Maintenance': 'Common elements show deferred maintenance', 'Under Renovation': 'Common elements are under renovation' }[J.projCond];
     if (cond) out.push(S(cond, 2));
     if (J.dues !== undefined) { const ut = (J.duesUtil || []).filter(x => x !== 'None').map(x => x === 'Other' ? (J.duesUtilOther || 'other') : x === 'SanitarySewer' ? 'sewer' : lc(x)); const inc = [...ut, ...(J.duesIncl || []).map(lc)];
-      out.push(S(`Monthly association dues are $${Number(J.dues).toLocaleString()}${inc.length ? ' and include ' + listJoin(inc) : ''}`, 1)); }
+      out.push(S(`Association dues are reported by the owner at $${Number(J.dues).toLocaleString()}${' ' + (J.duesFreq || 'Monthly').toLowerCase()}${inc.length ? ' and include ' + listJoin(inc) : ''}`, 1)); }
     if (P0.hoExt === false) out.push(S('Exterior maintenance is the responsibility of the association', 2));
     const park = [['pgSpaces', 'pgAssign', 'parking garage'], ['ccSpaces', 'ccAssign', 'common carport'], ['olSpaces', 'olAssign', 'open lot']].filter(([n]) => (g[n] || 0) > 0).map(([n, a, t]) => `${g[n]} ${g[a] ? lc(g[a]) + ' ' : ''}${t} space${g[n] > 1 ? 's' : ''}`);
     if (park.length) out.push(S(`Parking: ${listJoin(park)}`, 2));
-    if (J.strAllowed && J.strAllowed !== 'Unknown') out.push(S(`Short-term rentals: ${lc(J.strAllowed === 'Yes' ? 'allowed' : J.strAllowed === 'No' ? 'not allowed' : J.strAllowed)}`, 3));
-    if (J.rentRestrict) out.push(S(`Restrictions: ${J.rentRestrict}`, 3));
     if (J.projDef === false) out.push(S('No project deficiencies were observed in the common areas viewed', 2));
-    const src = (J.dataSrc || []).map(x => x === 'Other' ? (J.dataSrcOther || 'other') : labelOf(PROJ_SRC, x)).map(lc);
-    if (src.length) out.push(S(`Project data per ${listJoin(src)}`, 3));
     return out;
   },
   qc(ins) {
@@ -2883,8 +2804,6 @@ function computeIssues(ins) {
   { const P = ins.data.property.permits; if (P) { (P.holds || []).forEach((h, i) => out.push({ key: 'hold:' + i, sev: 'Check', label: `Parcel hold on record (County): ${h} – may need to be cleared before the property is marketable`, tab: 'property', group: 'crs', anchor: 'grp-crs' }));
     (P.accela || []).filter(a => a.dept === 'E' && !/closed|final/i.test(a.status || '')).forEach(a => out.push({ key: 'enf:' + a.num, sev: 'Check', label: `Open enforcement case ${a.num}: ${a.project || ''}`, tab: 'property', group: 'crs', anchor: 'grp-crs' })); } }
   if (d.property.project === true && d.property.condotel === true) out.push({ key: 'condotel', sev: 'Check', label: 'Condotel: most lenders (and Fannie Mae / Freddie Mac) treat condotels as ineligible. Confirm with your client and describe the rental program in the project commentary.', tab: 'property', group: 'ptype', anchor: 'f-property-condotel' });
-  if (IS_PROJ(ins) && d.project.singleUnits === 0) out.push({ key: 'single0', sev: 'Required', label: 'Most units owned by one entity cannot be 0 (enter 1 if no one owns more than one).', tab: 'project', group: 'projHOA', anchor: 'f-project-singleUnits', noOverride: true });
-  if (IS_COOP(ins) && d.project.blanket === true && !(ins.lists.blanketLoans || []).length) out.push({ key: 'noblanket', sev: 'Required', label: 'Blanket financing is Yes, but no blanket loan is added', tab: 'project', group: 'coop', anchor: 'grp-coop' });
   { const vc = d.condition.valCond || []; const act = L2.defects.filter(x => x.action && x.action !== 'None');
     if (vc.includes('AsIs') && vc.length > 1) out.push({ key: 'vc:mix', sev: 'Required', label: 'Market value condition: “As Is” cannot be combined with a “Subject to” condition', tab: 'condition', group: 'overall', anchor: 'f-condition-valCond', noOverride: true });
     if (vc.includes('AsIs') && act.length) out.push({ key: 'vc:def', sev: 'Required', label: `Market value condition is “As Is”, but ${act.length} defect${act.length > 1 ? 's recommend' : ' recommends'} ${listJoin([...new Set(act.map(x => x.action.toLowerCase()))])}. Use “Subject to…” or change the defect action.`, tab: 'condition', group: 'overall', anchor: 'f-condition-valCond', noOverride: true });
@@ -3104,9 +3023,9 @@ function buildMISMO(ins, imgName) {
   // HOMEOWNERS_ASSOCIATIONS (condo, co-op, PUD)
   if (isHoa) {
     const AC = X(X(X(P, 'HOMEOWNERS_ASSOCIATIONS'), 'HOMEOWNERS_ASSOCIATION'), 'ASSOCIATION_CHARGES');
-    const due = X(AC, 'ASSOCIATION_CHARGE'); const dd = X(due, 'ASSOCIATION_CHARGE_DETAIL'); V(dd, 'AssociationChargeAmount', PJ.dues); V(dd, 'AssociationChargePeriodType', 'Monthly'); V(dd, 'AssociationChargeType', 'AssociationDues');
+    const due = X(AC, 'ASSOCIATION_CHARGE'); const dd = X(due, 'ASSOCIATION_CHARGE_DETAIL'); V(dd, 'AssociationChargeAmount', (PJ.dues === undefined ? undefined : Math.round(+PJ.dues / ({ Quarterly: 3, 'Semi-annually': 6, Annually: 12 }[PJ.duesFreq] || 1)))); V(dd, 'AssociationChargePeriodType', 'Monthly'); V(dd, 'AssociationChargeType', 'AssociationDues');
     const inc = X(due, 'ASSOCIATION_CHARGE_INCLUDES_UTILITIES'); (PJ.duesUtil || []).forEach(u => { const e = X(inc, 'ASSOCIATION_CHARGE_INCLUDES_UTILITY'); V(e, 'AssociationChargeIncludesUtilityType', u); if (u === 'Other') V(e, 'AssociationChargeIncludesUtilityTypeOtherDescription', (PJ.duesUtilOther || 'Other').slice(0, 33)); });
-    if (PJ.specAssess) { const sa = X(X(AC, 'ASSOCIATION_CHARGE'), 'ASSOCIATION_CHARGE_DETAIL'); if (PJ.specAssess !== 'None') V(sa, 'AssociationChargeBalanceAmount', PJ.specAmt); V(sa, 'AssociationChargeType', 'AssociationSpecialAssessment'); V(sa, 'AssociationSpecialAssessmentStatusType', PJ.specAssess); }
+    if (['None', 'Existing', 'Proposed'].includes(PJ.specAssess)) { const sa = X(X(AC, 'ASSOCIATION_CHARGE'), 'ASSOCIATION_CHARGE_DETAIL');  V(sa, 'AssociationChargeType', 'AssociationSpecialAssessment'); V(sa, 'AssociationSpecialAssessmentStatusType', PJ.specAssess); }
     if (isProj && PJ.transferFee !== undefined) { const tf = X(X(AC, 'ASSOCIATION_CHARGE'), 'ASSOCIATION_CHARGE_DETAIL'); if (PJ.transferFee) { V(tf, 'AssociationChargeAmount', PJ.transferAmt); V(tf, 'AssociationChargePeriodType', 'OneTime'); V(tf, 'AssociationChargeType', 'OwnershipTransferFee'); } V(tf, 'OwnershipTransferFeeIndicator', yn(PJ.transferFee)); }
   }
 
