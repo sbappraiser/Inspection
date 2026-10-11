@@ -298,6 +298,15 @@ html.hc .group { border-width: 4px; }
 .btn.donecheck { background: #fff; border: 3px solid #000; color: #000; display: inline-flex; align-items: center; gap: 12px; font-weight: 700; padding: 8px 18px 8px 10px; min-height: 60px; }
 .gcheck.sm { width: 42px; height: 42px; margin: 0; font-size: 24px; transition: background .2s, color .2s; }
 
+.return-bar { position: fixed; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 58; display: flex; gap: 10px; padding: 10px; background: #000; border-radius: 14px; border: 3px solid var(--yellow); }
+.return-bar .ret-go { flex: 1; background: var(--yellow); color: #000; border: 3px solid #000; font-size: 20px; font-weight: 700; min-height: 60px; }
+.return-bar .ret-x { background: #fff; color: #000; border: 3px solid #000; min-width: 60px; font-size: 22px; }
+
+.jump-form { display: flex; gap: 8px; } .jump-form .txt { flex: 1; }
+.jump-h { font-weight: 700; padding: 8px 4px 2px; }
+.jump-item.hit small { display: block; font-weight: 400; color: #222; margin-top: 2px; }
+.jump-item mark { background: var(--yellow); padding: 0 2px; }
+
 </style>
 </head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting the inspection app…</p></div>
 <script>window.onerror=function(m,s,l){var b=document.getElementById('bootMsg');if(b){b.style.color='#c00';b.textContent='The app could not start: '+m+' (line '+l+'). Your inspections are still saved. Do not delete the app icon. Send a screenshot to Claude.';}};</script>
@@ -1799,7 +1808,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 /* ---------------- Home ---------------- */
 async function renderHome() {
-  app.ins = null; document.title = 'UAD Field Inspection';
+  app.ins = null; app.returnTo = null; document.querySelectorAll('.return-bar').forEach(e => e.remove()); document.title = 'UAD Field Inspection';
   let raw = [];
   try { raw = (await DB.all('inspections')) || []; } catch (e) { showFatal('Could not read saved inspections: ' + (e.message || e), 'home'); }
   const all = raw.map(i => { try { return normalize(i); } catch (e) { i._broken = e.message || String(e); return i; } }).sort((a, b) => (b.updated || 0) - (a.updated || 0));
@@ -1916,7 +1925,7 @@ async function openInspection2(id) {
       <div class="title"><b id="tTitle"></b><span id="tAddr"></span></div>
       <span class="saved" id="saved">Saved ✓</span>
       <button class="icon-btn" id="saveBtn">Save</button>
-      <button class="icon-btn" id="jumpBtn">Jump to</button>
+      <button class="icon-btn" id="jumpBtn">🔍 Search</button>
       ${hcBtn()}
       <button class="attn-pill" id="attnPill"></button></div>
     <nav class="tabs" id="tabs" role="tablist"></nav></header>
@@ -1944,10 +1953,11 @@ function goTab(id, anchor, groupId) {
   app.tab = id; app.missIdx = 0;
   if (groupId) openGroup(id, groupId);
   renderTab();
-  if (anchor) scrollToEl(anchor); else if (groupId) scrollToEl('grp-' + groupId); else window.scrollTo(0, 0);
+  if (anchor && document.getElementById(anchor)) scrollToEl(anchor); else if (groupId) scrollToEl('grp-' + groupId); else window.scrollTo(0, 0);
+  if (anchor && app.returnTo) { const el = document.getElementById(anchor); const box = el && el.querySelector('textarea, input.txt'); if (box) setTimeout(() => { try { box.focus({ preventScroll: true }); } catch (e) {} }, 150); }
 }
 function scrollToEl(id) {
-  const el = document.getElementById(id); if (!el) return;
+  const el = document.getElementById(id); if (!el) { window.scrollTo(0, 0); return; }
   const top = el.getBoundingClientRect().top + window.scrollY - ($('.bar') ? $('.bar').offsetHeight : 0) - 12;
   window.scrollTo(0, Math.max(0, top)); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600);
 }
@@ -1976,8 +1986,23 @@ function renderTab2() {
   else if (app.tab === 'attention') main.innerHTML = renderAttention();
   else if (app.tab === 'export') main.innerHTML = renderExport();
   bind(main); fillThumbs(main); window.scrollTo(0, y);
+  returnBar();
   const bar = $('.bar'); if (bar) document.documentElement.style.setProperty('--barh', bar.offsetHeight + 'px');
 }
+/* "Done – back to …" bar after jumping from a review list (Systems / Utilities / Counts confirmed) */
+function returnBar() {
+  const r = app.returnTo; let bar = document.querySelector('.return-bar');
+  if (!r) { if (bar) bar.remove(); return; }
+  if (!bar) { bar = document.createElement('div'); bar.className = 'return-bar'; document.body.appendChild(bar); }
+  bar.innerHTML = `<button class="btn ret-go">✓ Done – back to ${esc(r.title)}</button><button class="btn ret-x" aria-label="Stay here">✕</button>`;
+}
+function returnNow() {
+  const x = app.returnTo; if (!x) return; app.returnTo = null;
+  const a = document.activeElement; if (a && a.blur) a.blur();
+  document.querySelectorAll('.return-bar').forEach(e => e.remove());
+  saveNow(); goTab(x.tab, x.anchor || null, x.group || null); toast('Changes saved');
+}
+document.addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('.ret-go')) { e.preventDefault(); returnNow(); } else if (e.target.closest && e.target.closest('.ret-x')) { e.preventDefault(); app.returnTo = null; returnBar(); } }, true);
 function hcInit() { let on = false; try { on = localStorage.getItem('hc') === '1'; } catch (e) {} document.documentElement.classList.toggle('hc', on); }
 function hcToggle() { const on = !document.documentElement.classList.contains('hc'); document.documentElement.classList.toggle('hc', on); try { localStorage.setItem('hc', on ? '1' : '0'); } catch (e) {} document.querySelectorAll('.hc-btn').forEach(b => b.setAttribute('aria-pressed', on)); }
 const hcBtn = () => `<button class="icon-btn hc-btn" aria-pressed="${document.documentElement.classList.contains('hc')}" onclick="hcToggle()">☀ Outdoor</button>`;
@@ -1995,15 +2020,48 @@ function nextMissing() {
 
 /* ---------------- Jump to ---------------- */
 function openJump() {
-  const entries = [];
-  SECTIONS.forEach(s => { entries.push({ tab: s.id, label: s.title, sub: '' }); s.groups.filter(g => groupShown(g, s, app.ins)).forEach(g => entries.push({ tab: s.id, gid: g.id, label: g.title, sub: s.title })); });
-  EXTRA_TABS.forEach(t => entries.push({ tab: t.id, label: t.title, sub: '' }));
+  const ins = app.ins; const nav = [];
+  SECTIONS.forEach(s => { nav.push({ tab: s.id, label: s.title, sub: 'Tab' }); s.groups.filter(g => groupShown(g, s, ins)).forEach(g => nav.push({ tab: s.id, gid: g.id, label: g.title, sub: s.title })); });
+  EXTRA_TABS.forEach(t => nav.push({ tab: t.id, label: t.title, sub: 'Tab' }));
+  // everything you've entered: field names, typed text, picked options, list items, comments
+  const found = [];
+  const add = (q, label, value, tab, gid, anchor, item) => {
+    const hay = (label + ' ' + value).toLowerCase(); if (!hay.includes(q)) return;
+    found.push({ tab, gid, anchor, item, label, value });
+  };
+  const search = q => {
+    found.length = 0; if (q.length < 2) return;
+    SECTIONS.forEach(sec => sec.groups.forEach(g => {
+      if (!groupShown(g, sec, ins)) return;
+      g.fields.forEach(f => { if (['info', 'crs', 'review', 'calc', 'photo'].includes(f.t) || !isShown(f, secData(ins, sec.id, f), ins)) return; const d = secData(ins, sec.id, f); add(q, f.l, valText(f, d[f.k], d), sec.id, g.id, `f-${sec.id}-${f.k}`); });
+      if (g.list) ins.lists[g.list].forEach((it, i) => { const nm = LISTS[g.list].name(it, i, ins.lists[g.list]); LISTS[g.list].fields.forEach(f => { if (['info', 'photo'].includes(f.t) || !isShown(f, it, ins)) return; add(q, nm + ' – ' + f.l, valText(f, it[f.k], it), sec.id, g.id, `f-${g.list}-${it.id}-${f.k}`, it.id); }); });
+    }));
+    COMMENT_TARGETS.forEach(c => { const tx = buildComment(ins, c).text; if (tx.toLowerCase().includes(q)) found.push({ tab: 'summaries', anchor: 'sum-' + c.id, label: c.title, value: tx }); });
+    ins.photos.forEach(p => { if ((p.label || '').toLowerCase().includes(q)) found.push({ tab: 'photos', label: 'Photo', value: p.label }); });
+  };
+  const snip = (v, q) => { v = String(v || ''); const i = v.toLowerCase().indexOf(q); if (i < 0) return esc(v.slice(0, 90)); const a = Math.max(0, i - 40); return (a ? '…' : '') + esc(v.slice(a, i)) + '<mark>' + esc(v.substr(i, q.length)) + '</mark>' + esc(v.slice(i + q.length, i + q.length + 50)) + (i + q.length + 50 < v.length ? '…' : ''); };
   const bg = document.createElement('div'); bg.className = 'sheet-bg';
-  bg.innerHTML = `<div class="sheet jump" role="dialog" aria-label="Jump to"><div class="body"><input class="txt" id="jumpQ" placeholder="Search tabs and sections (e.g. attic, kitchen, view)" autocomplete="off"><div id="jumpList" class="jump-list"></div><button class="btn" id="jumpClose">Close</button></div></div>`;
+  bg.innerHTML = `<div class="sheet jump" role="dialog" aria-label="Search"><div class="body">
+    <form id="jumpForm" class="jump-form" autocomplete="off"><input class="txt" id="jumpQ" type="search" enterkeyhint="search" placeholder="Search anything: attic, granite, terrorist, Bath 2…"><button class="btn primary" type="submit">Search</button></form>
+    <div id="jumpList" class="jump-list"></div><button class="btn" id="jumpClose">Close</button></div></div>`;
   document.body.appendChild(bg);
-  const draw = q => { q = q.toLowerCase(); $('#jumpList', bg).innerHTML = entries.filter(e => !q || (e.label + ' ' + e.sub).toLowerCase().includes(q)).map((e, i) => `<button class="jump-item ${e.gid ? '' : 'top'}" data-i="${entries.indexOf(e)}">${esc(e.label)}${e.sub ? `<small>${esc(e.sub)}</small>` : ''}</button>`).join('') || '<p class="help">No match.</p>';
-    $('#jumpList', bg).querySelectorAll('[data-i]').forEach(b => b.onclick = () => { const e = entries[+b.dataset.i]; bg.remove(); goTab(e.tab, null, e.gid); }); };
-  draw(''); $('#jumpQ', bg).oninput = e => draw(e.target.value); $('#jumpClose', bg).onclick = () => bg.remove(); bg.onclick = e => { if (e.target === bg) bg.remove(); };
+  let list = [];
+  const go = e => { bg.remove(); if (e.item) app.open.add(e.item); app.returnTo = null; goTab(e.tab, e.anchor || null, e.gid || null); if (e.anchor) { const el = document.getElementById(e.anchor); const box = el && el.querySelector('textarea, input.txt'); if (box && box.value) setTimeout(() => { try { box.focus({ preventScroll: true }); const qi = box.value.toLowerCase().indexOf(lastQ); if (qi >= 0) box.setSelectionRange(qi, qi + lastQ.length); } catch (x) {} }, 150); } };
+  let lastQ = '';
+  const draw = raw => {
+    const q = raw.trim().toLowerCase(); lastQ = q; search(q);
+    const navHits = nav.filter(e => !q || (e.label + ' ' + e.sub).toLowerCase().includes(q));
+    list = [...found, ...navHits.map(e => ({ ...e, nav: true }))];
+    $('#jumpList', bg).innerHTML = (found.length ? `<div class="jump-h">${found.length} match${found.length === 1 ? '' : 'es'} in your entries</div>` : (q.length >= 2 ? '<div class="jump-h">No match in your entries</div>' : ''))
+      + list.map((e, i) => e.nav ? `<button class="jump-item ${e.gid ? '' : 'top'}" data-i="${i}">${esc(e.label)}<small>${esc(e.sub)}</small></button>`
+        : `<button class="jump-item hit" data-i="${i}">${esc(e.label)}<small>${snip(e.value, q)}</small></button>`).join('');
+    $('#jumpList', bg).querySelectorAll('[data-i]').forEach(b => b.onclick = () => go(list[+b.dataset.i]));
+  };
+  draw('');
+  $('#jumpQ', bg).oninput = e => draw(e.target.value);
+  $('#jumpForm', bg).onsubmit = ev => { ev.preventDefault(); draw($('#jumpQ', bg).value); if (list.length && found.length) go(list[0]); else if (!found.length) $('#jumpQ', bg).blur(); };
+  $('#jumpClose', bg).onclick = () => bg.remove(); bg.onclick = e => { if (e.target === bg) bg.remove(); };
+  setTimeout(() => $('#jumpQ', bg).focus(), 50);
 }
 
 /* ---------------- Sections ---------------- */
@@ -2066,14 +2124,14 @@ function renderField(f, d, ctx) {
     case 'num': case 'money': case 'year':
       html += `<input class="txt num" inputmode="${f.t === 'money' ? 'decimal' : 'numeric'}" ${attr} value="${esc(v ?? '')}" placeholder="${f.t === 'year' ? 'YYYY' : f.t === 'money' ? '$' : ''}">`; break;
     case 'date': html += `<input class="txt num" type="date" ${attr} value="${esc(v || '')}">`; break;
-    case 'text': html += `<input class="txt" ${attr} value="${esc(v || '')}" ${f.lim ? `maxlength="${f.lim}"` : ''}>`; break;
+    case 'text': html += `<input class="txt" spellcheck="true" autocorrect="on" autocapitalize="sentences" ${attr} value="${esc(v || '')}" ${f.lim ? `maxlength="${f.lim}"` : ''}>`; break;
     case 'note':
-      html += `<textarea class="txt" ${attr} placeholder="${f.lim ? 'Max ' + f.lim + ' characters' : 'Notes for your workfile'}">${esc(v || '')}</textarea>`;
+      html += `<textarea class="txt" spellcheck="true" autocorrect="on" autocapitalize="sentences" ${attr} placeholder="${f.lim ? 'Max ' + f.lim + ' characters' : 'Notes for your workfile'}">${esc(v || '')}</textarea>`;
       if (f.lim) html += `<div class="limit ${over ? 'over' : ''}" data-limit="${f.lim}">${(v || '').length} / ${f.lim}</div>`; break;
     case 'count':
       html += `<div class="stepper"><button ${attr} data-step="-1" aria-label="Decrease">−</button><output>${v ?? '–'}</output><button ${attr} data-step="1" aria-label="Increase">+</button></div>`; break;
     case 'review': { const items = f.items(ins) || [];
-      html += items.length ? `<div class="review">${items.map(x => `<div class="rv-row"><span class="rv-l">${esc(x.label)}</span><span class="rv-v ${x.value ? '' : 'empty'}">${esc(x.value || 'Not entered')}</span>${x.go ? `<button class="btn sm" data-go="${esc(x.go)}">Change ›</button>` : ''}</div>`).join('')}</div>` : '<div class="calc-text">Nothing entered yet.</div>'; break; }
+      html += items.length ? `<div class="review">${items.map(x => `<div class="rv-row"><span class="rv-l">${esc(x.label)}</span><span class="rv-v ${x.value ? '' : 'empty'}">${esc(x.value || 'Not entered')}</span>${x.go ? `<button class="btn sm" data-go="${esc(x.go)}" data-ret="${esc(ctx.sec + '|' + id + '|' + (ctx.group || '') + '|' + f.l)}">Change ›</button>` : ''}</div>`).join('')}</div>` : '<div class="calc-text">Nothing entered yet.</div>'; break; }
     case 'calc': html += typeof v === 'string' ? `<div class="calc-text">${esc(v)}</div>` : `<div class="calc">${esc(Number(v || 0).toLocaleString())}</div>`; break;
     case 'appliances': html += applianceWidget(d, ctx, f); break;
     case 'photo': html += photoSlot({ sec: ctx.sec, field: f.k, label: f.l, cat: f.cat, required: req }); break;
@@ -2313,9 +2371,12 @@ function bind(root) {
     app.confirm = null; app.shiftAt = Date.now(); renderTab(); toast('Removed'); await saveNow();
     for (const p of gone) { try { await DB.del('photos', p.id); thumbCache.delete(p.id); } catch (e) {} }
   });
-  root.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { const [tab, anchor, item, group] = b.dataset.go.split('|'); if (item) app.open.add(item); goTab(tab, anchor, group || null); });
-  root.querySelectorAll('[data-ovr]').forEach(b => b.onclick = () => { app.ovrOpen = b.dataset.ovr; renderTab(); const i = $('#ovrText'); if (i) i.focus(); });
-  root.querySelectorAll('[data-ovrsave]').forEach(b => b.onclick = () => { const r = ($('#ovrText').value || '').trim() || 'Overridden in field'; app.ins.overrides[b.dataset.ovrsave] = r; app.ovrOpen = null; save(); renderTab(); });
+  root.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.ret) { const [rt, ra, rg] = b.dataset.ret.split('|'); const sec = SECTIONS.find(s => s.id === rt); const g = sec && sec.groups.find(x => x.id === rg); app.returnTo = { tab: rt, anchor: ra, group: rg, title: g ? g.title : (b.dataset.ret.split('|')[3] || 'where you were') }; } const [tab, anchor, item, group] = b.dataset.go.split('|'); if (item) app.open.add(item); goTab(tab, anchor, group || null); });
+  root.querySelectorAll('[data-ovr]').forEach(b => b.onclick = () => {
+    if (b.dataset.check) { app.ins.overrides[b.dataset.ovr] = 'Dismissed'; save(); renderTab(); toast('Dismissed – see the list at the bottom to undo'); return; }
+    app.ovrOpen = b.dataset.ovr; renderTab(); const i = $('#ovrText'); if (i) { i.scrollIntoView({ block: 'center' }); i.focus({ preventScroll: true }); } });
+  root.querySelectorAll('[data-ovrsave]').forEach(b => b.onclick = () => { const r = ($('#ovrText').value || '').trim() || 'Overridden in field'; app.ins.overrides[b.dataset.ovrsave] = r; app.ovrOpen = null; save(); renderTab(); toast('Overridden'); });
+  root.querySelectorAll('[data-ovrcancel]').forEach(b => b.onclick = () => { app.ovrOpen = null; renderTab(); });
   root.querySelectorAll('[data-ovrclear]').forEach(b => b.onclick = () => { delete app.ins.overrides[b.dataset.ovrclear]; save(); renderTab(); });
   root.querySelectorAll('[data-comment]').forEach(t => { let before = t.value; t.addEventListener('input', () => { if (before.trim().length >= 15 && !t.value.trim()) offerUndo(app.ins.comments, t.dataset.comment, before); before = t.value || before; app.ins.comments[t.dataset.comment] = t.value; save(); updateSummary(t.dataset.comment); }); });
   root.querySelectorAll('[data-final]').forEach(t => { t.addEventListener('input', () => { app.ins.finals[t.dataset.final] = t.value; save(); const c = document.getElementById('cnt-' + t.dataset.final); const lim = COMMENT_TARGETS.find(x => x.id === t.dataset.final).lim; c.textContent = t.value.length + ' / ' + lim; c.classList.toggle('over', t.value.length > lim); }); });
@@ -2376,7 +2437,7 @@ function renderGallery() {
     const miss = issues.filter(x => x.tab === s.id);
     if (!ph.length && !miss.length) return '';
     return `<div class="gal-sec"><h3>${esc(s.title)} · ${ph.length}</h3>
-      ${miss.length ? `<div class="missing-photos">${miss.map(m => `<button class="${m.sev === 'Recommended' ? 'sug' : ''}" data-go="${m.tab}|${m.anchor}|${m.item || ''}|${m.group || ''}">${m.sev === 'Recommended' ? 'Suggested: ' : 'Missing: '}${esc(m.label)} ›</button>`).join('')}</div>` : ''}
+      ${miss.length ? `<div class="missing-photos">${miss.map(m => `<button class="${m.sev === 'Recommended' ? 'sug' : ''}" data-go="${m.tab}|${m.anchor}|${m.item || ''}|${m.group || ''}" data-ret="photos|||All Photos">${m.sev === 'Recommended' ? 'Suggested: ' : 'Missing: '}${esc(m.label)} ›</button>`).join('')}</div>` : ''}
       <div class="gal">${ph.map(p => `<button class="thumb ${p.required ? 'req' : ''}" data-view="${p.id}"><img data-pid="${p.id}" alt=""><span>${esc(p.label)}</span></button>`).join('')}</div></div>`;
   }).join('');
   const req = issues.filter(x => x.sev === 'Photo').length;
@@ -2391,14 +2452,14 @@ function renderSummaries() {
     if (t.id === 'adu' && !ins.lists.adus.length) return ''; if (t.id === 'outbuilding' && !ins.lists.outbuildings.length) return '';
     const r = buildComment(ins, t); const editing = ins.finals[t.id] !== undefined;
     return `<div class="sum" id="sum-${t.id}"><h3>${esc(t.title)}<span class="fid">${t.fid} · max ${t.lim.toLocaleString()}</span></h3>
-      ${editing ? `<textarea class="txt" data-final="${t.id}" style="min-height:160px">${esc(ins.finals[t.id])}</textarea>
+      ${editing ? `<textarea class="txt" spellcheck="true" autocorrect="on" autocapitalize="sentences" data-final="${t.id}" style="min-height:160px">${esc(ins.finals[t.id])}</textarea>
         <div class="limit ${r.over ? 'over' : ''}" id="cnt-${t.id}">${r.text.length} / ${t.lim}</div>
         <div class="row"><button class="btn sm" data-resetfinal="${t.id}">Go back to automatic summary</button><button class="btn sm" data-copy="${t.id}">Copy</button></div>`
       : `<div class="auto ${r.text ? '' : 'empty'}" id="auto-${t.id}">${esc(r.text || 'Nothing checked yet for this section.')}</div>
         <div class="limit ${r.over ? 'over' : ''}" id="cnt-${t.id}">${r.text.length} / ${t.lim}</div>
         ${r.dropped.length ? `<div class="dropped">Left out to stay under the limit (kept in your workfile): ${esc(r.dropped.join(' '))}</div>` : ''}
         <label class="flabel" for="c-${t.id}"><span class="tag">Optional</span><span class="lab">Your added comment</span></label>
-        <textarea class="txt" id="c-${t.id}" data-comment="${t.id}" placeholder="Added after the checkbox summary">${esc(ins.comments[t.id] || '')}</textarea>
+        <textarea class="txt" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="c-${t.id}" data-comment="${t.id}" placeholder="Added after the checkbox summary">${esc(ins.comments[t.id] || '')}</textarea>
         <div class="row"><button class="btn sm" data-editfinal="${t.id}">Edit final wording</button><button class="btn sm" data-copy="${t.id}">Copy</button></div>`}
     </div>`;
   }).join('');
@@ -2460,20 +2521,32 @@ function computeIssues(ins) {
     if (d[sec][k] === true && !has) out.push({ key: `def:${a}`, sev: 'Check', label: `${a} defects marked Yes, but none described on the Defects tab`, tab: 'defects', group: 'defList', anchor: 'grp-defList' });
     if (has && d[sec][k] !== true) out.push({ key: `defind:${a}`, sev: 'Required', label: `${a}: a defect is described, so “defects present” should be Yes`, tab: sec, anchor: `f-${sec}-${k}`, group: findField(sec, k).g ? findField(sec, k).g.id : null, noOverride: true });
   });
-  wordFlags(ins).forEach(w => out.push({ key: 'word:' + w.where + ':' + w.word, sev: 'Check', label: `Wording: “${w.word}” in ${w.where} may be flagged in SFREP or by reviewers (fair housing / bias wording). Consider rephrasing.`, tab: w.tab, group: w.group || null, anchor: w.anchor || '' }));
+  wordFlags(ins).forEach(w => out.push({ key: 'word:' + w.where + ':' + w.word, sev: 'Check', label: `Wording: “${w.word}” in ${w.where} may be flagged in SFREP or by reviewers (fair housing / bias wording). Consider rephrasing.`, tab: w.tab, group: w.group || null, anchor: w.anchor || '', item: w.item || null }));
   measureReminders(ins).forEach(m => out.push({ key: 'measure:' + m, sev: 'Check', label: `Measure for SFREP: ${m}`, tab: 'attention', anchor: '' }));
   COMMENT_TARGETS.forEach(t => { const r = buildComment(ins, t); if (r.over) out.push({ key: `lim:${t.id}`, sev: 'Required', label: `${t.title} is over ${t.lim} characters`, tab: 'summaries', anchor: 'sum-' + t.id, noOverride: true }); });
   _issueCache.ins = ins; _issueCache.ver = sig; _issueCache.val = out;
   return out;
 }
 // Words that bias / fair-housing checkers commonly flag, plus obvious dictation slips
-const FLAG_RX = /\b(european|french|italian|spanish|asian|african|mexican|ethnic\w*|immigrant\w*|terror\w*|crime|criminal\w*|dangerous|unsafe|gang\w*|ghetto|exclusive|prestigious|desirable|pride of ownership|family[- ]friendly|church\w*|synagogue|mosque|walkable)\b/gi;
+const FLAG_RX = new RegExp('\\b(' + [
+  // Fannie Mae / Freddie Mac unacceptable subjective terms
+  'pride of ownership', '(?:good|poor|bad|nice|declining) (?:neighborhood|area|location)', '(?:un)?desirable (?:neighborhood|area|location)', 'desirable', 'undesirable', 'crime[- ]ridden', 'crime', 'criminal\\w*',
+  // safety / exclusivity language
+  'safe(?:ty)? (?:neighborhood|area|community|street)', 'unsafe', 'dangerous', 'gangs?', 'ghetto', 'exclusive', 'prestigious', 'upscale', 'elite',
+  // protected classes: national origin, race, religion, familial status, age, disability, sex
+  'european', 'french', 'italian', 'spanish', 'asian', 'african', 'mexican', 'hispanic', 'latino', 'ethnic\\w*', 'immigrant\\w*', 'minorit(?:y|ies)', 'integrated', 'diverse',
+  'church\\w*', 'synagogue', 'mosque', 'christian', 'jewish', 'muslim',
+  'family[- ]friendly', 'young famil(?:y|ies)', 'families with children', 'kids', 'singles', 'retirees', 'elderly', 'seniors',
+  'handicap(?:ped)?', 'wheelchair[- ]bound', 'bachelor', 'man cave', 'master (?:bed(?:room)?|bath|suite)',
+  // dictation slips seen so far
+  'terror\\w*'
+].join('|') + ')\\b', 'gi');
 function wordFlags(ins) {
   const out = []; const seen = new Set();
-  const scan = (text, where, tab, group, anchor) => { (String(text || '').match(FLAG_RX) || []).forEach(m => { const k = where + m.toLowerCase(); if (!seen.has(k)) { seen.add(k); out.push({ word: m, where, tab, group, anchor }); } }); };
+  const scan = (text, where, tab, group, anchor, item) => { (String(text || '').match(FLAG_RX) || []).forEach(m => { const k = where + m.toLowerCase(); if (!seen.has(k)) { seen.add(k); out.push({ word: m, where, tab, group, anchor, item }); } }); };
   COMMENT_TARGETS.forEach(t => scan(buildComment(ins, t).text, t.title, 'summaries', null, 'sum-' + t.id));
   SECTIONS.forEach(sec => sec.groups.forEach(g => g.fields.forEach(f => { if ((f.t === 'note' || f.t === 'text') && !f.link) scan(ins.data[sec.id][f.k], f.l, sec.id, g.id, `f-${sec.id}-${f.k}`); })));
-  Object.keys(LISTS).forEach(k => ins.lists[k].forEach((it, i) => { LISTS[k].fields.forEach(f => { if (f.t === 'note' || f.t === 'text') scan(it[f.k], LISTS[k].name(it, i, ins.lists[k]) + ' – ' + f.l, listHome(k).tab, listHome(k).group, `f-${k}-${it.id}-${f.k}`); }); if (k === 'kitchens' || k === 'baths') scan(roomQualityComment(k, it), LISTS[k].name(it, i, ins.lists[k]) + ' – quality comment', listHome(k).tab, listHome(k).group, 'item-' + it.id); }));
+  Object.keys(LISTS).forEach(k => ins.lists[k].forEach((it, i) => { LISTS[k].fields.forEach(f => { if (f.t === 'note' || f.t === 'text') scan(it[f.k], LISTS[k].name(it, i, ins.lists[k]) + ' – ' + f.l, listHome(k).tab, listHome(k).group, `f-${k}-${it.id}-${f.k}`, it.id); }); if (k === 'kitchens' || k === 'baths') scan(roomQualityComment(k, it), LISTS[k].name(it, i, ins.lists[k]) + ' – quality comment', listHome(k).tab, listHome(k).group, 'item-' + it.id, it.id); }));
   return out;
 }
 function measureReminders(ins) {
@@ -2501,9 +2574,9 @@ function renderAttention() {
   const sevName = { Required: 'Required', Photo: 'Required photo', Check: 'Check', Recommended: 'Suggested photo' };
   const row = (x, over) => `<div class="att ${over ? 'overridden' : ''}"><span class="sev ${x.sev}">${sevName[x.sev]}</span>
     <div class="what">${esc(x.label)}<small>${esc(tabName(x.tab))}${over ? ' · overridden: ' + esc(ins.overrides[x.key]) : ''}</small></div>
-    ${x.tab !== 'attention' ? `<button class="btn sm primary" data-go="${x.tab}|${x.anchor}|${x.item || ''}|${x.group || ''}">Go</button>` : ''}
-    ${over ? `<button class="btn sm" data-ovrclear="${esc(x.key)}">Undo override</button>` : x.noOverride ? '' : `<button class="btn sm" data-ovr="${esc(x.key)}">${x.sev === 'Check' ? 'Dismiss' : 'Override'}</button>`}
-    ${app.ovrOpen === x.key ? `<div class="ovr"><input class="txt" id="ovrText" placeholder="Reason (e.g. owner would not allow photo)"><button class="btn sm primary" data-ovrsave="${esc(x.key)}">Save</button></div>` : ''}</div>`;
+    ${x.tab !== 'attention' ? `<button class="btn sm primary" data-go="${x.tab}|${x.anchor}|${x.item || ''}|${x.group || ''}" data-ret="attention|||Needs Attention">Go</button>` : ''}
+    ${over ? `<button class="btn sm" data-ovrclear="${esc(x.key)}">Undo override</button>` : x.noOverride ? '' : `<button class="btn sm" data-ovr="${esc(x.key)}" ${x.sev === 'Check' || x.sev === 'Recommended' ? 'data-check="1"' : ''}>${x.sev === 'Check' || x.sev === 'Recommended' ? 'Dismiss' : 'Override'}</button>`}
+    ${app.ovrOpen === x.key ? `<div class="ovr"><input class="txt" id="ovrText" placeholder="Reason (e.g. owner would not allow photo)"><button class="btn sm primary" data-ovrsave="${esc(x.key)}">Save override</button><button class="btn sm" data-ovrcancel="1">Cancel</button></div>` : ''}</div>`;
   const req = open.filter(x => x.sev === 'Required' || x.sev === 'Photo').length;
   return `<section class="group open"><div class="ghead static"><span class="gtitle">Needs attention</span><span class="count">${req} required · ${open.length - req} to review</span></div>
     ${open.length ? open.map(x => row(x, false)).join('') : '<div class="exp"><div class="info">Everything required is complete. Review your photos, then export.</div></div>'}</section>
