@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>UAD Field Inspection</title>
+<title>Inspect TEST</title>
+<script>var APP_CFG={db:"uad36-inspect"};</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Inspection">
+<meta name="apple-mobile-web-app-title" content="Inspect TEST">
 <meta name="theme-color" content="#ffffff">
 <link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -307,10 +308,16 @@ html.hc .group { border-width: 4px; }
 .jump-item.hit small { display: block; font-weight: 400; color: #222; margin-top: 2px; }
 .jump-item mark { background: var(--yellow); padding: 0 2px; }
 
+/* test copy marker */
+html.testcopy .bar { border-bottom-color: #7b2cbf; }
+.testflag { background: #7b2cbf; color: #fff; font-weight: 700; text-align: center; padding: 4px; font-size: 14px; }
+.sk-btn { background: #fff7d6; }
+
 </style>
-</head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting the inspection app…</p></div>
+</head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting Inspect TEST…</p></div>
 <script>window.onerror=function(m,s,l){var b=document.getElementById('bootMsg');if(b){b.style.color='#c00';b.textContent='The app could not start: '+m+' (line '+l+'). Your inspections are still saved. Do not delete the app icon. Send a screenshot to Claude.';}};</script>
 <script>
+const BUILD='6a-1014-0001';
 const UAD={"RoomType":[["Bedroom","Bedroom"],["BreakfastRoom","Breakfast Room"],["Den","Den"],["DiningRoom","Dining Room"],["FamilyRoom","Family Room"],["FullBathroom","Bath - Full"],["HalfBathroom","Bath - Half"],["Kitchen","Kitchen"],["LaundryRoom","Laundry Room"],["LivingRoom","Living Room"],["Loft","Loft"],["MediaRoom","Media Room"],["Mudroom","Mudroom"],["RecreationRoom","Recreation Room"],["Sunroom","Sunroom"],["UtilityRoom","Utility Room"],["WalkInPantry","Walk-In Pantry"],["Workshop","Workshop"],["Other","Other"]],"AmenityType":[["Airstrip","Airstrip"],["Beach","Beach"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["BuildingMaintenance","Building Maintenance"],["BuiltInPool","Built-in Pool"],["BusinessCenter","Business Center"],["CaregiverServices","Caregiver Services"],["Clubhouse","Clubhouse"],["ClubMembership","Club Membership"],["CommunityPier","Community Pier"],["ConciergeServiceCoordination","Concierge Service Coordination"],["Cooling","Cooling"],["Deck","Deck"],["DoorAttendant","Door Attendant"],["ElectricVehicleChargingStation","EV Station"],["Elevator","Elevator"],["FitnessArea","Fitness Area"],["GatedCommunity","Gated Community"],["GroundsMaintenance","Grounds Maintenance"],["Heating","Heating"],["IngroundPool","Inground Pool"],["IngroundSpa","Inground Spa"],["Lobby","Lobby"],["None","None"],["OngoingCleaningServices","Ongoing Cleaning Services"],["OutdoorRidingRing","Outdoor Riding Ring"],["OutdoorShower","Outdoor Shower"],["Patio","Patio"],["Playground","Playground"],["RecreationArea","Recreation Area"],["RegistrationServices","Registration Services"],["Sauna","Sauna"],["SharedLaundryFacilities","Shared Laundry Facilities"],["ShortTermRentalServices","Short Term Rental Services"],["SportsCourt","Sports Court"],["TelevisionOrInternetServices","Television or Internet Services"],["TrashRemoval","Trash Removal"],["UnitStorage","Unit Storage"],["WaterAccess","Water Access"],["WaterFrontage","Water Frontage"],["Other","Other"],["Fence","Fence"],["IrrigationSystem","Irrigation System"],["OutdoorFireplace","Outdoor Fireplace"],["OutdoorKitchen","Outdoor Kitchen"],["Balcony","Balcony"],["Gazebo","Gazebo"],["Porch","Porch"],["Portico","Portico"],["FireSuppressionSystem","Fire Suppression System"],["IndoorFireplace","Indoor Fireplace"],["MultipleZoneHeatingVentilationAndAirConditioning","Multi-Zone HVAC"],["SmartHomeSystem","Smart Home System"],["WholeHouseVentilation","Whole House Ventilation"],["WoodStove","Wood Stove"]],"FlooringType":[["Carpet","Carpet"],["CeramicTile","Ceramic Tile"],["EngineeredWood","Engineered Wood"],["FinishedConcrete","Finished Concrete"],["Hardwood","Hardwood"],["Laminate","Laminate"],["Marble","Marble"],["SubflooringOnly","Subflooring Only"],["Vinyl","Vinyl"],["Other","Other"]],"ViewType":[["Bay","Bay"],["Canal","Canal"],["CityStreet","City Street"],["Commercial","Commercial"],["Cove","Cove"],["Creek","Creek"],["GolfCourse","Golf Course"],["Gulf","Gulf"],["HighDensityResidential","High Density Residential"],["Highway","Highway"],["Industrial","Industrial"],["Lake","Lake"],["Marsh","Marsh"],["Mountain","Mountain"],["Ocean","Ocean"],["Park","Park"],["ParkingLot","Parking Lot"],["Pastoral","Pastoral"],["Pond","Pond"],["Reservoir","Reservoir"],["Residential","Residential"],["River","River"],["School","School"],["Skyline","Skyline"],["Sound","Sound"],["TrafficWallBarriers","Traffic Wall Barriers"],["Valley","Valley"],["Woods","Woods"],["Other","Other"]],"SiteInfluenceType":[["Agricultural","Agricultural"],["Airport","Airport"],["BusyRoadway","Busy Roadway"],["CommercialArea","Commercial Area"],["GolfCourse","Golf Course"],["GreenSpace","Green Space"],["HighDensityResidential","High Density Residential"],["HighPressureGasLine","High Pressure Gas Line"],["HistoricDistrict","Historic District"],["IndustrialArea","Industrial Area"],["LocalDistributionLine","Local Distribution Line"],["OilOrGasWell","Oil or Gas Well"],["OverheadElectricPowerTransmissionLine","Overhead Electric Power Transmission Line"],["Park","Park"],["PublicTransportationHub","Public Transportation Hub"],["RailLine","Rail Line"],["Residential","Residential"],["School","School"],["StormwaterRetention","Stormwater Retention"],["BodyOfWater","Body Of Water"],["Other","Other"]],"SiteFeatureType":[["None","None"],["CoastalBarrierResourcesSystem","Coastal Barrier Resources System"],["Drainage","Drainage"],["ExcessLand","Excess Land"],["Landlocked","Landlocked"],["Landscaping","Landscaping"],["RoadFrontage","Road Frontage"],["Shape","Shape"],["SoilSuitability","Soil Suitability"],["SurplusLand","Surplus Land"],["Topography","Topography"],["Wetlands","Wetlands"],["ZeroLotLine","Zero Lot Line"],["Other","Other"]],"TopographyType":[["Flat","Flat"],["Rocky","Rocky"],["Rolling","Rolling"],["Sloping","Sloping"],["Other","Other"]],"ArchitecturalDesignCategoryType":[["AFrame","A-Frame"],["Barn","Barn"],["BiLevel","Bi-Level"],["Bungalow","Bungalow"],["CapeCod","Cape Cod"],["Chalet","Chalet"],["Colonial","Colonial"],["Contemporary","Contemporary"],["Cottage","Cottage"],["Craftsman","Craftsman"],["EarthBerm","Earth / Berm"],["Farmhouse","Farmhouse"],["GeodesicDome","Geodesic Dome"],["Georgian","Georgian"],["Log","Log"],["Mediterranean","Mediterranean"],["Modern","Modern"],["NeoEclectic","Neo-Eclectic"],["RaisedRanch","Raised Ranch"],["Rambler","Rambler"],["Ranch","Ranch"],["Southwest","Southwest"],["Spanish","Spanish"],["SplitFoyerOrEntry","Split Foyer or Entry"],["SplitLevel","Split Level"],["Stilt","Stilt"],["Traditional","Traditional"],["Tudor","Tudor"],["Victorian","Victorian"],["Other","Other"]],"WallMaterialType":[["Adobe","Adobe"],["Aluminum","Aluminum"],["Asbestos","Asbestos"],["Brick","Brick"],["CementBoard","Cement Board"],["ConcreteBlock","Concrete Block"],["EngineeredWood","Engineered Wood"],["Glass","Glass"],["Log","Log"],["PouredConcrete","Poured Concrete"],["Steel","Steel"],["Stone","Stone"],["Stucco","Stucco"],["SyntheticStone","Synthetic Stone"],["SyntheticStucco","Synthetic Stucco"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"RoofMaterialType":[["Asbestos","Asbestos"],["Asphalt","Asphalt"],["CeramicTile","Ceramic Tile"],["Clay","Clay"],["Composition","Composition"],["Concrete","Concrete"],["Copper","Copper"],["Metal","Metal"],["Rubber","Rubber"],["Slate","Slate"],["SolarShingles","Solar Shingles"],["Synthetic","Synthetic"],["TarAndGravel","Tar / Gravel"],["Wood","Wood"],["Other","Other"]],"FoundationType":[["Basement","Basement"],["CrawlSpace","Crawl Space"],["PostAndPier","Post and Pier"],["Runner","Runner"],["Slab","Slab"],["Other","Other"]],"FoundationMaterialType":[["Brick","Brick"],["ConcreteBlock","Concrete Block"],["Metal","Metal"],["PouredConcrete","Poured Concrete"],["Stone","Stone"],["Wood","Wood"],["Other","Other"]],"HeatingSystemType":[["Baseboard","Baseboard"],["Fireplace","Fireplace"],["ForcedWarmAir","Forced Warm Air"],["GravityAir","Gravity Air"],["MiniSplit","Mini Split"],["None","None"],["PassiveSolar","Passive Solar"],["Radiant","Radiant"],["Radiators","Radiators"],["Stove","Stove"],["Other","Other"]],"HeatingFuelType":[["Coal","Coal"],["Electric","Electric"],["Geothermal","Geothermal"],["NaturalGas","Natural Gas"],["Oil","Oil"],["Propane","Propane"],["Solar","Solar"],["Wood","Wood"],["Other","Other"]],"CoolingSystemType":[["Centralized","Centralized"],["Individual","Individual"],["Other","Other"]],"MechanicalSystemType":[["RadonMitigation","Radon Mitigation"],["SumpPump","Sump Pump"],["WaterHeater","Water Heater"],["WholeHouseWaterTreatment","Whole House Water Treatment"],["Other","Other"]],"CarStorageType":[["Carport","Carport"],["CommonCarport","Common Carport"],["Driveway","Driveway"],["Garage","Garage"],["OpenLot","Open Lot"],["ParkingGarage","Parking Garage"],["SharedDriveway","Shared Driveway"],["None","None"],["Other","Other"]],"CarStorageAttachmentType":[["Attached","Attached"],["BuiltIn","Built-in"],["Detached","Detached"]],"ImprovedSurfaceMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Cobblestone","Cobblestone"],["Concrete","Concrete"],["Dirt","Dirt"],["Gravel","Gravel"],["Other","Other"]],"OutbuildingType":[["Barn","Barn"],["Boathouse","Boathouse"],["Bunkhouse","Bunkhouse"],["EnclosedKennel","Enclosed Kennel"],["Greenhouse","Greenhouse"],["GuestHouse","Guest House"],["IndoorRidingArena","Indoor Riding Arena"],["ManufacturedHome","Manufactured Home"],["Office","Office"],["PoolHouse","Pool House"],["Shed","Shed"],["Silo","Silo"],["Stable","Stable"],["StandaloneADU","Standalone ADU"],["Studio","Studio"],["Workshop","Workshop"],["Other","Other"]],"FunctionalIssueType":[["CeilingHeight","Ceiling Height"],["FloorPlan","Floor Plan"],["NonConformity","Nonconformity"],["None","None"],["Overimprovement","Overimprovement"],["Underimprovement","Underimprovement"],["Other","Other"]],"DisasterMitigationFeatureType":[["EnclosedSoffits","Enclosed Soffits"],["FireResistantDecking","Fire Resistant Decking"],["FireResistantExteriorWalls","Fire Resistant Exterior Walls"],["FloodVents","Flood Vents"],["FortifiedRoof","Fortified Roof"],["FramingAnchorageOrBracing","Framing Anchorage or Bracing"],["ImpactResistantGlass","Impact Resistant Glass"],["ImpactResistantShingles","Impact Resistant Shingles"],["NoncombustiblePerimeter","Noncombustible Perimeter"],["None","None"],["StormShelter","Storm Shelter"],["StormShutters","Storm Shutters"],["WaterHeaterStrapping","Water Heater Strapping"],["Other","Other"]],"RenewableEnergyComponentType":[["Geothermal","Geothermal"],["Solar","Solar"],["WindTurbine","Wind Turbine"],["Other","Other"]],"RenewableEnergyComponentOwnershipType":[["Leased","Leased"],["Owned","Owned"],["PowerPurchaseAgreement","Power Purchase Agreement"],["Other","Other"]],"CeilingStyleType":[["Barrel","Barrel"],["Beams","Beams"],["Cathedral","Cathedral"],["Coffered","Coffered"],["Drop","Drop"],["Flat","Flat"],["Tray","Tray"],["Vaulted","Vaulted"],["Other","Other"]],"ApproximateCeilingHeightType":[["EightFeet","8 Ft."],["LessThanSevenFeet","Less than 7 feet"],["NineFeet","9 Ft."],["SevenFeet","7 Ft."],["TenFeetAndAbove","10 or more feet"],["TwoOrMoreStories","2 or more stories"]],"RoomUpdateStatusType":[["FullyUpdated","Fully Updated"],["NotUpdated","Not Updated"],["PartiallyUpdated","Partially Updated"]],"RoomUpdatedTimeframeType":[["FiveToTenYears","5-10 years"],["LessThanOneYear","Less than 1 year"],["OneToFiveYears","1-5 years"],["TenOrMoreYears","10 or more years"]],"RoomConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["TypicalWearAndTear","Typical Wear and Tear"]],"DefectComponentLabelType":[["ExteriorWallsAndTrim","Exterior Walls and Trim"],["Foundation","Foundation"],["MechanicalSystem","Mechanical System"],["Roof","Roof"],["Windows","Windows"],["Other","Other"],["Flooring","Flooring"],["WallsAndCeiling","Walls and Ceiling"]],"DefectItemRecommendedActionType":[["Completion","Completion"],["Inspection","Inspection"],["None","None"],["Repair","Repair"]],"LevelType":[["BelowGradeFive","Level B5"],["BelowGradeFour","Level B4"],["BelowGradeOne","Level B1"],["BelowGradeThree","Level B3"],["BelowGradeTwo","Level B2"],["LevelEight","Level 8"],["LevelFive","Level 5"],["LevelFour","Level 4"],["LevelNine","Level 9"],["LevelOne","Level 1"],["LevelSeven","Level 7"],["LevelSix","Level 6"],["LevelTen","Level 10"],["LevelThree","Level 3"],["LevelTwo","Level 2"]],"GradeLevelType":[["AboveGrade","Above Grade"],["FullyBelowGrade","Below Grade"],["PartiallyBelowGrade","Partially Below Grade"]],"AccessType":[["ExteriorAccessOnly","Exterior Access Only"],["InteriorAccessOnly","Interior Access Only"],["InteriorAndExteriorAccess","Interior and Exterior Access"]],"UnitOccupancyType":[["OwnerOccupied","Owner"],["Tenant","Tenant"],["Vacant","Vacant"]],"AmenityMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Composite","Composite"],["Concrete","Concrete"],["Fiberglass","Fiberglass"],["Metal","Metal"],["NaturalStone","Natural Stone"],["Pavers","Pavers"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"HazardZoneType":[["FEMASpecialFloodHazardArea","FEMA Special Flood Hazard Area"],["None","No Hazard Zone Noted"],["USGSLavaFlowZone","USGS Lava Flow Zone"],["Other","Other"]],"AccessibilityFeatureType":[["Appliances","Appliances"],["Auditory","Auditory"],["Bathtub","Bathtub"],["Cabinets","Cabinets"],["Counters","Counters"],["Doorways","Doorways"],["ElectricalSwitches","Electrical Switches"],["GrabBars","Grab Bars"],["Handrails","Handrails"],["Hardware","Hardware"],["Lighting","Lighting"],["None","None"],["Ramps","Ramps"],["Shower","Shower"],["Sink","Sink"],["Toilet","Toilet"],["Other","Other"]],"ValueMarketabilityImpactType":[["Adverse","Adverse"],["Beneficial","Beneficial"],["Neutral","Neutral"]],"ViewRangeType":[["Full","Full"],["Partial","Partial"],["Seasonal","Seasonal"],["Other","Other"]],"SiteInfluenceProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"StreetAccessType":[["Alley","Alley"],["Arterial","Arterial Street"],["Collector","Collector Street"],["CulDeSac","Cul-de-sac"],["DeadEnd","Dead End"],["Local","Local Road"],["Rural","Rural Road"],["Other","Other"]],"PropertyPrimaryEntryExitMethodType":[["PedestrianOnlyAccess","Pedestrian Only Access"],["PrivateAirstrip","Private Airstrip"],["PrivateStreet","Private Street"],["PublicStreet","Public Street"],["Waterway","Waterway"],["Other","Other"]],"ConstructionMethodType":[["Container","Container"],["Manufactured","Manufactured"],["Modular","Modular"],["OnFrameModular","On-Frame Modular"],["SiteBuilt","Site Built"],["ThreeDimensionalPrintingTechnology","3D Technology"],["Other","Other"]],"AttachmentType":[["Attached","Attached"],["Detached","Detached"]],"FrontDoorApproximateElevationRangeType":[["EightToNineFeet","8-9 Ft."],["FiveToSixFeet","5-6 Ft."],["FourToFiveFeet","4-5 Ft."],["GroundLevel","Ground Level"],["NineToTenFeet","9-10 Ft."],["OneToTwoFeet","1-2 Ft."],["SevenToEightFeet","7-8 Ft."],["SixToSevenFeet","6-7 Ft."],["TenOrMoreFeet","10 or more feet"],["ThreeToFourFeet","3-4 Ft."],["TwoToThreeFeet","2-3 Ft."],["UpToOneFoot","Up to 1 foot"]],"ImprovementComponentConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["NoFinish","No Finish"],["TypicalWearAndTear","Typical Wear and Tear"]],"OverallBathroomsUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"OverallFlooringUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"BelowGradeExteriorAccessType":[["CellarDoor","Cellar Door"],["WalkOut","Walk Out"],["WalkUp","Walk Up"],["Other","Other"]],"EnvironmentalConditionType":[["HazardousAboveGroundStorageTank","Hazardous Above Ground Storage Tank"],["HazardousSubstances","Hazardous Substances"],["Landfill","Landfill"],["None","None"],["Radon","Radon"],["SlushPit","Slush Pit"],["SoilContamination","Soil Contamination"],["SuperfundSite","Superfund Site"],["UndergroundStorageTank","Underground Storage Tank"],["WaterContamination","Water Contamination"],["Other","Other"]],"ConvertedAreaOriginalUseType":[["Garage","Garage"],["Patio","Patio"],["Porch","Porch"],["Other","Other"]],"ConvertedAreaFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"RoofEstimatedAgeRangeType":[["LessThanOneYear","Less than 1 year"],["OneToTenYears","1-10 years"],["TenToTwentyYears","10-20 years"],["TwentyOrMoreYears","20 or more years"]],"SewerSystemType":[["Cesspool","Cesspool"],["Septic","Septic"],["Other","Other"]],"WaterSourceType":[["Cistern","Cistern"],["HauledWaterHoldingTank","Hauled Water Holding Tank"],["LakeOrSpring","Lake or Spring"],["Well","Well"],["Other","Other"]],"WaterWellType":[["Artesian","Artesian"],["Drilled","Drilled"],["Dug","Dug"],["Other","Other"]],"BodyOfWaterType":[["Bay","Bay"],["Canal","Canal"],["Cove","Cove"],["Creek","Creek"],["Gulf","Gulf"],["Lake","Lake"],["Marsh","Marsh"],["Ocean","Ocean"],["Pond","Pond"],["Reservoir","Reservoir"],["River","River"],["Sound","Sound"],["Other","Other"]],"WaterfrontFeatureType":[["Beach","Beach"],["BoatLift","Boat Lift"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["Dock","Dock"],["None","None"],["Pier","Pier"],["Riprap","Riprap"],["SeawallOrBulkhead","Seawall or Bulkhead"],["Other","Other"]],"WaterAccessRightType":[["Deeded","Deeded Access"],["Permitted","By Permit"],["PrivatelyOwned","Privately Owned"],["Other","Other"]],"WaterAccessDepthType":[["DeepWater","Deep Water"],["NonNavigable","Non-Navigable"],["ShallowWater","Shallow Water"],["Other","Other"]],"BodyOfWaterProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"UnitBelowGradeFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"EncroachmentType":[["Building","Building"],["Driveway","Driveway"],["Fence","Fence"],["Overhang","Overhang"],["Other","Other"]],"EasementType":[["Conservation","Conservation"],["Drainage","Drainage"],["IngressOrEgress","Ingress / Egress"],["Utility","Utility"],["Other","Other"]],"RestrictionType":[["Age","Age"],["HistoricPreservation","Historic Preservation"],["Income","Income"],["LandUse","Land Use"],["Rental","Rental"],["SalePrice","Sale Price"],["Other","Other"]],"SiteZoningComplianceType":[["Illegal","Illegal"],["Legal","Legal"],["LegalNonConforming","Legal Nonconforming"],["NoZoning","No Zoning"]],"PropertyEstateType":[["FeeSimple","Fee Simple"],["Leasehold","Leasehold"],["Other","Other"]],"StructuralDesignType":[["Highrise","High-rise"],["Lowrise","Low-rise"],["Midrise","Mid-rise"],["RowhouseTownhouse","Rowhouse / Townhouse"],["SemiDetached","Semi-Detached"],["Other","Other"]],"SwimmingPoolFeatureType":[["Caged","Caged"],["Heated","Heated"],["Indoor","Indoor"],["Other","Other"]],"SiteDrainageReasonType":[["EvidenceOfErosion","Evidence of Erosion"],["ImproperGrading","Improper Grading"],["StandingWater","Standing Water"],["Other","Other"]]};
 
 /* ============================================================
@@ -376,7 +383,7 @@ const APPLIANCES = [
 ];
 const CITIES = opts('Santa Barbara','Goleta','Carpinteria','Summerland','Other');
 const ZIPS = ['93101','93103','93105','93108','93109','93110','93111','93117','93013','93067','Other'];
-const LEVELS_ALL = opts(['LevelOne','Level 1'],['LevelTwo','Level 2'],['LevelThree','Level 3'],['LevelFour','Level 4'],['LevelFive','Level 5'],['BelowGradeOne','Level B1'],['BelowGradeTwo','Level B2'],['BelowGradeThree','Level B3']);
+const LEVELS_ALL = opts(['LevelOne','Level 1'],['LevelTwo','Level 2'],['LevelThree','Level 3'],['LevelFour','Level 4'],['LevelFive','Level 5'],['LevelSix','Level 6'],['LevelSeven','Level 7'],['LevelEight','Level 8'],['LevelNine','Level 9'],['LevelTen','Level 10'],['BelowGradeOne','Level B1'],['BelowGradeTwo','Level B2'],['BelowGradeThree','Level B3'],['BelowGradeFour','Level B4'],['BelowGradeFive','Level B5']);
 const ROOM_TYPES = ['Entry','Foyer','Living Room','Great Room','Family Room','Dining Room','Dining Area','Breakfast Room','Nook','Sitting Room / Area','Den','Office','Study','Library',
   'Recreation Room','Game Room','Media Room','Theater','Music Room / Studio','Art Studio','Butler\'s Pantry','Walk-In Pantry','China Room','Flower Room','Wrapping Room','Laundry Room','Mudroom',
   'Dog Grooming Room','Stylist / Glam Room','Massage Room','Spa Room','Gym','Sunroom','Loft','Bonus Room','Wine Cellar','Wine Room','Workshop','Storage','Mechanical','Utility Room','Hall','Other'];
@@ -734,6 +741,18 @@ function pubrecItems(ins) {
     { label: 'Baths', value: `Assessor ${c.baths || '—'} · MLS ${c.bathsMls || '—'} · Your count ${fb} full${hb ? ', ' + hb + ' half' : ''}` },
   ].concat(c.rooms || c.roomsMls ? [{ label: 'Total rooms', value: `Assessor ${c.rooms || '—'} · MLS ${c.roomsMls || '—'}` }] : []);
 }
+function sketchItems(ins) {
+  const S = ins && ins.sketch; if (!S || !S.totals) return [{ label: 'Sketch', value: '' }];
+  const T = S.totals, f = n => (n || 0).toLocaleString() + ' sf', out = [];
+  out.push({ label: 'Finished above grade', value: f(T.agFin) });
+  if (T.agNon) out.push({ label: 'Finished above grade – nonstandard', value: f(T.agNon) });
+  if (T.agUnf) out.push({ label: 'Unfinished above grade', value: f(T.agUnf) });
+  if (T.bgFin || T.bgNon || T.bgUnf) out.push({ label: 'Below grade (finished / nonstd. / unfinished)', value: [T.bgFin, T.bgNon, T.bgUnf].map(n => (n || 0).toLocaleString()).join(' / ') + ' sf' });
+  [...(T.gar || []), ...(T.out || []), ...(T.ob || []), ...(T.adu || []), ...(T.amen || [])].forEach(x => out.push({ label: x.name, value: f(x.sf) }));
+  out.push({ label: 'Sketch updated', value: new Date(S.updated).toLocaleString() });
+  out.push({ label: 'Sketch image', value: !S.imageAt ? 'Not made yet – open the sketch and tap Back to inspection' : S.imageAt + 5000 < S.updated ? 'Older than the drawing – open the sketch and tap Back to refresh it' : 'Up to date' });
+  return out;
+}
 function countItems(ins) {
   const L = ins.lists; const main = L.rooms.filter(r => COUNT_ROOMS.includes(r.type));
   const beds = L.bedrooms.length, fb = L.baths.filter(b => b.kind === 'FullBathroom').length, hb = L.baths.filter(b => b.kind === 'HalfBathroom').length;
@@ -1090,7 +1109,9 @@ const SECTIONS = [
       { k: 'liveWork', l: 'Live/work space available within the unit', t: 'yn', show: (d, ins) => PRP(ins).siteCommon === true, req: (d, ins) => PRP(ins).siteCommon === true, uad: 'AllowableLiveWorkSpaceIndicator', fid: '10.027' },
       { k: 'liveWorkInfo', t: 'info', l: 'Enter the allowable work space (sq. ft.) in SFREP from your sketch.', show: d => d.liveWork === true },
       { k: 'unitPos', l: 'Unit location / exposure', t: 'multi', show: (d, ins) => IS_HOA(ins) || PRP(ins).attach === 'Attached', o: opts('Ground Floor','Top Floor','Penthouse','End Unit','Interior Unit','Corner Unit','Faces Street','Faces Courtyard','Faces Pool','Faces Parking','Ocean Facing','Mountain Facing','Near Elevator','Near Trash / Mechanical','Private Entry','Private Yard / Patio','Shared Walls: One Side','Shared Walls: Two Sides','Units Above','Units Below','No Units Above','Elevator Access to Unit','Stairs Only') },
-      { k: 'measure', t: 'info', l: 'All square footage (levels, finished and unfinished areas) is entered in SFREP from your sketch.' },
+      { k: 'sketchRev', l: 'Area from the sketch (tap ✏️ Sketch at the top to draw or change it)', t: 'review', items: ins => sketchItems(ins) },
+      { k: 'measure', t: 'info', l: 'No sketch yet: square footage will be entered in SFREP from your sketch.', show: (d, ins) => !(ins && ins.sketch && ins.sketch.areaCount) },
+      { k: 'sketchImg', l: 'Sketch image (made by the sketch page)', t: 'photo', cat: 'SubjectPropertyImprovementSketch' },
       { k: 'areaSource', l: 'Area data source', t: 'one', req: true, o: opts(['PhysicalMeasurement','Physical Measurement'],['PlansAndSpecifications','Plans'],['PublicRecords','Public Record'],['PropertyDataReport','Property Data Report'],['Other','Other']), uad: 'DataSourceType', fid: '10.009' },
       { k: 'ansi', l: 'Measured per ANSI Z765-2021', t: 'yn', req: true },
     ]},
@@ -1358,33 +1379,56 @@ function toast(msg) {
 
 /* ---------------- Storage (IndexedDB with memory fallback) ---------------- */
 const DB = (() => {
-  let db = null; const mem = { inspections: new Map(), photos: new Map() };
-  const open = () => new Promise(res => {
+  let db = null, closed = false; const mem = { inspections: new Map(), photos: new Map(), sketches: new Map() };
+  const DB_NAME = (typeof APP_CFG !== 'undefined' && APP_CFG.db) || 'uad36-inspect';
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  // one attempt to open; resolves null if the iPad does not answer within ms
+  const openOnce = ms => new Promise(res => {
+    let done = false; const fin = v => { if (!done) { done = true; res(v); } };
+    setTimeout(() => fin(null), ms);
     try {
-      const r = indexedDB.open('uad36-inspect', 1);
-      r.onupgradeneeded = () => { const d = r.result; d.createObjectStore('inspections', { keyPath: 'id' }); const p = d.createObjectStore('photos', { keyPath: 'id' }); p.createIndex('ins', 'insId'); };
-      r.onsuccess = () => { db = r.result; res(true); };
-      r.onerror = () => res(false);
-    } catch (e) { res(false); }
+      const r = indexedDB.open(DB_NAME, 2);
+      r.onupgradeneeded = () => { const d = r.result; const has = n => d.objectStoreNames.contains(n);
+        if (!has('inspections')) d.createObjectStore('inspections', { keyPath: 'id' });
+        if (!has('photos')) { const p = d.createObjectStore('photos', { keyPath: 'id' }); p.createIndex('ins', 'insId'); }
+        if (!has('sketches')) d.createObjectStore('sketches', { keyPath: 'id' }); };
+      r.onsuccess = () => { if (done) { try { r.result.close(); } catch (e) {} return; } const d = r.result; d.onversionchange = () => { try { d.close(); } catch (e) {} }; fin(d); };
+      r.onerror = () => fin(null); r.onblocked = () => {};
+    } catch (e) { fin(null); }
   });
-  const tx = (store, mode, fn) => new Promise((res, rej) => {
+  const open = async () => {
+    // Safari sometimes does not answer the first request after a page change: wake it up, then retry a few times
+    try { if (indexedDB.databases) await Promise.race([indexedDB.databases(), wait(1500)]); } catch (e) {}
+    for (let i = 0; i < 4 && !db; i++) { db = await openOnce(i ? 3000 : 2500); if (!db) await wait(300); }
+    DB.step = db ? 'open' : 'open failed'; return !!db;
+  };
+  // every request has a time limit so a stuck request can never freeze the page
+  const tx = (store, mode, fn, ms = 6000) => new Promise((res, rej) => {
+    if (closed) { rej(new Error('storage closed while leaving the page')); return; }
     if (!db) { res(fn(null)); return; }
-    const t = db.transaction(store, mode); const s = t.objectStore(store); let out; const r = fn(s);
+    let t; try { t = db.transaction(store, mode); } catch (e) { rej(e); return; }
+    const s = t.objectStore(store); let out; const r = fn(s);
+    const timer = setTimeout(() => rej(new Error('storage did not answer (' + store + ')')), ms);
     if (r && 'onsuccess' in r) r.onsuccess = () => { out = r.result; };
-    t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+    t.oncomplete = () => { clearTimeout(timer); res(out); }; t.onerror = () => { clearTimeout(timer); rej(t.error); }; t.onabort = () => { clearTimeout(timer); rej(t.error); };
   });
-  return {
-    ready: open(),
+  const DB = {
+    step: 'starting',
+    ready: null,
     get persistent() { return !!db; },
-    async put(store, obj) { if (!db) { mem[store].set(obj.id, obj); return; } return tx(store, 'readwrite', s => s.put(obj)); },
-    async get(store, id) { if (!db) return mem[store].get(id); return tx(store, 'readonly', s => s.get(id)); },
-    async del(store, id) { if (!db) { mem[store].delete(id); return; } return tx(store, 'readwrite', s => s.delete(id)); },
-    async all(store) { if (!db) return [...mem[store].values()]; return tx(store, 'readonly', s => s.getAll()); },
+    // finish and close before switching pages, so the page being left cannot hold the storage
+    close() { closed = true; try { if (db) db.close(); } catch (e) {} },
+    async put(store, obj) { if (!db && !closed) { mem[store].set(obj.id, obj); return; } return tx(store, 'readwrite', s => s.put(obj)); },
+    async get(store, id) { if (!db && !closed) return mem[store].get(id); return tx(store, 'readonly', s => s.get(id)); },
+    async del(store, id) { if (!db && !closed) { mem[store].delete(id); return; } return tx(store, 'readwrite', s => s.delete(id)); },
+    async all(store) { if (!db && !closed) return [...mem[store].values()]; return tx(store, 'readonly', s => s.getAll()); },
     async photosFor(insId) {
-      if (!db) return [...mem.photos.values()].filter(p => p.insId === insId);
+      if (!db && !closed) return [...mem.photos.values()].filter(p => p.insId === insId);
       return tx('photos', 'readonly', s => s.index('ins').getAll(insId));
     },
   };
+  DB.ready = open();
+  return DB;
 })();
 
 /* ---------------- Inspection model ---------------- */
@@ -1509,6 +1553,21 @@ async function thumbFor(id) {
 /* ---------------- Minimal ZIP writer / reader (store method) ---------------- */
 const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
 function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+/* letter-size PDF from JPEG pages (one picture per page) */
+function makePdf(pages) { // pages: [{bytes: Uint8Array (JPEG), w, h}]
+  const enc = new TextEncoder(); const parts = []; let len = 0; const offs = [];
+  const add = x => { const b = typeof x === 'string' ? enc.encode(x) : x; parts.push(b); len += b.length; };
+  const obj = (n, body) => { offs[n] = len; add(`${n} 0 obj\n`); body(); add('\nendobj\n'); };
+  add('%PDF-1.4\n%\xE2\xE3\n'); const n = pages.length; const kids = pages.map((_, i) => `${3 + i * 3} 0 R`).join(' ');
+  obj(1, () => add('<< /Type /Catalog /Pages 2 0 R >>')); obj(2, () => add(`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`));
+  pages.forEach((pg, i) => { const P = 3 + i * 3, Cn = P + 1, Im = P + 2; const W = 612, H = Math.round(612 * pg.h / pg.w);
+    obj(P, () => add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 ${Im} 0 R >> >> /Contents ${Cn} 0 R >>`));
+    const cs = `q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`; obj(Cn, () => add(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+    obj(Im, () => { add(`<< /Type /XObject /Subtype /Image /Width ${pg.w} /Height ${pg.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${pg.bytes.length} >>\nstream\n`); add(pg.bytes); add('\nendstream'); }); });
+  const xref = len; const total = 3 + n * 3; let x = `xref\n0 ${total}\n0000000000 65535 f \n`; for (let i = 1; i < total; i++) x += String(offs[i]).padStart(10, '0') + ' 00000 n \n';
+  add(x + `trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+  const out = new Uint8Array(len); let o = 0; parts.forEach(b => { out.set(b, o); o += b.length; }); return out;
+}
 async function makeZip(entries) { // entries: [{name, data: Uint8Array|string|Blob}]
   const enc = new TextEncoder(); const parts = []; const central = []; let offset = 0;
   const d = new Date(); const dosTime = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1); const dosDate = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
@@ -2056,8 +2115,9 @@ async function saveNow(announce) {
   catch (e) { setSaved('NOT SAVED'); toast('Could not save. Export a backup now.'); }
 }
 function setSaved(t) { const el = $('#saved'); if (el) el.textContent = t; }
-window.addEventListener('pagehide', () => { if (app.ins) writeNow(); });
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && app.ins) writeNow(); });
+window.addEventListener('pagehide', () => { if (app.ins && !app.leaving) writeNow().catch(() => {}); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && app.ins && !app.leaving) writeNow().catch(() => {}); });
+window.addEventListener('pageshow', e => { if (e.persisted && app.leaving) location.reload(); }); // came back to a frozen copy: start fresh
 
 /* ---------------- Home ---------------- */
 async function renderHome() {
@@ -2067,9 +2127,10 @@ async function renderHome() {
   const all = raw.map(i => { try { return normalize(i); } catch (e) { i._broken = e.message || String(e); return i; } }).sort((a, b) => (b.updated || 0) - (a.updated || 0));
   const root = $('#app');
   root.innerHTML = `
-  <header class="bar"><div class="bar-row"><div class="title"><b>UAD 3.6 Field Inspection</b><span>${all.length} inspection${all.length === 1 ? '' : 's'} on this iPad</span></div>
+  <header class="bar"><div class="bar-row"><div class="title"><b>UAD 3.6 Field Inspection</b><span>${all.length} inspection${all.length === 1 ? '' : 's'} on this iPad · ${(navigator.standalone || matchMedia('(display-mode: standalone)').matches) ? 'opened from the Home Screen icon' : 'opened in Safari'}</span></div>
     ${hcBtn()}<button class="icon-btn" id="storeBtn">Storage check</button><label class="icon-btn" style="position:relative;overflow:hidden">Restore backup<input id="restoreFile" type="file" accept=".zip,application/zip" style="position:absolute;inset:0;opacity:0"></label></div></header>
   <main>
+    ${(navigator.standalone || matchMedia('(display-mode: standalone)').matches) ? '' : '<p class="warn-box">You are in Safari. Inspections made here are kept separately from the Home Screen app – use the Home Screen icon for real work.</p>'}
     <form class="new-form" id="newForm" autocomplete="off">
       <h2 style="grid-column:1/-1">Start a new inspection</h2>
       <div><label class="flabel" for="nAddr"><span class="tag">Required</span><span class="lab">Property address</span></label><input class="txt" id="nAddr" required placeholder="123 Oak Street"></div>
@@ -2165,13 +2226,13 @@ async function recoverPhotos(recs) {
 }
 
 /* ---------------- Inspection shell ---------------- */
-async function openInspection(id) {
-  try { await openInspection2(id); }
+async function openInspection(id, tab) {
+  try { await openInspection2(id, tab); }
   catch (e) { console.error(e); renderHome(); setTimeout(() => showFatal('Could not open this inspection: ' + (e.message || e), 'open'), 50); }
 }
-async function openInspection2(id) {
+async function openInspection2(id, tab) {
   const ins = normalize(await DB.get('inspections', id)); app.ins = ins;
-  app.tab = 'property'; app.open = new Set(); app.groups = {}; app.cur = null; app.confirm = null; app.appl = null;
+  app.tab = (tab && (SECTIONS.some(x => x.id === tab) || EXTRA_TABS.some(x => x.id === tab))) ? tab : 'property'; app.open = new Set(); app.groups = {}; app.cur = null; app.confirm = null; app.appl = null;
   const root = $('#app');
   root.innerHTML = `<header class="bar"><div class="bar-row">
       <button class="icon-btn" id="homeBtn" aria-label="All inspections">‹ All</button>
@@ -2179,6 +2240,7 @@ async function openInspection2(id) {
       <span class="saved" id="saved">Saved ✓</span>
       <button class="icon-btn" id="saveBtn">Save</button>
       <button class="icon-btn" id="jumpBtn">🔍 Search</button>
+      <button class="icon-btn sk-btn" id="sketchBtn">✏️ Sketch</button>
       ${hcBtn()}
       <button class="attn-pill" id="attnPill"></button></div>
     <nav class="tabs" id="tabs" role="tablist"></nav></header>
@@ -2186,6 +2248,7 @@ async function openInspection2(id) {
   $('#homeBtn').onclick = async () => { await saveNow(); renderHome(); window.scrollTo(0, 0); };
   $('#saveBtn').onclick = () => saveNow(true);
   $('#jumpBtn').onclick = openJump;
+  $('#sketchBtn').onclick = async () => { const b = $('#sketchBtn'); b.textContent = 'Saving…'; const url = 'sketch.html?ins=' + encodeURIComponent(app.ins.id) + '&tab=' + encodeURIComponent(app.tab || 'interior'); try { await saveNow(); } catch (e) {} app.leaving = true; clearTimeout(app.saving); DB.close(); b.textContent = 'Opening…'; location.href = url; };
   $('#attnPill').onclick = () => goTab('attention');
   renderTab();
 }
@@ -2812,6 +2875,8 @@ function computeIssues(ins) {
     if (L2.defects.some(x => x.action === 'Inspection') && !eaTopics.has('Defect / condition')) out.push({ key: 'ea:insp', sev: 'Check', label: 'A defect recommends inspection: consider an extraordinary assumption or “Subject to Inspection”.', tab: 'interview', group: 'ea', anchor: 'grp-ea' });
     if (vc.includes('SubjectToCompletionPerPlans') && !eaTopics.has('Proposed construction / plans')) out.push({ key: 'ea:plans', sev: 'Check', label: 'Value is subject to completion per plans: add a hypothetical condition for the proposed construction.', tab: 'interview', group: 'ea', anchor: 'grp-ea' });
     if (vc.includes('SubjectToRepair') && !eaTopics.has('Repairs to be completed')) out.push({ key: 'ea:rep', sev: 'Check', label: 'Value is subject to repair: add a hypothetical condition describing the repairs.', tab: 'interview', group: 'ea', anchor: 'grp-ea' }); }
+  if (ins.sketch && Array.isArray(ins.sketch.labelIds)) { const ids = new Set(ins.sketch.labelIds); ['bedrooms', 'baths', 'kitchens', 'wetbars', 'rooms'].forEach(k => (ins.lists[k] || []).forEach((it, i) => { if (it.fromSketch && !ids.has(it.fromSketch)) out.push({ key: 'skroom:' + it.id, sev: 'Check', label: `${LISTS[k].name(it, i, ins.lists[k])} came from a sketch label that was removed – remove the room here, or put the label back on the sketch.`, tab: 'interior', group: listHome(k).group, anchor: 'grp-' + listHome(k).group }); })); }
+  if (ins.sketch && ins.sketch.areaCount && (!ins.sketch.imageAt || ins.sketch.imageAt + 5000 < ins.sketch.updated)) out.push({ key: 'skimg:' + Math.floor((ins.sketch.updated || 0) / 60000), sev: 'Check', label: 'The sketch image is missing or older than the drawing: open ✏️ Sketch and tap “Back to inspection” to refresh it before exporting.', tab: 'interior', group: 'unit', anchor: 'f-interior-sketchRev' });
   wordFlags(ins).forEach(w => out.push({ key: 'word:' + w.where + ':' + w.word, sev: 'Check', label: `Wording: “${w.word}” in ${w.where} may be flagged in SFREP or by reviewers (fair housing / bias wording). Consider rephrasing.`, tab: w.tab, group: w.group || null, anchor: w.anchor || '', item: w.item || null }));
   measureReminders(ins).forEach(m => out.push({ key: 'measure:' + m, sev: 'Check', label: `Measure for SFREP: ${m}`, tab: 'attention', anchor: '' }));
   COMMENT_TARGETS.forEach(t => { const r = buildComment(ins, t); if (r.over) out.push({ key: `lim:${t.id}`, sev: 'Required', label: `${t.title} is over ${t.lim} characters`, tab: 'summaries', anchor: 'sum-' + t.id, noOverride: true }); });
@@ -2935,6 +3000,7 @@ function notesHTML(ins, names) {
 <h1>${esc(insTitle(ins))}</h1><p class="meta">${esc([p.addr, p.unit, p.city, p.state, p.zip].filter(Boolean).join(', '))}<br>County: ${esc(p.county || '')} · Inspected ${esc(p.inspDate || '')} · Exported ${new Date().toLocaleString()}<br>${ins.photos.length} photos · Inspection record ID ${ins.id}</p>
 ${body}
 ${crsNotes(ins)}${permitNotes(ins)}<section><h2>Measure for SFREP (from your sketch)</h2>${measureReminders(ins).length ? '<ul>' + measureReminders(ins).map(m => '<li>' + esc(m) + '</li>').join('') + '</ul>' : '<p>None.</p>'}</section>
+${(ins.sketch && (ins.sketch.calcs || []).length) ? `<section><h2>Area calculations (from the sketch, ANSI Z765-2021)</h2>${ins.sketch.calcs.map(x => `<h4>${esc(x.code)} ${esc(x.name)} · ${esc(x.levelName || x.level)}</h4><table>${x.lines.map(l => `<tr><td>${esc(l.t)}</td><td style="text-align:right">${l.a.toFixed(1)}</td></tr>`).join('')}${x.less.map(k => `<tr><td>less ${esc(k.name)} (drawn inside)</td><td style="text-align:right">−${k.a.toFixed(1)}</td></tr>`).join('')}<tr><th>Total</th><th style="text-align:right">${x.net.toLocaleString()} sf</th></tr></table>`).join('')}</section>` : ''}
 <section><h2>UAD commentary (as sent to SFREP)</h2>${sums || '<p>None.</p>'}</section>
 <section><h2>Open items at export</h2>${open.length ? '<ul>' + open.map(x => `<li>${esc(x.sev)}: ${esc(x.label)}</li>`).join('') + '</ul>' : '<p>None.</p>'}
 ${ovr.length ? '<h3>Overridden in the field</h3><ul>' + ovr.map(x => `<li>${esc(x.label)} — ${esc(ins.overrides[x.key])}</li>`).join('') + '</ul>' : ''}</section>
@@ -2989,7 +3055,7 @@ function buildMISMO(ins, imgName) {
   const cs = X(P, 'CAR_STORAGES');
   if (d.garage.hasGarage) {
     const c = X(cs, 'CAR_STORAGE'); const det = X(c, 'CAR_STORAGE_DETAIL');
-    V(det, 'CarStorageAttachmentType', d.garage.garAttach); V(det, 'CarStorageType', 'Garage'); V(det, 'ParkingSpacesCount', d.garage.garSpaces);
+    V(det, 'CarStorageAreaMeasure', skGarage(ins, false), SQFT); V(det, 'CarStorageAttachmentType', d.garage.garAttach); V(det, 'CarStorageType', 'Garage'); V(det, 'ParkingSpacesCount', d.garage.garSpaces);
     imagesInto(c, take(p => p.sec === 'garage'));
   }
   if (d.driveway.hasDrive) {
@@ -3000,7 +3066,7 @@ function buildMISMO(ins, imgName) {
     V(det, 'ParkingSpacesCount', d.driveway.driveSpaces); V(det, 'TenOrMoreParkingSpacesIndicator', (d.driveway.driveSpaces || 0) >= 10 ? 'true' : 'false');
     imagesInto(c, take(p => p.sec === 'driveway'));
   }
-  if (d.garage.carport) { const det = X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'); V(det, 'CarStorageAttachmentType', d.garage.carportAttach); V(det, 'CarStorageType', 'Carport'); V(det, 'ParkingSpacesCount', d.garage.carport); }
+  if (d.garage.carport) { const det = X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'); V(det, 'CarStorageAreaMeasure', skGarage(ins, true), SQFT); V(det, 'CarStorageAttachmentType', d.garage.carportAttach); V(det, 'CarStorageType', 'Carport'); V(det, 'ParkingSpacesCount', d.garage.carport); }
   const projSpaces = isHoa ? [['ParkingGarage', 'pgSpaces', 'pgAssign'], ['CommonCarport', 'ccSpaces', 'ccAssign'], ['OpenLot', 'olSpaces', 'olAssign']].filter(([, n]) => (d.garage[n] || 0) > 0) : [];
   projSpaces.forEach(([type, n, a]) => { const det = X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'); V(det, 'CarStorageType', type); V(det, 'ParkingSpacesCount', d.garage[n]); V(det, 'ProjectParkingSpaceAssignmentType', d.garage[a]); });
   if (!d.driveway.hasDrive && !d.garage.hasGarage && !d.garage.carport && !projSpaces.length) V(X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'), 'CarStorageType', 'None');
@@ -3046,7 +3112,7 @@ function buildMISMO(ins, imgName) {
     const ic = X(pu, 'INTERIOR_COMPONENTS');
     if ((src.flooring || []).length) { const c = X(ic, 'INTERIOR_COMPONENT'); const fc = X(c, 'FLOOR_COVERINGS'); src.flooring.filter(f => f !== 'None').forEach(f => { const e = X(fc, 'FLOOR_COVERING'); const m = FLOOR_MAP[f] || (UAD_FLOOR.has(f) ? f : null); if (m) V(e, 'FlooringType', m); else { V(e, 'FlooringType', 'Other'); V(e, 'FlooringTypeOtherDescription', f.slice(0, 33)); } V(e, 'ImprovementComponentConditionStatusType', src.floorCond); }); const det = X(c, 'INTERIOR_COMPONENT_DETAIL'); V(det, 'ImprovementComponentType', 'Flooring'); V(det, 'OverallFlooringUpdateStatusType', src.floorUpd); }
     if ((src.ceilH || []).length || (src.ceilS || []).length) { const c = X(ic, 'INTERIOR_COMPONENT'); const det = X(c, 'INTERIOR_COMPONENT_DETAIL'); V(det, 'ImprovementComponentConditionStatusType', src.wallCond); V(det, 'ImprovementComponentType', 'WallsAndCeiling'); const wc = X(c, 'WALLS_AND_CEILING'); const h = X(wc, 'CEILING_HEIGHTS'); (src.ceilH || []).forEach(x => V(X(h, 'CEILING_HEIGHT'), 'ApproximateCeilingHeightType', x)); const st = X(wc, 'CEILING_STYLES'); (src.ceilS || []).forEach(x => { const e = X(st, 'CEILING_STYLE'); if (UAD_CEIL.has(x)) V(e, 'CeilingStyleType', x); else { V(e, 'CeilingStyleType', 'Other'); V(e, 'CeilingStyleTypeOtherDescription', x.slice(0, 33)); } }); }
-    const lv = X(pu, 'LEVELS'); (src.levels || []).forEach(l => { const e = X(lv, 'LEVEL'); V(e, 'AccessType', l.access); V(e, 'BelowGradeExteriorAccessType', l.bgAccess); V(e, 'GradeLevelType', l.grade); V(e, 'LevelType', l.level); });
+    const lv = X(pu, 'LEVELS'); (src.levels || []).forEach(l => { const e = X(lv, 'LEVEL'); V(e, 'AccessType', l.access); V(e, 'BelowGradeExteriorAccessType', l.bgAccess); V(e, 'GradeLevelType', l.grade); V(e, 'LevelFinishedAreaMeasure', l.finSf, SQFT); V(e, 'LevelType', l.level); V(e, 'LevelUnfinishedAreaMeasure', l.unfSf, SQFT); });
     const ar = X(pu, 'PROPERTY_UNIT_AREA'); const a = src.area || {};
     V(ar, 'UnitAboveGradeUnfinishedAreaMeasure', a.agUnfin, SQFT); V(ar, 'UnitBelowGradeUnfinishedAreaMeasure', a.bgUnfin, SQFT); V(ar, 'UnitNonStandardAboveGradeFinishedAreaMeasure', a.agNon, SQFT); V(ar, 'UnitNonStandardBelowGradeFinishedAreaMeasure', a.bgNon, SQFT); V(ar, 'UnitStandardAboveGradeFinishedAreaMeasure', a.agFin, SQFT); V(ar, 'UnitStandardBelowGradeFinishedAreaMeasure', a.bgFin, SQFT);
     const det = X(pu, 'PROPERTY_UNIT_DETAIL');
@@ -3082,7 +3148,7 @@ function buildMISMO(ins, imgName) {
   const getC = id => { const t = COMMENT_TARGETS.find(x => x.id === id); return buildComment(ins, t).text || undefined; };
   unit(PUS, UNIT, {
     access: d.interior.access, accessDesc: d.interior.accessDesc, flooring: unitList(ins, 'flooring'), floorCond: d.interior.floorCond, floorUpd: d.interior.floorUpd,
-    ceilH: d.interior.ceilH, ceilS: unitList(ins, 'ceilS'), wallCond: d.interior.wallCond, levels: Lx.levels, area: {},
+    ceilH: d.interior.ceilH, ceilS: unitList(ins, 'ceilS'), wallCond: d.interior.wallCond, levels: Lx.levels.map(l => ({ ...l, ...skLevelArea(ins, l.level) })), area: skUnitArea(ins),
     beds: Lx.bedrooms.length, full: Lx.baths.filter(b => b.kind === 'FullBathroom').length, half: Lx.baths.filter(b => b.kind === 'HalfBathroom').length,
     ic: d.interior.ic, iq: d.interior.iq, levelCount: Lx.levels.length, bathUpd: d.interior.bathUpd, defects: d.interior.intDefects, occ: d.property.occ,
     comment: getC('interior'), rooms: mainRooms, bgCompare: d.interior.bgCompare,
@@ -3168,6 +3234,7 @@ function buildMISMO(ins, imgName) {
   mainFirst(take(p => p.list === 'outbuildings')).forEach(p => { const l = outLabels.find(x => x[0] === p.item); const first = p.slot === 'main' && !firstSeen.has(p.item); if (first) firstSeen.add(p.item); push(p, 'OutbuildingExhibit', l ? ['ImageImprovement', l[1]] : null, first); });
   take(p => p.list === 'adus' && p.slot === 'main').forEach(p => { const l = aduLabels.find(x => x[0] === p.item); const first = !firstSeen.has(p.item); if (first) firstSeen.add(p.item); push(p, 'OutbuildingExhibit', l ? ['ImageImprovement', l[2]] : null, first); });
   take(p => p.list === 'adus').forEach(p => { const l = aduLabels.find(x => x[0] === p.item); push(p, 'UnitInteriorExhibit', l ? ['ImagePropertyUnit', l[1]] : null); });
+  take(p => p.sec === 'interior' && p.field === 'sketchImg').forEach(p => push(p, 'SubjectPropertyImprovementSketch'));
   take(p => p.list === 'noncont').forEach(p => push(p, 'NoncontinuousArea'));
   take(p => p.sec === 'interior' || ['wetbars', 'levels'].includes(p.list)).forEach(p => push(p, 'UnitInteriorExhibit', ['ImagePropertyUnit', UNIT]));
   take(p => p.sec === 'systems').forEach(p => push(p, 'EnergyEfficientAndGreenFeaturesExhibit'));
@@ -3327,6 +3394,11 @@ function aduComment(ins, a, i) {
 }
 
 /* Site size in acres (CRS lot size, else County acreage) */
+/* ---- areas from the sketch page (ins.sketch.totals) ---- */
+const SK_LV = { LevelOne: 'L1', LevelTwo: 'L2', LevelThree: 'L3', LevelFour: 'L4', LevelFive: 'L5', LevelSix: 'L6', LevelSeven: 'L7', LevelEight: 'L8', LevelNine: 'L9', LevelTen: 'L10', BelowGradeOne: 'B1', BelowGradeTwo: 'B2', BelowGradeThree: 'B3', BelowGradeFour: 'B4', BelowGradeFive: 'B5' };
+function skUnitArea(ins) { const T = ins.sketch && ins.sketch.totals; if (!T || !ins.sketch.areaCount) return {}; return { agFin: T.agFin, agNon: T.agNon, agUnfin: T.agUnf, bgFin: T.bgFin, bgNon: T.bgNon, bgUnfin: T.bgUnf }; }
+function skLevelArea(ins, uadLevel) { const T = ins.sketch && ins.sketch.totals; const L = T && T.levels && T.levels[SK_LV[uadLevel]]; if (!L) return {}; return { finSf: (L.fin || 0) + (L.non || 0), unfSf: L.unf || 0 }; }
+function skGarage(ins, carport) { const T = ins.sketch && ins.sketch.totals; if (!T || !(T.gar || []).length) return undefined; const g = T.gar.filter(x => /carport/i.test(x.name) === carport); return g.length ? g.reduce((t, x) => t + x.sf, 0) : undefined; }
 function acresOf(ins) { const c = ins.data.property.crs || {}, P = ins.data.property.permits || {}; const sf = +c.lotSf; if (sf) return (sf / 43560).toFixed(2); if (c.acres) return Number(c.acres).toFixed(2); return ''; }
 /* Transfers of the subject within 3 years before the inspection date, from the CRS report (null when no CRS) */
 function priorTransfers(ins) {
@@ -3361,6 +3433,9 @@ async function doExport(kind, btn) {
         { name: 'SFREP/' + base + '.xml', data: buildMISMO(ins, sNames) },
       ];
       for (const p of sfrepPhotos) { const rec = await DB.get('photos', p.id); if (rec) entries.push({ name: 'SFREP/Images/' + sNames.get(p.id), data: rec.blob }); }
+      const skp = ins.photos.filter(p => p.sec === 'interior' && p.field === 'sketchImg').sort((a, b) => a.ts - b.ts); const pdfPages = [];
+      for (const p of skp) { const rec = await DB.get('photos', p.id); if (rec && rec.blob && p.w && p.h) pdfPages.push({ bytes: new Uint8Array(await rec.blob.arrayBuffer()), w: p.w, h: p.h }); }
+      if (pdfPages.length) entries.push({ name: 'Sketch.pdf', data: makePdf(pdfPages) });
       blob = await makeZip(entries); fname = base + ' – Workfile.zip';
     } else {
       const sNames = sfrepNames(names); const entries = [{ name: base + '.xml', data: buildMISMO(ins, sNames) }];
@@ -3427,14 +3502,17 @@ window.addEventListener('unhandledrejection', e => showFatal(e.reason && (e.reas
   try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claude|anthropic/.test(location.host)) navigator.serviceWorker.register('sw.js'); } catch (e) {}
   const msg = document.getElementById('bootMsg'); if (msg) msg.textContent = 'Opening saved inspections…';
   // never wait forever on storage
-  const ok = await Promise.race([DB.ready, new Promise(r => setTimeout(() => r('timeout'), 8000))]);
-  if (ok === 'timeout') {
+  const ok = await Promise.race([DB.ready, new Promise(r => setTimeout(() => r('timeout'), 15000))]);
+  if (ok !== true) {
     $('#app').innerHTML = `<div class="fatal"><h2>The iPad's storage is not responding</h2><p>Your inspections are still saved. <b>Do not delete the app icon.</b></p>
       <p>Close the app fully (swipe up and flick it away), wait 10 seconds and open it again. If this keeps happening, restart the iPad.</p>
       <div class="row"><button class="btn primary" onclick="location.reload()">Try again</button></div></div>`;
     return;
   }
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
+  try { if (typeof APP_CFG !== 'undefined' && APP_CFG.test) { document.documentElement.classList.add('testcopy'); const f = document.createElement('div'); f.className = 'testflag'; f.textContent = 'TEST COPY – separate storage, not for real inspections · version ' + (typeof BUILD !== 'undefined' ? BUILD : '?'); document.body.prepend(f); } } catch (e) {}
+  const q = new URLSearchParams(location.search); const openId = q.get('open');
+  if (openId) { history.replaceState(null, '', location.pathname); const rec = await DB.get('inspections', openId); if (rec) { openInspection(openId, q.get('tab')); return; } }
   renderHome();
 })();
 
