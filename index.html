@@ -44,7 +44,8 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body { min-height: 100%; }
+#app:has(> header.bar) { padding-top: var(--barh, 130px); }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 19px/1.4 var(--font); -webkit-text-size-adjust: 100%; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
@@ -53,7 +54,8 @@ button:disabled { cursor: default; }
 h1, h2, h3 { text-wrap: balance; margin: 0; }
 
 /* ---------- Top bar ---------- */
-.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); color: var(--ink); border-bottom: 5px solid var(--tangerine); }
+/* fixed (not sticky) so it never slides away when iOS scrolls or the keyboard opens; #app is padded by its height */
+.bar { position: fixed; top: 0; left: 0; right: 0; padding-top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); color: var(--ink); border-bottom: 5px solid var(--tangerine); }
 .bar-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; min-height: 60px; flex-wrap: wrap; }
 .bar .title { flex: 1; min-width: 160px; }
 .bar .title b { display: block; font-size: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -277,7 +279,7 @@ html.hc .group { border-width: 4px; }
 .rv-v.empty { color: var(--warn); font-weight: 700; }
 
 /* keep the open room's name in view while scrolling through it */
-.item.open > .item-head { position: sticky; top: calc(var(--barh, 120px) + env(safe-area-inset-top, 0px)); z-index: 6; border-bottom: 3px solid #000; }
+.item.open > .item-head { position: sticky; top: var(--barh, 120px); z-index: 6; border-bottom: 3px solid #000; }
 
 /* pale fills need an edge to read in sun */
 .flabel .tag, .lg.req, .lg.opt { border: 2px solid #000; }
@@ -314,6 +316,8 @@ html.testcopy .bar { border-bottom-color: #7b2cbf; }
 .sk-btn { background: #fff7d6; }
 
 .padwrap{position:relative}
+.padwrap{position:relative}.padwrap .pfx{position:absolute;left:14px;top:13px;font-weight:700;pointer-events:none}.padwrap input.haspfx{padding-left:30px}input.txt.bad{border-color:var(--warn);background:var(--warn-lt)}
+.chip.withicon{display:inline-flex;align-items:center;gap:8px}.chipicon{width:56px;height:35px;flex:none}
 .tenkey{display:grid;grid-template-columns:repeat(3,64px);gap:6px;margin-top:8px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .tenkey[hidden]{display:none}
 .tk{font:700 24px system-ui,sans-serif;min-height:52px;border:2px solid #0b8f96;border-radius:8px;background:#fff;color:#066a70;touch-action:manipulation}
@@ -326,7 +330,7 @@ html.testcopy .bar { border-bottom-color: #7b2cbf; }
 </head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting Inspect TEST…</p></div>
 <script>window.onerror=function(m,s,l){var b=document.getElementById('bootMsg');if(b){b.style.color='#c00';b.textContent='The app could not start: '+m+' (line '+l+'). Your inspections are still saved. Do not delete the app icon. Send a screenshot to Claude.';}};</script>
 <script>
-const BUILD='6e-1016-0008';
+const BUILD='6f-1016-0648';
 const UAD={"RoomType":[["Bedroom","Bedroom"],["BreakfastRoom","Breakfast Room"],["Den","Den"],["DiningRoom","Dining Room"],["FamilyRoom","Family Room"],["FullBathroom","Bath - Full"],["HalfBathroom","Bath - Half"],["Kitchen","Kitchen"],["LaundryRoom","Laundry Room"],["LivingRoom","Living Room"],["Loft","Loft"],["MediaRoom","Media Room"],["Mudroom","Mudroom"],["RecreationRoom","Recreation Room"],["Sunroom","Sunroom"],["UtilityRoom","Utility Room"],["WalkInPantry","Walk-In Pantry"],["Workshop","Workshop"],["Other","Other"]],"AmenityType":[["Airstrip","Airstrip"],["Beach","Beach"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["BuildingMaintenance","Building Maintenance"],["BuiltInPool","Built-in Pool"],["BusinessCenter","Business Center"],["CaregiverServices","Caregiver Services"],["Clubhouse","Clubhouse"],["ClubMembership","Club Membership"],["CommunityPier","Community Pier"],["ConciergeServiceCoordination","Concierge Service Coordination"],["Cooling","Cooling"],["Deck","Deck"],["DoorAttendant","Door Attendant"],["ElectricVehicleChargingStation","EV Station"],["Elevator","Elevator"],["FitnessArea","Fitness Area"],["GatedCommunity","Gated Community"],["GroundsMaintenance","Grounds Maintenance"],["Heating","Heating"],["IngroundPool","Inground Pool"],["IngroundSpa","Inground Spa"],["Lobby","Lobby"],["None","None"],["OngoingCleaningServices","Ongoing Cleaning Services"],["OutdoorRidingRing","Outdoor Riding Ring"],["OutdoorShower","Outdoor Shower"],["Patio","Patio"],["Playground","Playground"],["RecreationArea","Recreation Area"],["RegistrationServices","Registration Services"],["Sauna","Sauna"],["SharedLaundryFacilities","Shared Laundry Facilities"],["ShortTermRentalServices","Short Term Rental Services"],["SportsCourt","Sports Court"],["TelevisionOrInternetServices","Television or Internet Services"],["TrashRemoval","Trash Removal"],["UnitStorage","Unit Storage"],["WaterAccess","Water Access"],["WaterFrontage","Water Frontage"],["Other","Other"],["Fence","Fence"],["IrrigationSystem","Irrigation System"],["OutdoorFireplace","Outdoor Fireplace"],["OutdoorKitchen","Outdoor Kitchen"],["Balcony","Balcony"],["Gazebo","Gazebo"],["Porch","Porch"],["Portico","Portico"],["FireSuppressionSystem","Fire Suppression System"],["IndoorFireplace","Indoor Fireplace"],["MultipleZoneHeatingVentilationAndAirConditioning","Multi-Zone HVAC"],["SmartHomeSystem","Smart Home System"],["WholeHouseVentilation","Whole House Ventilation"],["WoodStove","Wood Stove"]],"FlooringType":[["Carpet","Carpet"],["CeramicTile","Ceramic Tile"],["EngineeredWood","Engineered Wood"],["FinishedConcrete","Finished Concrete"],["Hardwood","Hardwood"],["Laminate","Laminate"],["Marble","Marble"],["SubflooringOnly","Subflooring Only"],["Vinyl","Vinyl"],["Other","Other"]],"ViewType":[["Bay","Bay"],["Canal","Canal"],["CityStreet","City Street"],["Commercial","Commercial"],["Cove","Cove"],["Creek","Creek"],["GolfCourse","Golf Course"],["Gulf","Gulf"],["HighDensityResidential","High Density Residential"],["Highway","Highway"],["Industrial","Industrial"],["Lake","Lake"],["Marsh","Marsh"],["Mountain","Mountain"],["Ocean","Ocean"],["Park","Park"],["ParkingLot","Parking Lot"],["Pastoral","Pastoral"],["Pond","Pond"],["Reservoir","Reservoir"],["Residential","Residential"],["River","River"],["School","School"],["Skyline","Skyline"],["Sound","Sound"],["TrafficWallBarriers","Traffic Wall Barriers"],["Valley","Valley"],["Woods","Woods"],["Other","Other"]],"SiteInfluenceType":[["Agricultural","Agricultural"],["Airport","Airport"],["BusyRoadway","Busy Roadway"],["CommercialArea","Commercial Area"],["GolfCourse","Golf Course"],["GreenSpace","Green Space"],["HighDensityResidential","High Density Residential"],["HighPressureGasLine","High Pressure Gas Line"],["HistoricDistrict","Historic District"],["IndustrialArea","Industrial Area"],["LocalDistributionLine","Local Distribution Line"],["OilOrGasWell","Oil or Gas Well"],["OverheadElectricPowerTransmissionLine","Overhead Electric Power Transmission Line"],["Park","Park"],["PublicTransportationHub","Public Transportation Hub"],["RailLine","Rail Line"],["Residential","Residential"],["School","School"],["StormwaterRetention","Stormwater Retention"],["BodyOfWater","Body Of Water"],["Other","Other"]],"SiteFeatureType":[["None","None"],["CoastalBarrierResourcesSystem","Coastal Barrier Resources System"],["Drainage","Drainage"],["ExcessLand","Excess Land"],["Landlocked","Landlocked"],["Landscaping","Landscaping"],["RoadFrontage","Road Frontage"],["Shape","Shape"],["SoilSuitability","Soil Suitability"],["SurplusLand","Surplus Land"],["Topography","Topography"],["Wetlands","Wetlands"],["ZeroLotLine","Zero Lot Line"],["Other","Other"]],"TopographyType":[["Flat","Flat"],["Rocky","Rocky"],["Rolling","Rolling"],["Sloping","Sloping"],["Other","Other"]],"ArchitecturalDesignCategoryType":[["AFrame","A-Frame"],["Barn","Barn"],["BiLevel","Bi-Level"],["Bungalow","Bungalow"],["CapeCod","Cape Cod"],["Chalet","Chalet"],["Colonial","Colonial"],["Contemporary","Contemporary"],["Cottage","Cottage"],["Craftsman","Craftsman"],["EarthBerm","Earth / Berm"],["Farmhouse","Farmhouse"],["GeodesicDome","Geodesic Dome"],["Georgian","Georgian"],["Log","Log"],["Mediterranean","Mediterranean"],["Modern","Modern"],["NeoEclectic","Neo-Eclectic"],["RaisedRanch","Raised Ranch"],["Rambler","Rambler"],["Ranch","Ranch"],["Southwest","Southwest"],["Spanish","Spanish"],["SplitFoyerOrEntry","Split Foyer or Entry"],["SplitLevel","Split Level"],["Stilt","Stilt"],["Traditional","Traditional"],["Tudor","Tudor"],["Victorian","Victorian"],["Other","Other"]],"WallMaterialType":[["Adobe","Adobe"],["Aluminum","Aluminum"],["Asbestos","Asbestos"],["Brick","Brick"],["CementBoard","Cement Board"],["ConcreteBlock","Concrete Block"],["EngineeredWood","Engineered Wood"],["Glass","Glass"],["Log","Log"],["PouredConcrete","Poured Concrete"],["Steel","Steel"],["Stone","Stone"],["Stucco","Stucco"],["SyntheticStone","Synthetic Stone"],["SyntheticStucco","Synthetic Stucco"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"RoofMaterialType":[["Asbestos","Asbestos"],["Asphalt","Asphalt"],["CeramicTile","Ceramic Tile"],["Clay","Clay"],["Composition","Composition"],["Concrete","Concrete"],["Copper","Copper"],["Metal","Metal"],["Rubber","Rubber"],["Slate","Slate"],["SolarShingles","Solar Shingles"],["Synthetic","Synthetic"],["TarAndGravel","Tar / Gravel"],["Wood","Wood"],["Other","Other"]],"FoundationType":[["Basement","Basement"],["CrawlSpace","Crawl Space"],["PostAndPier","Post and Pier"],["Runner","Runner"],["Slab","Slab"],["Other","Other"]],"FoundationMaterialType":[["Brick","Brick"],["ConcreteBlock","Concrete Block"],["Metal","Metal"],["PouredConcrete","Poured Concrete"],["Stone","Stone"],["Wood","Wood"],["Other","Other"]],"HeatingSystemType":[["Baseboard","Baseboard"],["Fireplace","Fireplace"],["ForcedWarmAir","Forced Warm Air"],["GravityAir","Gravity Air"],["MiniSplit","Mini Split"],["None","None"],["PassiveSolar","Passive Solar"],["Radiant","Radiant"],["Radiators","Radiators"],["Stove","Stove"],["Other","Other"]],"HeatingFuelType":[["Coal","Coal"],["Electric","Electric"],["Geothermal","Geothermal"],["NaturalGas","Natural Gas"],["Oil","Oil"],["Propane","Propane"],["Solar","Solar"],["Wood","Wood"],["Other","Other"]],"CoolingSystemType":[["Centralized","Centralized"],["Individual","Individual"],["Other","Other"]],"MechanicalSystemType":[["RadonMitigation","Radon Mitigation"],["SumpPump","Sump Pump"],["WaterHeater","Water Heater"],["WholeHouseWaterTreatment","Whole House Water Treatment"],["Other","Other"]],"CarStorageType":[["Carport","Carport"],["CommonCarport","Common Carport"],["Driveway","Driveway"],["Garage","Garage"],["OpenLot","Open Lot"],["ParkingGarage","Parking Garage"],["SharedDriveway","Shared Driveway"],["None","None"],["Other","Other"]],"CarStorageAttachmentType":[["Attached","Attached"],["BuiltIn","Built-in"],["Detached","Detached"]],"ImprovedSurfaceMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Cobblestone","Cobblestone"],["Concrete","Concrete"],["Dirt","Dirt"],["Gravel","Gravel"],["Other","Other"]],"OutbuildingType":[["Barn","Barn"],["Boathouse","Boathouse"],["Bunkhouse","Bunkhouse"],["EnclosedKennel","Enclosed Kennel"],["Greenhouse","Greenhouse"],["GuestHouse","Guest House"],["IndoorRidingArena","Indoor Riding Arena"],["ManufacturedHome","Manufactured Home"],["Office","Office"],["PoolHouse","Pool House"],["Shed","Shed"],["Silo","Silo"],["Stable","Stable"],["StandaloneADU","Standalone ADU"],["Studio","Studio"],["Workshop","Workshop"],["Other","Other"]],"FunctionalIssueType":[["CeilingHeight","Ceiling Height"],["FloorPlan","Floor Plan"],["NonConformity","Nonconformity"],["None","None"],["Overimprovement","Overimprovement"],["Underimprovement","Underimprovement"],["Other","Other"]],"DisasterMitigationFeatureType":[["EnclosedSoffits","Enclosed Soffits"],["FireResistantDecking","Fire Resistant Decking"],["FireResistantExteriorWalls","Fire Resistant Exterior Walls"],["FloodVents","Flood Vents"],["FortifiedRoof","Fortified Roof"],["FramingAnchorageOrBracing","Framing Anchorage or Bracing"],["ImpactResistantGlass","Impact Resistant Glass"],["ImpactResistantShingles","Impact Resistant Shingles"],["NoncombustiblePerimeter","Noncombustible Perimeter"],["None","None"],["StormShelter","Storm Shelter"],["StormShutters","Storm Shutters"],["WaterHeaterStrapping","Water Heater Strapping"],["Other","Other"]],"RenewableEnergyComponentType":[["Geothermal","Geothermal"],["Solar","Solar"],["WindTurbine","Wind Turbine"],["Other","Other"]],"RenewableEnergyComponentOwnershipType":[["Leased","Leased"],["Owned","Owned"],["PowerPurchaseAgreement","Power Purchase Agreement"],["Other","Other"]],"CeilingStyleType":[["Barrel","Barrel"],["Beams","Beams"],["Cathedral","Cathedral"],["Coffered","Coffered"],["Drop","Drop"],["Flat","Flat"],["Tray","Tray"],["Vaulted","Vaulted"],["Other","Other"]],"ApproximateCeilingHeightType":[["EightFeet","8 Ft."],["LessThanSevenFeet","Less than 7 feet"],["NineFeet","9 Ft."],["SevenFeet","7 Ft."],["TenFeetAndAbove","10 or more feet"],["TwoOrMoreStories","2 or more stories"]],"RoomUpdateStatusType":[["FullyUpdated","Fully Updated"],["NotUpdated","Not Updated"],["PartiallyUpdated","Partially Updated"]],"RoomUpdatedTimeframeType":[["FiveToTenYears","5-10 years"],["LessThanOneYear","Less than 1 year"],["OneToFiveYears","1-5 years"],["TenOrMoreYears","10 or more years"]],"RoomConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["TypicalWearAndTear","Typical Wear and Tear"]],"DefectComponentLabelType":[["ExteriorWallsAndTrim","Exterior Walls and Trim"],["Foundation","Foundation"],["MechanicalSystem","Mechanical System"],["Roof","Roof"],["Windows","Windows"],["Other","Other"],["Flooring","Flooring"],["WallsAndCeiling","Walls and Ceiling"]],"DefectItemRecommendedActionType":[["Completion","Completion"],["Inspection","Inspection"],["None","None"],["Repair","Repair"]],"LevelType":[["BelowGradeFive","Level B5"],["BelowGradeFour","Level B4"],["BelowGradeOne","Level B1"],["BelowGradeThree","Level B3"],["BelowGradeTwo","Level B2"],["LevelEight","Level 8"],["LevelFive","Level 5"],["LevelFour","Level 4"],["LevelNine","Level 9"],["LevelOne","Level 1"],["LevelSeven","Level 7"],["LevelSix","Level 6"],["LevelTen","Level 10"],["LevelThree","Level 3"],["LevelTwo","Level 2"]],"GradeLevelType":[["AboveGrade","Above Grade"],["FullyBelowGrade","Below Grade"],["PartiallyBelowGrade","Partially Below Grade"]],"AccessType":[["ExteriorAccessOnly","Exterior Access Only"],["InteriorAccessOnly","Interior Access Only"],["InteriorAndExteriorAccess","Interior and Exterior Access"]],"UnitOccupancyType":[["OwnerOccupied","Owner"],["Tenant","Tenant"],["Vacant","Vacant"]],"AmenityMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Composite","Composite"],["Concrete","Concrete"],["Fiberglass","Fiberglass"],["Metal","Metal"],["NaturalStone","Natural Stone"],["Pavers","Pavers"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"HazardZoneType":[["FEMASpecialFloodHazardArea","FEMA Special Flood Hazard Area"],["None","No Hazard Zone Noted"],["USGSLavaFlowZone","USGS Lava Flow Zone"],["Other","Other"]],"AccessibilityFeatureType":[["Appliances","Appliances"],["Auditory","Auditory"],["Bathtub","Bathtub"],["Cabinets","Cabinets"],["Counters","Counters"],["Doorways","Doorways"],["ElectricalSwitches","Electrical Switches"],["GrabBars","Grab Bars"],["Handrails","Handrails"],["Hardware","Hardware"],["Lighting","Lighting"],["None","None"],["Ramps","Ramps"],["Shower","Shower"],["Sink","Sink"],["Toilet","Toilet"],["Other","Other"]],"ValueMarketabilityImpactType":[["Adverse","Adverse"],["Beneficial","Beneficial"],["Neutral","Neutral"]],"ViewRangeType":[["Full","Full"],["Partial","Partial"],["Seasonal","Seasonal"],["Other","Other"]],"SiteInfluenceProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"StreetAccessType":[["Alley","Alley"],["Arterial","Arterial Street"],["Collector","Collector Street"],["CulDeSac","Cul-de-sac"],["DeadEnd","Dead End"],["Local","Local Road"],["Rural","Rural Road"],["Other","Other"]],"PropertyPrimaryEntryExitMethodType":[["PedestrianOnlyAccess","Pedestrian Only Access"],["PrivateAirstrip","Private Airstrip"],["PrivateStreet","Private Street"],["PublicStreet","Public Street"],["Waterway","Waterway"],["Other","Other"]],"ConstructionMethodType":[["Container","Container"],["Manufactured","Manufactured"],["Modular","Modular"],["OnFrameModular","On-Frame Modular"],["SiteBuilt","Site Built"],["ThreeDimensionalPrintingTechnology","3D Technology"],["Other","Other"]],"AttachmentType":[["Attached","Attached"],["Detached","Detached"]],"FrontDoorApproximateElevationRangeType":[["EightToNineFeet","8-9 Ft."],["FiveToSixFeet","5-6 Ft."],["FourToFiveFeet","4-5 Ft."],["GroundLevel","Ground Level"],["NineToTenFeet","9-10 Ft."],["OneToTwoFeet","1-2 Ft."],["SevenToEightFeet","7-8 Ft."],["SixToSevenFeet","6-7 Ft."],["TenOrMoreFeet","10 or more feet"],["ThreeToFourFeet","3-4 Ft."],["TwoToThreeFeet","2-3 Ft."],["UpToOneFoot","Up to 1 foot"]],"ImprovementComponentConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["NoFinish","No Finish"],["TypicalWearAndTear","Typical Wear and Tear"]],"OverallBathroomsUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"OverallFlooringUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"BelowGradeExteriorAccessType":[["CellarDoor","Cellar Door"],["WalkOut","Walk Out"],["WalkUp","Walk Up"],["Other","Other"]],"EnvironmentalConditionType":[["HazardousAboveGroundStorageTank","Hazardous Above Ground Storage Tank"],["HazardousSubstances","Hazardous Substances"],["Landfill","Landfill"],["None","None"],["Radon","Radon"],["SlushPit","Slush Pit"],["SoilContamination","Soil Contamination"],["SuperfundSite","Superfund Site"],["UndergroundStorageTank","Underground Storage Tank"],["WaterContamination","Water Contamination"],["Other","Other"]],"ConvertedAreaOriginalUseType":[["Garage","Garage"],["Patio","Patio"],["Porch","Porch"],["Other","Other"]],"ConvertedAreaFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"RoofEstimatedAgeRangeType":[["LessThanOneYear","Less than 1 year"],["OneToTenYears","1-10 years"],["TenToTwentyYears","10-20 years"],["TwentyOrMoreYears","20 or more years"]],"SewerSystemType":[["Cesspool","Cesspool"],["Septic","Septic"],["Other","Other"]],"WaterSourceType":[["Cistern","Cistern"],["HauledWaterHoldingTank","Hauled Water Holding Tank"],["LakeOrSpring","Lake or Spring"],["Well","Well"],["Other","Other"]],"WaterWellType":[["Artesian","Artesian"],["Drilled","Drilled"],["Dug","Dug"],["Other","Other"]],"BodyOfWaterType":[["Bay","Bay"],["Canal","Canal"],["Cove","Cove"],["Creek","Creek"],["Gulf","Gulf"],["Lake","Lake"],["Marsh","Marsh"],["Ocean","Ocean"],["Pond","Pond"],["Reservoir","Reservoir"],["River","River"],["Sound","Sound"],["Other","Other"]],"WaterfrontFeatureType":[["Beach","Beach"],["BoatLift","Boat Lift"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["Dock","Dock"],["None","None"],["Pier","Pier"],["Riprap","Riprap"],["SeawallOrBulkhead","Seawall or Bulkhead"],["Other","Other"]],"WaterAccessRightType":[["Deeded","Deeded Access"],["Permitted","By Permit"],["PrivatelyOwned","Privately Owned"],["Other","Other"]],"WaterAccessDepthType":[["DeepWater","Deep Water"],["NonNavigable","Non-Navigable"],["ShallowWater","Shallow Water"],["Other","Other"]],"BodyOfWaterProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"UnitBelowGradeFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"EncroachmentType":[["Building","Building"],["Driveway","Driveway"],["Fence","Fence"],["Overhang","Overhang"],["Other","Other"]],"EasementType":[["Conservation","Conservation"],["Drainage","Drainage"],["IngressOrEgress","Ingress / Egress"],["Utility","Utility"],["Other","Other"]],"RestrictionType":[["Age","Age"],["HistoricPreservation","Historic Preservation"],["Income","Income"],["LandUse","Land Use"],["Rental","Rental"],["SalePrice","Sale Price"],["Other","Other"]],"SiteZoningComplianceType":[["Illegal","Illegal"],["Legal","Legal"],["LegalNonConforming","Legal Nonconforming"],["NoZoning","No Zoning"]],"PropertyEstateType":[["FeeSimple","Fee Simple"],["Leasehold","Leasehold"],["Other","Other"]],"StructuralDesignType":[["Highrise","High-rise"],["Lowrise","Low-rise"],["Midrise","Mid-rise"],["RowhouseTownhouse","Rowhouse / Townhouse"],["SemiDetached","Semi-Detached"],["Other","Other"]],"SwimmingPoolFeatureType":[["Caged","Caged"],["Heated","Heated"],["Indoor","Indoor"],["Other","Other"]],"SiteDrainageReasonType":[["EvidenceOfErosion","Evidence of Erosion"],["ImproperGrading","Improper Grading"],["StandingWater","Standing Water"],["Other","Other"]]};
 
 /* ============================================================
@@ -357,7 +361,7 @@ const CEIL_S = opts(['Flat','Flat'],['Vaulted','Vaulted'],['Cathedral','Cathedra
 const FLOORING = opts('Tile','Stone Tile','Stone Slab',['Hardwood','Hardwood'],['EngineeredWood','Engineered Wood'],'Bamboo',['Laminate','Laminate'],'LVP','Vinyl Tile','Vinyl Sheet',['Carpet','Carpet'],['FinishedConcrete','Finished Concrete'],'Plywood','None',['Microcement / Plaster','Other','Other']);
 const COUNTERS = opts('Stone Slab','Tile','Corian / Solid Surface','Butcher Block','Concrete','Stainless Steel','Porcelain Slab','Laminate','Microcement / Plaster','Other');
 const CABINETS = opts('Custom Built','Semi-Custom','Stock','Solid Wood','Painted Wood','Stained Wood','Matched Grain Laminate','Lacquer / High Gloss','Thermofoil','Laminate','MDF','Metal','Glass Front','Inset','Frameless (Full Overlay)','Slab / Flat Panel','Shaker','Raised Panel','White Oak','Rift-sawn Oak','Walnut','Panel-ready Appliance Fronts','Other');
-const FIXTURE_FIN = opts('Polished Chrome','Brushed Nickel','Polished Nickel','Stainless','Unlacquered Brass','Brushed Brass / Gold','Matte Black','Oil-rubbed Bronze','Mixed Metals');
+const FIXTURE_FIN = opts('Polished Chrome','Brushed Nickel','Polished Nickel','Stainless','Unlacquered Brass',['Polished Gold Tone','Gold tone – polished'],['Brushed Brass / Gold','Gold tone – brushed / satin'],'Matte Black','Oil-rubbed Bronze','Mixed Metals');
 const BATH_MAT = opts('Stone Tile','Stone Slab','Tile','Corian','Glass Tile','Acrylic / Fiberglass','Cast Iron','Enameled Steel','Copper','Concrete','Waterproof Plaster (Tadelakt / Microcement)','Other');
 const REMODEL = opts('Gutted and Remodeled','Remodeled','Updated','Partially Updated','Older Remodel','Dated','Original','New Construction');
 const BRANDS = ['Wolf','Viking','Miele','Sub-Zero','Thermador','Dacor','Bosch','GE Profile','GE Monogram','GE Café','KitchenAid','La Cornue','Bertazzoni','Gaggenau','JennAir','Fisher & Paykel','Sharp','LG','Samsung','Maytag','Kenmore','Frigidaire','Whirlpool','Asko','BlueStar','O\'Keefe & Merritt','Other'];
@@ -421,7 +425,7 @@ const PROJ_SRC = opts(['CondominiumQuestionnaire','Condominium Questionnaire'],[
 
 const LISTS = {
   outdoorLiving: {
-    title: 'Porches, Patios, Decks & Balconies', addLabel: 'Add porch / patio / deck',
+    title: 'Porches, Patios, Decks & Balconies', addLabel: 'Add porch / patio / deck', quickAdd: { k: 'type', o: ['Patio','Porch','Deck','Balcony','Portico','Veranda','Terrace','Loggia','Courtyard','Roof Deck'] },
     name: (it, i) => it.type || ('Outdoor area ' + (i + 1)),
     fields: [
       { k: 'type', l: 'Type', t: 'one', req: true, o: opts('Patio','Porch','Deck','Balcony','Portico','Veranda','Terrace','Loggia','Courtyard','Roof Deck'), uad: 'AmenityType' },
@@ -438,7 +442,7 @@ const LISTS = {
     title: 'Pool, Spa & Water Features', addLabel: 'Add pool / spa / water feature',
     name: (it, i) => labelOf(LISTS.waterFeatures.fields[0].o, it.type) || ('Water feature ' + (i + 1)),
     fields: [
-      { k: 'type', l: 'Type', t: 'one', req: true, o: opts(['IngroundPool','In-ground Pool'],'Above-ground Pool',['IngroundSpa','In-ground Spa'],'Above-ground Spa / Hot Tub','Lap Pool','Infinity Edge Pool','Plunge Pool','Cold Plunge',['OutdoorShower','Outdoor Shower'],'Pond','Koi Pond','Fountain','Waterfall','Stream','Reflecting Pool','Splash Pad','Other') },
+      { k: 'type', l: 'Type', t: 'one', req: true, o: opts(['IngroundPool','In-ground Pool'],'Above-ground Pool',['IngroundSpa','In-ground Spa'],'Above-ground Spa / Hot Tub','Lap Pool','Infinity Edge Pool','Plunge Pool','Cold Plunge',['OutdoorShower','Outdoor Shower'],['Sauna','Sauna'],'Pond','Koi Pond','Fountain','Waterfall','Stream','Reflecting Pool','Splash Pad','Other') },
       { k: 'mat', l: 'Material / finish', t: 'one', o: opts('Gunite / Plaster','Pebble Finish','Tile','Fiberglass','Vinyl Liner','Concrete','Natural Stone','Other'), req: it => it.type === 'IngroundPool' },
       { k: 'feat', l: 'Features', t: 'multi', o: opts('Heated','Solar Heated','Salt Water','Automatic Cover','Safety Fence','Caged','Spa Spillover','Water Slide','Diving Board','Baja Shelf','Lighting','Automation','Indoor') },
       { k: 'cond', l: 'Condition', t: 'one', o: COMP_COND },
@@ -490,8 +494,6 @@ const LISTS = {
       { k: 'fullBaths', l: 'Full baths', t: 'count', show: it => it.living === true, req: it => it.living === true },
       { k: 'halfBaths', l: 'Half baths', t: 'count', show: it => it.living === true, req: it => it.living === true },
       { k: 'kitchen', l: 'Kitchen', t: 'one', o: opts('Full Kitchen','Kitchenette','Wet Bar Only','None'), show: it => it.living === true, req: it => it.living === true },
-      { k: 'q', l: 'Quality', t: 'one', o: QR },
-      { k: 'c', l: 'Condition', t: 'one', o: CR },
       { k: 'defects', l: 'Outbuilding defects present?', t: 'yn', req: true, uad: 'OutbuildingDefectsExistIndicator' },
       { k: 'note', l: 'Notes', t: 'note' },
     ],
@@ -631,8 +633,6 @@ const LISTS = {
       { k: 'upd', l: 'Update status', t: 'one', req: true, o: UPDATE, uad: 'RoomUpdateStatusType' },
       { k: 'time', l: 'Update time frame', t: 'one', o: TIMEFRAME, show: it => it.upd && it.upd !== 'NotUpdated', req: it => it.upd && it.upd !== 'NotUpdated', uad: 'RoomUpdatedTimeframeType' },
       { k: 'condStat', l: 'Condition status', t: 'one', req: true, o: COND_STATUS, uad: 'RoomConditionStatusType' },
-      { k: 'q', l: 'Quality rating', t: 'one', req: true, o: QR },
-      { k: 'c', l: 'Condition rating', t: 'one', req: true, o: CR },
       { k: 'condNote', l: 'Condition comment', t: 'note', lim: 120, uad: 'RoomConditionAdditionalDescription', fid: '10.042', show: it => it.condStat && it.condStat.startsWith('Damaged'), req: it => it.condStat && it.condStat.startsWith('Damaged') },
       { k: 'note', l: 'Notes', t: 'note' },
     ],
@@ -654,12 +654,9 @@ const LISTS = {
       { k: 'islandSeat', l: 'Island bar seating', t: 'yn', show: it => (it.islands || 0) > 0 },
       { k: 'finish', l: 'Fixture finish', t: 'multi', o: FIXTURE_FIN },
       { k: 'amen', l: 'Amenities', t: 'multi', o: opts('Waterfall Counter Edge','Peninsula','Breakfast Bar','Eat-in Area','Dual Waterfall Island','Mitered Counter Edge','Floating Shelves','No Upper Cabinets','Full-height Cabinet Wall','Panel-ready / Integrated Appliances','Plaster Range Hood','Pantry','Walk-in Pantry','Butler\'s Pantry','Cabinet Organizers / Pull-outs','Under-cabinet Lighting','Pendant Lighting','Prep Sink','Farmhouse Sink','Double Sink','Desk Area','Glass-front Cabinets','Open Shelving','Tile Backsplash','Slab Backsplash') },
-      { k: 'remodel', l: 'Remodel status (your notes)', t: 'one', o: REMODEL },
       { k: 'upd', l: 'Update status', t: 'one', req: true, o: UPDATE, uad: 'RoomUpdateStatusType' },
       { k: 'time', l: 'Update time frame', t: 'one', o: TIMEFRAME, show: it => it.upd && it.upd !== 'NotUpdated', req: it => it.upd && it.upd !== 'NotUpdated', uad: 'RoomUpdatedTimeframeType' },
       { k: 'condStat', l: 'Condition status', t: 'one', req: true, o: COND_STATUS, uad: 'RoomConditionStatusType' },
-      { k: 'q', l: 'Kitchen quality', t: 'one', req: true, o: QR },
-      { k: 'c', l: 'Kitchen condition', t: 'one', req: true, o: CR },
       { k: 'condNote', l: 'Condition comment', t: 'note', lim: 120, uad: 'RoomConditionAdditionalDescription', show: it => it.condStat && it.condStat.startsWith('Damaged'), req: it => it.condStat && it.condStat.startsWith('Damaged') },
       { k: 'note', l: 'Notes', t: 'note' },
     ],
@@ -853,9 +850,6 @@ const SECTIONS = [
       { k: 'photoAmen2', l: 'Project amenity 2', t: 'photo', cat: 'ProjectAmenity', show: d => (d.projAmen || []).some(x => x !== 'None') },
       { k: 'photoAmen3', l: 'Project amenity 3', t: 'photo', cat: 'ProjectAmenity', show: d => (d.projAmen || []).some(x => x !== 'None') },
       { k: 'photoAmen4', l: 'Project amenity 4', t: 'photo', cat: 'ProjectAmenity', show: d => (d.projAmen || []).some(x => x !== 'None') },
-      { k: 'ageRestr', l: 'Age-restricted community (e.g. 55+)', t: 'yn', help: 'An owner or occupant must meet an age requirement in the CC&Rs. Sent to SFREP as a property restriction (Age).', uad: 'RestrictionType', fid: '1.025' },
-      { k: 'ageDesc', l: 'Age restriction – what it requires', t: 'text', lim: 250, show: d => d.ageRestr === true, help: 'e.g. At least one owner must be 55 or older.', uad: 'RestrictionDescription', fid: '4.053' },
-      { k: 'ageImpact', l: 'Effect of the age restriction on value / marketability', t: 'one', o: IMPACT, show: d => d.ageRestr === true, req: d => d.ageRestr === true, uad: 'ValueMarketabilityImpactType', fid: '4.052' },
       { k: 'projDef', l: 'Deficiencies observed in the project (common areas, buildings)', t: 'yn', req: (d, ins) => IS_PROJ(ins), uad: 'ProjectDeficiencyObservedIndicator', fid: '1.019' },
       { k: 'projDefDesc', l: 'Describe the deficiencies', t: 'note', lim: 2500, show: d => d.projDef === true, req: d => d.projDef === true, uad: 'ProjectConditionAndQualityDescription', fid: '18.015' },
       { k: 'photoProjDef', l: 'Project deficiency', t: 'photo', cat: 'ProjectDeficiency', show: d => d.projDef === true, recommended: true },
@@ -876,7 +870,7 @@ const SECTIONS = [
       { k: 'hoaHasContact', l: 'Does the owner have an HOA contact?', t: 'yn', req: true, help: 'No = follow up from the MLS, title or escrow; the contact is then not counted as missing.' },
       { k: 'hoaName', l: 'HOA / management company', t: 'text', show: d => d.hoaHasContact !== false, req: d => d.hoaHasContact === true },
       { k: 'hoaContactName', l: 'HOA contact name', t: 'text', show: d => d.hoaHasContact !== false, req: d => d.hoaHasContact === true },
-      { k: 'hoaPhone', l: 'HOA contact phone', t: 'text', show: d => d.hoaHasContact !== false, req: d => d.hoaHasContact === true && !d.hoaEmail, help: 'Phone or email is enough.' },
+      { k: 'hoaPhone', l: 'HOA contact phone', t: 'phone', show: d => d.hoaHasContact !== false, req: d => d.hoaHasContact === true && !d.hoaEmail, help: 'Phone or email is enough.' },
       { k: 'hoaEmail', l: 'HOA contact email', t: 'text', show: d => d.hoaHasContact !== false },
       { k: 'dues', l: 'HOA dues ($), per owner', t: 'money', uad: 'AssociationChargeAmount', fid: '18.011', help: 'Leave blank if the owner does not know.' },
       { k: 'duesFreq', l: 'Dues are paid', t: 'one', o: opts('Monthly','Quarterly','Semi-annually','Annually'), show: d => d.dues !== undefined, help: 'Sent to SFREP as a monthly amount.' },
@@ -890,7 +884,7 @@ const SECTIONS = [
       { k: 'clubDues', l: 'Club dues ($ per month)', t: 'money', show: d => d.clubReq === true },
       { k: 'groundRent', l: 'On leased land (land lease / ground rent)', t: 'yn', uad: 'ProjectAnalysisGroundRentIndicator', fid: '18.019' },
       { k: 'grMonthly', l: 'Land lease fee ($ per month)', t: 'money', show: d => d.groundRent === true, help: 'Sent to SFREP as the annual amount (× 12), separate from the HOA dues.', uad: 'ProjectAnalysisGroundRentAmount', fid: '18.020' },
-      { k: 'grExp', l: 'Land lease expires', t: 'text', show: d => d.groundRent === true, help: 'mm/dd/yyyy, if the owner knows.', uad: 'ProjectAnalysisGroundRentExpirationDate', fid: '18.021' },
+      { k: 'grExp', l: 'Land lease expires', t: 'date', show: d => d.groundRent === true, help: 'If the owner knows.', uad: 'ProjectAnalysisGroundRentExpirationDate', fid: '18.021' },
       { k: 'grDesc', l: 'Land lease notes (lessor, renewal, rent increases)', t: 'text', lim: 250, show: d => d.groundRent === true, uad: 'ProjectAnalysisGroundRentDescription', fid: '18.022' },
       { k: 'specAssess', l: 'Special assessment the owner knows of', t: 'one', o: opts(['None','None known'],['Existing','Existing'],['Proposed','Proposed'],['Unknown','Owner not sure']), uad: 'AssociationSpecialAssessmentStatusType' },
       { k: 'specDesc', l: 'Special assessment – what the owner said (purpose, amount)', t: 'text', show: d => ['Existing','Proposed'].includes(d.specAssess) },
@@ -948,37 +942,38 @@ const SECTIONS = [
       { k: 'hoaExt1', t: 'info', l: 'The HOA maintains the exterior, so UAD does not require exterior component conditions or exterior quality/condition ratings and they are not sent to SFREP. Fill in what you want for your comments and workfile.', show: (d, ins) => !HO_EXT(ins) },
       { k: 'roofObs', l: 'Roof observable', t: 'yn', req: (d, ins) => HO_EXT(ins), uad: 'RoofObservableIndicator' },
       { k: 'roofMat', l: 'Roof material', t: 'multi', req: (d, ins) => HO_EXT(ins), o: U('RoofMaterialType'), uad: 'RoofMaterialType' },
-      { k: 'roofStyle', l: 'Roof style', t: 'multi', o: opts('Gable','Hip','Flat','Shed','Mansard','Gambrel','Dutch Gable','Butterfly','Multiple Ridges','Steep Pitch','Low Pitch','Dormers') },
+      { k: 'roofStyle', l: 'Roof style (your notes – not a UAD field)', t: 'multi', icons: 'roof', o: opts('Gable','Hip','Flat','Shed','Mansard','Gambrel','Dutch Gable','Butterfly','Multiple Ridges','Steep Pitch','Low Pitch','Dormers') },
       { k: 'roofAge', l: 'Roof estimated age', t: 'one', req: (d, ins) => HO_EXT(ins), o: order(U('RoofEstimatedAgeRangeType'), ['LessThanOneYear','OneToTenYears','TenToTwentyYears','TwentyOrMoreYears']), uad: 'RoofEstimatedAgeRangeType' },
       { k: 'roofCond', l: 'Roof condition', t: 'one', show: d => d.roofObs !== false, req: (d, ins) => d.roofObs !== false && HO_EXT(ins), o: COMP_COND, uad: 'ImprovementComponentConditionStatusType' },
       { k: 'roofMoreInfo', t: 'info', l: 'Other roofs (garage, addition, ADU, patio cover…): add them below. They go into the exterior comment; the main roof stays in the UAD roof fields.' },
-      { k: 'gutters', l: 'Gutters / downspouts', t: 'multi', o: opts('Gutters','Downspouts','Copper Gutters','Seamless Gutters','Rain Chains','Gutter Guards','None') },
+      { k: 'gutterMat', l: 'Gutter material (your notes – not a UAD field)', t: 'multi', o: opts('None','Aluminum','Copper','Galvanized Steel','Zinc','Vinyl','Stainless Steel','Painted Steel','Wood') },
+      { k: 'gutters', l: 'Gutters & downspouts', t: 'multi', show: d => !(d.gutterMat || []).includes('None'), o: opts('Seamless','Half-round','K-style (ogee)','Box Gutters','Downspouts','Rain Chains','Gutter Guards','Underground Drains') },
     ], list: 'roofs2' },
     { id: 'walls', title: 'Exterior walls, windows & foundation', fields: [
       { k: 'hoaExt2', t: 'info', l: 'The HOA maintains the exterior, so UAD does not require exterior component conditions or exterior quality/condition ratings and they are not sent to SFREP. Fill in what you want for your comments and workfile.', show: (d, ins) => !HO_EXT(ins) },
-      { k: 'walls', l: 'Exterior walls', t: 'multi', req: (d, ins) => HO_EXT(ins), o: U('WallMaterialType'), uad: 'WallMaterialType' },
+      { k: 'walls', l: 'Exterior walls', t: 'multi', req: (d, ins) => HO_EXT(ins), o: U('WallMaterialType').filter(x => x[0] !== 'Asbestos').map(x => x[0] === 'Stucco' ? ['Stucco', 'Stucco / cement plaster (incl. color coat)'] : x), uad: 'WallMaterialType' },
       { k: 'wallsCond', l: 'Exterior walls & trim condition', t: 'one', req: (d, ins) => HO_EXT(ins), o: COMP_COND, uad: 'ImprovementComponentConditionStatusType' },
       { k: 'windows', l: 'Windows', t: 'multi', req: (d, ins) => HO_EXT(ins), o: opts('Dual Pane','Single Pane','Triple Pane','Low-E','Vinyl','Wood','Aluminum','Clad Wood','Fiberglass','Steel','Bronze','Casement','Double Hung','Sliding','Picture','Bay / Bow','Divided Lite','Impact Glass') },
       { k: 'winCond', l: 'Windows condition', t: 'one', req: (d, ins) => HO_EXT(ins), o: COMP_COND, uad: 'ImprovementComponentConditionStatusType' },
-      { k: 'foundType', l: 'Foundation type', t: 'multi', req: (d, ins) => HO_EXT(ins), o: U('FoundationType'), uad: 'FoundationType' },
+      { k: 'foundType', l: 'Foundation type', t: 'multi', req: (d, ins) => HO_EXT(ins), o: [...U('FoundationType').filter(x => x[0] !== 'Other'), ['ConcretePerimeter', 'Concrete perimeter (raised floor)'], ...U('FoundationType').filter(x => x[0] === 'Other')], uad: 'FoundationType', help: 'Concrete perimeter goes to SFREP as crawl space with poured concrete.' },
       { k: 'foundMat', l: 'Foundation material', t: 'multi', req: (d, ins) => HO_EXT(ins), o: U('FoundationMaterialType'), uad: 'FoundationMaterialType' },
       { k: 'foundCond', l: 'Foundation condition', t: 'one', req: (d, ins) => HO_EXT(ins), o: COMP_COND, uad: 'ImprovementComponentConditionStatusType' },
-      { k: 'extFeat', l: 'Exterior features', t: 'multi', o: opts('Front Porch','Covered Entry','Courtyard Entry','Balcony','Shutters','Columns','Exterior Lighting','Exterior Speakers','Solar Panels Visible','Palapa / Thatch Shade','Cable / Wire Mesh Rails','Exposed Rafter Tails','Chimney') },
+      { k: 'extFeat', l: 'Exterior features', t: 'multi', help: 'Porches, patios, decks and balconies are on the Outdoor tab; solar is on the Systems tab.', o: opts('Covered Entry','Courtyard Entry','Shutters','Columns','Exterior Lighting','Exterior Speakers','Palapa / Thatch Shade','Cable / Wire Mesh Rails','Exposed Rafter Tails','Chimney') },
       { k: 'converted', l: 'Converted area (garage, porch, patio)?', t: 'yn', req: true, uad: 'ConvertedAreaExistsIndicator', fid: '8.012' },
       { k: 'convFrom', l: 'Converted from', t: 'one', o: U('ConvertedAreaOriginalUseType'), show: d => d.converted === true, req: d => d.converted === true, uad: 'ConvertedAreaOriginalUseType' },
       { k: 'convSim', l: 'Converted area vs. rest of living area', t: 'one', o: UN('ConvertedAreaFinishComparisonType'), show: d => d.converted === true, req: d => d.converted === true, uad: 'ConvertedAreaFinishComparisonType' },
       { k: 'note', l: 'Front / exterior notes', t: 'note' },
     ]},
     { id: 'extQC', title: 'Exterior quality & condition', fields: [
-      { k: 'hoaExt3', t: 'info', l: 'The HOA maintains the exterior, so UAD does not require exterior component conditions or exterior quality/condition ratings and they are not sent to SFREP. Fill in what you want for your comments and workfile.', show: (d, ins) => !HO_EXT(ins) },
-      { k: 'eq', l: 'Exterior quality', t: 'one', req: (d, ins) => HO_EXT(ins), o: QR, uad: 'ExteriorQualityRatingCode' },
-      { k: 'ec', l: 'Exterior condition', t: 'one', req: (d, ins) => HO_EXT(ins), o: CR, uad: 'ExteriorConditionRatingCode' },
-    ]},
+      { k: 'eq', l: 'Exterior quality', t: 'one', req: true, o: QR, uad: 'ExteriorQualityRatingCode' },
+      { k: 'ec', l: 'Exterior condition', t: 'one', req: true, o: CR, uad: 'ExteriorConditionRatingCode' },
+    ], showGroup: (d, ins) => HO_EXT(ins) },
   ]},
 
   { id: 'garage', title: 'Garage', groups: [
     { id: 'vs', title: 'Vehicle storage', fields: [
-      { k: 'hasGarage', l: 'Garage', t: 'yn', req: true },
+      { k: 'garShared', l: 'Is the garage shared with other units (a common parking garage)?', t: 'yn', show: (d, ins) => IS_HOA(ins), req: (d, ins) => IS_PROJ(ins), help: 'Yes = enter the unit\'s spaces under Parking garage spaces below. No = the unit has its own private garage.' },
+      { k: 'hasGarage', l: 'Private garage (the unit\'s own)', t: 'yn', req: d => d.garShared !== true, show: d => d.garShared !== true },
       { k: 'garAttach', l: 'Garage attachment', t: 'one', o: U('CarStorageAttachmentType'), show: d => d.hasGarage === true, req: d => d.hasGarage === true, uad: 'CarStorageAttachmentType' },
       { k: 'garSpaces', l: 'Vehicle spaces', t: 'count', show: d => d.hasGarage === true, req: d => d.hasGarage === true, uad: 'ParkingSpacesCount' },
       { k: 'garTandemYN', l: 'Any tandem spaces?', t: 'yn', show: d => d.hasGarage === true, req: d => d.hasGarage === true },
@@ -987,11 +982,11 @@ const SECTIONS = [
       { k: 'garFinish', l: 'Finish status', t: 'one', show: d => d.hasGarage === true, req: d => d.hasGarage === true, o: opts('Finished','Partially Finished','Unfinished','Drywall Unpainted','Fully Finished with Flooring') },
       { k: 'garConverted', l: 'Garage converted?', t: 'yn', show: d => d.hasGarage === true, req: d => d.hasGarage === true },
       { k: 'garConvPermit', l: 'Conversion permitted?', t: 'one', o: opts('Permitted','Unpermitted','Unknown'), show: d => d.garConverted === true, req: d => d.garConverted === true },
-      { k: 'garFeat', l: 'Garage features', t: 'multi', show: d => d.hasGarage === true, o: opts('Automatic Door Opener','Loft','Cabinetry','Epoxy Floor','Workshop Area','EV Charger','Sink','Storage Racks','Heated','Cooled','Insulated','Windows','Side Door','Car Lift','Workbench','Second Refrigerator','Other') },
+      { k: 'garFeat', l: 'Garage features', t: 'multi', show: d => d.hasGarage === true, o: opts('Automatic Door Opener','Loft','Cabinetry','Epoxy Floor','Workshop Area','Sink','Storage Racks','Heated','Cooled','Insulated','Windows','Side Door','Car Lift','Workbench','Second Refrigerator','Other') },
       { k: 'carport', l: 'Carport spaces (private)', t: 'count' },
       { k: 'carportAttach', l: 'Carport attachment', t: 'one', o: U('CarStorageAttachmentType'), show: d => (d.carport || 0) > 0, req: d => (d.carport || 0) > 0, uad: 'CarStorageAttachmentType' },
       { k: 'projPark', t: 'info', l: 'Project parking: enter the spaces this unit has the right to use, and how they are held.', show: (d, ins) => IS_HOA(ins) },
-      { k: 'pgSpaces', l: 'Parking garage spaces', t: 'count', show: (d, ins) => IS_HOA(ins), uad: 'ParkingSpacesCount', fid: '13.002' },
+      { k: 'pgSpaces', l: 'Parking garage spaces', t: 'count', show: (d, ins) => IS_HOA(ins), req: d => d.garShared === true, uad: 'ParkingSpacesCount', fid: '13.002' },
       { k: 'pgAssign', l: 'Parking garage spaces are', t: 'one', o: ASSIGN, show: (d, ins) => IS_HOA(ins) && (d.pgSpaces || 0) > 0, req: (d, ins) => IS_HOA(ins) && (d.pgSpaces || 0) > 0, uad: 'ProjectParkingSpaceAssignmentType' },
       { k: 'ccSpaces', l: 'Common carport spaces', t: 'count', show: (d, ins) => IS_HOA(ins), uad: 'ParkingSpacesCount' },
       { k: 'ccAssign', l: 'Common carport spaces are', t: 'one', o: ASSIGN, show: (d, ins) => IS_HOA(ins) && (d.ccSpaces || 0) > 0, req: (d, ins) => IS_HOA(ins) && (d.ccSpaces || 0) > 0, uad: 'ProjectParkingSpaceAssignmentType' },
@@ -1028,7 +1023,7 @@ const SECTIONS = [
       { k: 'zoneCode', l: 'Zoning code', t: 'text', help: 'Filled from the County permit history or CRS report when loaded', uad: 'SiteZoningClassificationIdentifier' },
       { k: 'zoneDesc', l: 'Zoning description', t: 'text', help: 'e.g. Single-family residential, 10,000 sq. ft. minimum lot', uad: 'SiteZoningClassificationDescription' },
       { k: 'zoneComp', l: 'Zoning compliance', t: 'one', req: true, o: opts(['Legal','Legal'],['LegalNonConforming','Legal Nonconforming'],['Illegal','Illegal'],['NoZoning','No Zoning']), uad: 'SiteZoningComplianceType' },
-      { k: 'usable', l: 'Usable lot area', t: 'one', o: opts('All Usable','Mostly Usable','Partially Usable','Limited Usable Area') },
+      { k: 'usable', l: 'Usable lot area', t: 'one', show: (d, ins) => !IS_PROJ(ins), o: opts('All Usable','Mostly Usable','Partially Usable','Limited Usable Area') },
       { k: 'siteFeat', l: 'Site characteristics affecting value', t: 'multi', req: true, o: noneFirst(UN('SiteFeatureType')), uad: 'SiteFeatureType' },
       { k: 'siteFeatImpact', l: 'Impact of site characteristics', t: 'one', o: UN('ValueMarketabilityImpactType'), show: d => (d.siteFeat || []).some(x => x !== 'None'), req: d => (d.siteFeat || []).some(x => x !== 'None') },
       { k: 'siteFeatDesc', l: 'Site characteristic comment', t: 'note', lim: 140, show: d => (d.siteFeat || []).some(x => x !== 'None'), req: d => d.siteFeatImpact && d.siteFeatImpact !== 'Neutral', uad: 'SiteFeatureDescription', fid: '4.065' },
@@ -1036,6 +1031,11 @@ const SECTIONS = [
       { k: 'photoSite', l: 'Site', t: 'photo', cat: 'SiteCharacteristic', recommended: true },
       { k: 'photoSite2', l: 'Site 2', t: 'photo', cat: 'SiteCharacteristic' },
       { k: 'photoSite3', l: 'Site 3', t: 'photo', cat: 'SiteCharacteristic' },
+    ]},
+    { id: 'restr', title: 'Restrictions', fields: [
+      { k: 'ageRestr', l: 'Age-restricted (55+)?', t: 'yn', req: true, help: 'An owner or occupant must meet an age requirement (CC&Rs / deed). Sent to SFREP as a property restriction (Age).', uad: 'RestrictionType', fid: '4.051' },
+      { k: 'ageDesc', l: 'Age restriction – what it requires', t: 'text', lim: 250, show: d => d.ageRestr === true, help: 'e.g. At least one owner must be 55 or older.', uad: 'RestrictionDescription', fid: '4.053' },
+      { k: 'ageImpact', l: 'Effect of the age restriction on value / marketability', t: 'one', o: IMPACT, show: d => d.ageRestr === true, req: d => d.ageRestr === true, uad: 'ValueMarketabilityImpactType', fid: '4.052' },
     ]},
     { id: 'infl', title: 'Site influences', fields: [
       { k: 'influences', l: 'Site influences', t: 'multi', req: true, o: [['Residential','Residential']].concat(U('SiteInfluenceType').filter(x => x[0] !== 'Residential' && x[0] !== 'BodyOfWater' && x[0] !== 'Other')).concat([['BodyOfWater','Body of Water'],['Other','Other']]), uad: 'SiteInfluenceType' },
@@ -1092,22 +1092,25 @@ const SECTIONS = [
   ]},
 
   { id: 'amenities', title: 'Outdoor', groups: [
+    { id: 'yard', title: 'The unit\'s own outdoor space', showGroup: (d, ins) => IS_PROJ(ins), fields: [
+      { k: 'ownYard', l: 'Does the unit have its own yard (exclusive use, not common area)?', t: 'yn', req: (d, ins) => IS_PROJ(ins), help: 'Common pool, spa, landscaping and recreation belong on the Project / HOA tab (common amenities). Answer Yes only if this unit has its own yard; then its pool, landscaping and outdoor items are asked here.' },
+    ]},
     { id: 'olv', title: 'Porches, patios, decks & balconies', fields: [], list: 'outdoorLiving' },
-    { id: 'wf', title: 'Pool, spa & water features', fields: [], list: 'waterFeatures' },
-    { id: 'land', title: 'Landscaping', fields: [
+    { id: 'wf', title: 'Pool, spa & water features', fields: [], list: 'waterFeatures', showGroup: (d, ins) => !IS_PROJ(ins) || d.ownYard === true },
+    { id: 'land', title: 'Landscaping', showGroup: (d, ins) => !IS_PROJ(ins) || d.ownYard === true, fields: [
       { k: 'landArea', l: 'Landscaped area', t: 'one', o: opts('Fully Landscaped','Usable Lot Area Fully Landscaped','Mostly Landscaped','Partially Landscaped','Minimal Landscaping','Natural / Native','Drought Tolerant','Overgrown','None') },
       { k: 'landFeat', l: 'Landscape features', t: 'multi', o: opts('Lawn','Mature Trees','Specimen Trees','Shrubs','Bushes','Hedges','Ground Cover','Flower Beds','Rose Garden','Vegetable Garden','Raised Beds','Orchard','Fruit Trees','Citrus Trees','Avocado Trees','Vineyard','Wooded','Boulders / Rocky','Native Plants','Succulents','Drought Tolerant','Artificial Turf','Meadow') },
       { k: 'landSys', l: 'Systems', t: 'multi', o: opts('Automatic Irrigation','Drip Irrigation','Manual Irrigation','Drainage System','Subsurface Drains','Landscape Lighting','Outdoor Speakers') },
-      { k: 'hardscape', l: 'Hardscape & structures', t: 'multi', o: opts('Perimeter Walls','Fencing','Retaining Walls','Terraces','Garden Walls','Stone Steps','Pathways','Bridge','Courtyard','Arbor','Trellis','Pergola','Gazebo','Other') },
+      { k: 'hardscape', l: 'Hardscape & structures', t: 'multi', o: opts('Perimeter Walls','Fencing','Retaining Walls','Terraces','Garden Walls','Stone Steps','Pathways','Bridge','Arbor','Other') },
       { k: 'fenceMat', l: 'Fencing material', t: 'multi', show: d => (d.hardscape || []).includes('Fencing'), o: opts('Wood','Wrought Iron','Vinyl','Chain Link','Block / Masonry','Stucco Wall','Split Rail','Hedge') },
       { k: 'walks', l: 'Walks', t: 'multi', o: opts('Concrete','Pavers','Flagstone','Brick','Decomposed Granite','Gravel','Stamped Concrete','Wood','Stone') },
       { k: 'photoLand', l: 'Landscape', t: 'photo', cat: 'SubjectPropertyAmenitiesExhibit', recommended: true },
       { k: 'photoLand2', l: 'Landscape 2', t: 'photo', cat: 'SubjectPropertyAmenitiesExhibit' },
       { k: 'photoLand3', l: 'Landscape 3', t: 'photo', cat: 'SubjectPropertyAmenitiesExhibit' },
     ]},
-    { id: 'rec', title: 'Recreation & outdoor living', fields: [
+    { id: 'rec', title: 'Recreation & outdoor living', showGroup: (d, ins) => !IS_PROJ(ins) || d.ownYard === true, fields: [
       { k: 'rec', l: 'Recreation', t: 'multi', o: opts('Tennis Court','Sport Court','Pickleball Court','Basketball Court','Bocce Court','Putting Green','Playground','Play Structure','Trampoline (in-ground)','Skate Ramp','Volleyball','Batting Cage') },
-      { k: 'outdoor', l: 'Outdoor living', t: 'multi', o: opts('Outdoor Dining','Outdoor Kitchen','Built-in BBQ Area','Pizza Oven','Outdoor Bar','Outdoor Fireplace','Fire Pit','Sauna','Cold Plunge','Gazebo','Trellis','Pergola','Cabana','Outdoor Shower','Outdoor TV','Hammock Area','Dog Run','Chicken Coop','Other') },
+      { k: 'outdoor', l: 'Outdoor living', t: 'multi', o: opts('Outdoor Dining','Outdoor Kitchen','Built-in BBQ Area','Pizza Oven','Outdoor Bar','Outdoor Fireplace','Fire Pit','Gazebo','Trellis','Pergola','Outdoor TV','Hammock Area','Dog Run','Chicken Coop','Other') },
       { k: 'gazeboMeasure', t: 'info', l: 'Measure it: SFREP requires the gazebo area. Enter it in SFREP from your sketch.', show: d => (d.outdoor || []).includes('Gazebo') },
       { k: 'equestrian', l: 'Equestrian', t: 'yn' },
       { k: 'equine', l: 'Horse amenities', t: 'multi', show: d => d.equestrian === true, o: opts('Barn','Stable','Stalls','Paddocks','Pasture','Corrals','Pens','Arena','Covered Arena','Round Pen','Riding Ring','Hot Walker','Wash Rack','Tack Room','Hay Barn','Manure Area','Trail Access','Fencing','Water Troughs','Horse Trailer Parking') },
@@ -1127,12 +1130,12 @@ const SECTIONS = [
       { k: 'halfBaths', l: 'Total half baths', t: 'calc', calc: ins => (ins.lists.baths || []).filter(b => b.kind === 'HalfBathroom').length, uad: 'HalfBathroomCount' },
       { k: 'levelCount', l: 'Levels in unit', t: 'calc', calc: ins => (ins.lists.levels || []).length, uad: 'LevelCount' },
       { k: 'bgCompare', l: 'Below-grade finish compared to above grade', t: 'one', o: opts('Superior','Similar','Inferior'), show: (d, ins) => (ins.lists.levels || []).some(l => l.grade && l.grade !== 'AboveGrade'), req: (d, ins) => (ins.lists.levels || []).some(l => l.grade && l.grade !== 'AboveGrade'), uad: 'UnitBelowGradeFinishComparisonType', fid: '10.010', help: 'Required when there is finished below-grade area.' },
-      { k: 'floorNum', l: 'Floor number of the unit', t: 'text', lim: 10, show: (d, ins) => RISE(ins), req: (d, ins) => RISE(ins), uad: 'FloorIdentifier', fid: '10.018', help: 'The floor of the unit\'s main entry level, e.g. 3' },
+      { k: 'floorNum', l: 'Floor number of the unit', t: 'sel', o: Array.from({ length: 40 }, (_, i) => [String(i + 1), String(i + 1)]), show: (d, ins) => RISE(ins), req: (d, ins) => RISE(ins), uad: 'FloorIdentifier', fid: '10.018', help: 'The floor of the unit\'s main entry level, e.g. 3' },
       { k: 'corner', l: 'Corner unit', t: 'yn', show: (d, ins) => RISE(ins), req: (d, ins) => RISE(ins), uad: 'CornerUnitIndicator', fid: '10.019' },
       { k: 'unitMixed', l: 'Non-residential use in the unit', t: 'yn', show: (d, ins) => PRP(ins).siteCommon === true, req: (d, ins) => PRP(ins).siteCommon === true, uad: 'UnitMixedUsageIndicator', fid: '10.026' },
       { k: 'liveWork', l: 'Live/work space available within the unit', t: 'yn', show: (d, ins) => PRP(ins).siteCommon === true, req: (d, ins) => PRP(ins).siteCommon === true, uad: 'AllowableLiveWorkSpaceIndicator', fid: '10.027' },
       { k: 'liveWorkInfo', t: 'info', l: 'Enter the allowable work space (sq. ft.) in SFREP from your sketch.', show: d => d.liveWork === true },
-      { k: 'unitPos', l: 'Unit location / exposure', t: 'multi', show: (d, ins) => IS_HOA(ins) || PRP(ins).attach === 'Attached', o: opts('Ground Floor','Top Floor','Penthouse','End Unit','Interior Unit','Corner Unit','Faces Street','Faces Courtyard','Faces Pool','Faces Parking','Ocean Facing','Mountain Facing','Near Elevator','Near Trash / Mechanical','Private Entry','Private Yard / Patio','Shared Walls: One Side','Shared Walls: Two Sides','Units Above','Units Below','No Units Above','Elevator Access to Unit','Stairs Only') },
+      { k: 'unitPos', l: 'Unit location / exposure', t: 'multi', show: (d, ins) => IS_HOA(ins) || PRP(ins).attach === 'Attached', o: (d, ins) => opts('Ground Floor','Top Floor','Penthouse', ...(PRP(ins).structDesign === 'RowhouseTownhouse' ? [] : ['End Unit']),'Interior Unit','Faces Street','Faces Courtyard','Faces Pool','Faces Parking','Ocean Facing','Mountain Facing','Near Elevator','Near Trash / Mechanical','Private Entry','Private Yard / Patio','Shared Walls: One Side','Shared Walls: Two Sides','Units Above','Units Below','No Units Above','Elevator Access to Unit','Stairs Only') },
       { k: 'sketchRev', l: 'Area from the sketch (tap ✏️ Sketch at the top to draw or change it)', t: 'review', items: ins => sketchItems(ins) },
       { k: 'measure', t: 'info', l: 'No sketch yet: square footage will be entered in SFREP from your sketch.', show: (d, ins) => !(ins && ins.sketch && ins.sketch.areaCount) },
       { k: 'sketchImg', l: 'Sketch image (made by the sketch page)', t: 'photo', cat: 'SubjectPropertyImprovementSketch' },
@@ -1156,7 +1159,7 @@ const SECTIONS = [
       { k: 'bathUpd', l: 'Overall bathrooms update status', t: 'one', req: true, o: UN('OverallBathroomsUpdateStatusType'), uad: 'OverallBathroomsUpdateStatusType' },
     ]},
     { id: 'feat', title: 'Interior features, windows & doors', fields: [
-      { k: 'intFeat', l: 'Interior features', t: 'multi', o: opts('Ceiling Fans','Plaster Walls (Venetian / Lime / Tadelakt)','Exposed Beams','Wood Plank Ceilings','Wallpaper','Wood Paneling','Built-in Shelving','Built-in Hutch','Built-in Desk','Crown Molding','Wainscoting','Skylights','Solatubes','Clerestory Windows','Pocket Doors','Recessed LED Lighting','Custom Light Fixtures','Chandeliers','Dimmers','Elevator','Dumbwaiter','Laundry Chute','Wine Storage','Wine Cellar','Safe Room','Hidden Room','Radiant Floors','Fire Sprinklers') },
+      { k: 'intFeat', l: 'Interior features', t: 'multi', o: opts('Ceiling Fans','Plaster Walls (Venetian / Lime / Tadelakt)','Exposed Beams','Wood Plank Ceilings','Wallpaper','Wood Paneling','Built-in Shelving','Built-in Hutch','Built-in Desk','Crown Molding','Wainscoting','Skylights','Solatubes','Clerestory Windows','Pocket Doors','Recessed LED Lighting','Custom Light Fixtures','Chandeliers','Dimmers','Elevator','Dumbwaiter','Laundry Chute','Wine Storage','Safe Room','Hidden Room','Fire Sprinklers') },
       { k: 'fireplaces', l: 'Fireplaces', t: 'count' },
       { k: 'fpType', l: 'Fireplace type', t: 'multi', show: d => (d.fireplaces || 0) > 0, o: opts('Wood Burning','Gas','Gas Insert','Electric','Pellet Stove','Wood Stove','See-through') },
       { k: 'winCover', l: 'Window coverings', t: 'multi', o: opts('None','Drapes','Curtains','Plantation Shutters','Blinds','Wood Blinds','Automatic / Motorized Shades','Roman Shades','Roller Shades','Blackout Shades','Solar Shades','Sheers') },
@@ -1274,8 +1277,6 @@ const SECTIONS = [
         ['Mechanical / water systems', 'systems', 'mech'], ['Renewable energy', 'systems', 'renew'], ['Solar ownership', 'systems', 'solarOwn'],
         ['Efficiency items', 'systems', 'eff'], ['Smart home', 'systems', 'smart'], ['Security', 'systems', 'security'], ['Technology', 'systems', 'tech']]) },
       { k: 'sysOk', l: 'Systems confirmed with interviewee', t: 'yn' },
-      { k: 'sys', l: 'Other systems mentioned', t: 'multi', o: opts('Soft Water','Water Filtration','Recirculating Hot Water','Radiant Floor Heat','Whole House Fan','Fire Sprinklers','Central Vacuum','Elevator','Generator','Backup Battery System','EV Charger','Built-in Speakers','LED Recessed Lighting','Custom Lighting Fixtures','Automatic Irrigation','Owned Solar','Leased Solar') },
-      { k: 'solarInfo', l: 'Owned solar: year purchased, cost, kilowatts', t: 'text', show: d => (d.sys || []).includes('Owned Solar') },
       { k: 'otherSys', l: 'Systems notes', t: 'note' },
     ]},
     { id: 'utilConf', title: 'Utilities confirmed', fields: [
@@ -1284,8 +1285,7 @@ const SECTIONS = [
         .concat(ins.lists.adus.map((a, i) => ({ label: LISTS.adus.name(a, i) + ' – separately metered', value: a.metered === undefined ? '' : (a.metered ? 'Yes' : 'No'), go: 'buildings|item-' + a.id + '|' + a.id + '|adu' })))
         .concat(ins.lists.outbuildings.filter(o => (o.util || []).length).map((o, i) => ({ label: LISTS.outbuildings.name(o, i) + ' – utilities', value: valText(LISTS.outbuildings.fields.find(f => f.k === 'util'), o.util, o), go: 'buildings|item-' + o.id + '|' + o.id + '|outb' }))) },
       { k: 'utilOk', l: 'Utilities confirmed with interviewee', t: 'yn' },
-      { k: 'utilMore', l: 'Utility details', t: 'multi', o: opts('Water Well – Private','Water Well – Shared','Mutual Water Company','Propane Tank – Owned','Propane Tank – Leased','Septic Recently Pumped / Inspected','Sewer Lateral Replaced','Underground Utilities','Fiber Internet Available') },
-      { k: 'wellInfo', l: 'Water well: shared / private, use, testing', t: 'text', show: d => (d.utilMore || []).some(x => x.startsWith('Water Well')) },
+      { k: 'utilMore', l: 'Utility details', t: 'multi', o: opts('Mutual Water Company','Propane Tank – Owned','Propane Tank – Leased','Septic Recently Pumped / Inspected','Sewer Lateral Replaced','Underground Utilities','Fiber Internet Available') },
       { k: 'utilNote', l: 'Utilities notes', t: 'note' },
     ]},
     { id: 'ea', title: 'Extraordinary assumptions & hypothetical conditions', fields: [
@@ -1385,7 +1385,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 const todayISO = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
 const isEmpty = v => v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
-const optsOf = (f, d) => (typeof f.o === 'function' ? f.o(d || {}) : f.o) || [];
+const optsOf = (f, d, ins) => (typeof f.o === 'function' ? f.o(d || {}, ins || (typeof app !== 'undefined' ? app.ins : null)) : f.o) || [];
 const labelFor = (f, v, d) => { const o = optsOf(f, d).find(x => x[0] === v); return o ? o[1] : v; };
 const applText = v => Object.entries(v || {}).map(([k, s]) => { const a = APPLIANCES.find(x => x.k === k); return a ? `${a.l}${s.brand ? ' (' + s.brand + ')' : ''}${s.qty > 1 ? ' ×' + s.qty : ''}` : k; }).join(', ');
 const valText = (f, v, d) => {
@@ -1520,6 +1520,27 @@ function normalize(ins) {
   { const STONE = new Set(['Quartzite','Quartz','Granite','Marble','Soapstone','Limestone Slab','Engineered Stone']);
     const fixc = it => ['counter','vanCounter'].forEach(k => { if (Array.isArray(it[k])) it[k] = [...new Set(it[k].map(v => STONE.has(v) ? 'Stone Slab' : v))]; });
     ['kitchens','baths','wetbars'].forEach(k => (ins.lists[k] || []).forEach(fixc)); }
+  // 6f (Oct 2026): duplicate questions merged – carry answers to the one place they are asked now
+  { const D = ins.data, L = ins.lists; if (!D._v6f) { D._v6f = true;
+    const has = (o, k, v) => Array.isArray(o[k]) && o[k].includes(v), take = (o, k, v) => { if (has(o, k, v)) o[k] = o[k].filter(x => x !== v); };
+    const addWF = t => { if (!L.waterFeatures.some(w => w.type === t)) L.waterFeatures.push({ id: uid(), type: t }); };
+    const addOL = t => { if (!L.outdoorLiving.some(w => w.type === t)) L.outdoorLiving.push({ id: uid(), type: t }); };
+    const A = D.amenities, F = D.front, G = D.garage, I = D.interior, S = D.systems, V = D.interview, P = D.project, SI = D.site;
+    [['Sauna', 'Sauna'], ['Cold Plunge', 'Cold Plunge'], ['Outdoor Shower', 'OutdoorShower']].forEach(([o, t]) => { if (has(A, 'outdoor', o)) { addWF(t); take(A, 'outdoor', o); } });
+    ['Gazebo', 'Trellis', 'Pergola'].forEach(o => { if (has(A, 'hardscape', o)) { A.outdoor = [...new Set([...(A.outdoor || []), o])]; take(A, 'hardscape', o); } });
+    if (has(F, 'extFeat', 'Front Porch')) addOL('Porch'); if (has(F, 'extFeat', 'Balcony')) addOL('Balcony');
+    if (has(G, 'garFeat', 'EV Charger')) S.eff = [...new Set([...(S.eff || []), 'EV Charging'])];
+    if (has(I, 'intFeat', 'Radiant Floors') && !has(S, 'heat', 'Radiant')) S.heat = [...new Set([...(S.heat || []), 'Radiant'])];
+    if (Array.isArray(F.gutters)) { const g = F.gutters; F.gutterMat = [...new Set([...(F.gutterMat || []), ...(g.includes('Copper Gutters') ? ['Copper'] : []), ...(g.includes('None') ? ['None'] : [])])];
+      F.gutters = [...new Set(g.map(x => ({ 'Seamless Gutters': 'Seamless', 'Downspouts': 'Downspouts', 'Rain Chains': 'Rain Chains', 'Gutter Guards': 'Gutter Guards' })[x]).filter(Boolean))]; }
+    if (P && P.ageRestr !== undefined && SI.ageRestr === undefined) { SI.ageRestr = P.ageRestr; SI.ageDesc = P.ageDesc; SI.ageImpact = P.ageImpact; delete P.ageRestr; delete P.ageDesc; delete P.ageImpact; }
+    if (has(I, 'unitPos', 'Corner Unit')) { if (I.corner === undefined) I.corner = true; take(I, 'unitPos', 'Corner Unit'); }
+    if (I.floorNum !== undefined) I.floorNum = String(I.floorNum).replace(/\D/g, '') || undefined;
+    if (Array.isArray(V.sys) && V.sys.length) V.otherSys = [V.otherSys, 'Also mentioned: ' + V.sys.join(', ') + (V.solarInfo ? ' (solar: ' + V.solarInfo + ')' : '')].filter(Boolean).join('\n');
+    delete V.sys; delete V.solarInfo;
+    if (V.wellInfo) { V.utilNote = [V.utilNote, 'Well: ' + V.wellInfo].filter(Boolean).join('\n'); delete V.wellInfo; }
+    [...(L.baths || []), ...(L.kitchens || []), ...(L.outbuildings || [])].forEach(it => { delete it.q; delete it.c; }); (L.kitchens || []).forEach(it => delete it.remodel);
+    if (P && P.grExp && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(P.grExp)) { const [m, d, y] = P.grExp.split('/'); P.grExp = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`; } } }
   // field types changed between versions (e.g. single choice -> multiple): repair stored values to match
   const fix = (f, d) => {
     if (!d || !f || !f.k) return; const v = d[f.k]; if (v === undefined || v === null) return;
@@ -1873,6 +1894,7 @@ const GEN = {
   },
   siteFeatures(ins) {
     const s = ins.data.site, a = ins.data.amenities, out = [];
+    if (s.ageRestr === true && !IS_HOA(ins)) out.push(S(`The property is age restricted${s.ageDesc ? ' (' + (s.ageDesc.charAt(0).toLowerCase() + s.ageDesc.slice(1)).replace(/\.$/, '') + ')' : ''}; the effect on value and marketability is considered ${(s.ageImpact || 'neutral').toLowerCase()}`, 1));
     out.push(S(s.siteDefects === true ? 'Adverse site conditions observed are described in the site defects section' : 'No readily observable adverse site conditions or material encroachments were noted during observation', 1));
     out.push(S('This analysis does not determine precise boundaries, easements, or legal matters requiring a professional survey or title examination. Site data (boundaries, dimensions, configuration) is based on available public records, plat maps, and aerial imagery considered reliable for appraisal purposes', 1));
     if ((a.hardscape || []).includes('Fencing') || (a.hardscape || []).includes('Perimeter Walls')) out.push(S('Perimeter fencing provides an effective physical buffer from adjacent parcels, supporting typical residential usage within this market segment', 2));
@@ -1928,7 +1950,8 @@ const GEN = {
     const ef = lvl(ins, 'front', 'extFeat'); if (ef.length) out.push(S(`Exterior features include ${listJoin(ef)}`, 2));
     const fd = lvl(ins, 'front', 'frontDoor'); if (fd.length) out.push(S(`${cap(listJoin(fd))} front entry door`, 3));
     const xd = lvl(ins, 'interior', 'extDoors'); if (xd.length) out.push(S(`Exterior doors include ${listJoin(xd)}`, 2));
-    const g = lvl(ins, 'front', 'gutters'); if (g.length) out.push(S(`${cap(listJoin(g))}`, 3));
+    { const gm = lvl(ins, 'front', 'gutterMat').filter(x => !/^none$/i.test(x)), g = lvl(ins, 'front', 'gutters');
+      if (gm.length || g.length) out.push(S(`${gm.length ? cap(listJoin(gm)) + ' gutters' : 'Gutters'}${g.length ? ' (' + listJoin(g) + ')' : ''}`, 3)); }
     if (f.converted) out.push(S(`A converted ${lc(sv(ins, 'front', 'convFrom'))} area is ${lc(sv(ins, 'front', 'convSim'))} to the rest of the living area`, 1));
     if (iv.addDesc) out.push(S(`Reported additions / conversions: ${iv.addDesc}${iv.addPermit === 'Yes' ? ' (reported as permitted)' : iv.addPermit === 'No' ? ' (reported as not permitted)' : ''}`, 1));
     return out;
@@ -2010,12 +2033,13 @@ const GEN = {
   },
   vehicle(ins) {
     const g = ins.data.garage, d = ins.data.driveway, out = [];
-    if (g.hasGarage) {
+    if (g.garShared === true) out.push(S('The unit has the use of a shared (common) parking garage', 1));
+    if (g.hasGarage && g.garShared !== true) {
       const att = lc(sv(ins, 'garage', 'garAttach')); const tandem = g.garTandemYN && g.garTandem;
       out.push(S(`Property features a${/^[aeiou]/.test(att) ? 'n' : ''} ${att} ${g.garSpaces || '[ ]'}-car garage${tandem ? ' with ' + (g.garTandem > 1 ? g.garTandem + ' tandem bays' : 'one tandem bay') : ''}. ${tandem ? 'Reduced tandem utility is adjusted via the grid' : 'Structural utility is standard; evaluated in the grid'}`, 1));
       if (g.garConverted) out.push(S(`The garage has been converted (${lc(g.garConvPermit || 'permit status unknown')})`, 1));
       const feat = lvl(ins, 'garage', 'garFeat').filter(x => !/^ev charger$/i.test(x)); if (feat.length || g.garFinish) out.push(S(`${feat.length ? 'Garage features include ' + listJoin(feat) : 'Garage'}${g.garFinish ? (feat.length ? '; ' : ' is ') + lc(g.garFinish) : ''}`, 2));
-    } else if (g.hasGarage === false && !(IS_HOA(ins) && ((g.pgSpaces || 0) + (g.ccSpaces || 0) + (g.olSpaces || 0)) > 0)) out.push(S('There is no garage', 1));
+    } else if (g.hasGarage === false && g.garShared !== true && !(IS_HOA(ins) && ((g.pgSpaces || 0) + (g.ccSpaces || 0) + (g.olSpaces || 0)) > 0)) out.push(S('There is no garage', 1));
     if (g.carport) out.push(S(`${g.carport}-car carport`, 2));
     if (IS_HOA(ins)) [['pgSpaces', 'pgAssign', 'parking garage'], ['ccSpaces', 'ccAssign', 'common carport'], ['olSpaces', 'olAssign', 'open lot']].forEach(([n, a, t]) => { if ((g[n] || 0) > 0) out.push(S(`${g[n]} ${g[a] ? lc(g[a]) + ' ' : ''}${t} space${g[n] > 1 ? 's' : ''}${g.spaceIds ? ' (' + g.spaceIds + ')' : ''}`, 1)); });
     const op = lvl(ins, 'garage', 'otherPark'); if (op.length) out.push(S(`Other parking: ${listJoin(op)}`, 3));
@@ -2072,9 +2096,9 @@ const GEN = {
     out.push(S(`The subject is ${unitDesc ? 'a ' + unitDesc + ' unit' : 'located'} in ${J.projName ? J.projName + ', a' : 'a'} ${des}${kind}${P0.condotel ? ' operated with a hotel-style rental program (condotel)' : ''}`, 1));
     const am = (J.projAmen || []).filter(x => x !== 'None').map(x => x === 'Other' ? (J.projAmenOther || 'other amenities') : x.startsWith('Other:') ? x.slice(6) : labelOf(PROJ_AMEN, x)).map(lc);
     if (am.length) out.push(S(`Common elements include ${listJoin([...new Set(am)])}`, 2));
-    if (J.ageRestr === true) out.push(S(`The project is age restricted${J.ageDesc ? ' (' + (J.ageDesc.charAt(0).toLowerCase() + J.ageDesc.slice(1)).replace(/\.$/, '') + ')' : ''}`, 1));
+    { const AG = ins.data.site.ageRestr !== undefined ? ins.data.site : J; if (AG.ageRestr === true) out.push(S(`The project is age restricted${AG.ageDesc ? ' (' + (AG.ageDesc.charAt(0).toLowerCase() + AG.ageDesc.slice(1)).replace(/\.$/, '') + ')' : ''}`, 1)); }
     if (J.clubReq === true) out.push(S(`Ownership requires ${J.clubName ? 'membership in ' + J.clubName : 'a club membership'}${J.clubInit ? ', with an initiation fee of $' + Number(J.clubInit).toLocaleString() : ''}${J.clubDues ? (J.clubInit ? ' and' : ',') + ' club dues of $' + Number(J.clubDues).toLocaleString() + ' per month' : ''}, in addition to the association dues`, 1));
-    if (J.groundRent === true) out.push(S(`The project is on leased land${J.grMonthly ? ' with a land lease payment of $' + Number(J.grMonthly).toLocaleString() + ' per month' : ''}${J.grExp ? ', expiring ' + J.grExp : ''}, in addition to the association dues`, 1));
+    if (J.groundRent === true) out.push(S(`The project is on leased land${J.grMonthly ? ' with a land lease payment of $' + Number(J.grMonthly).toLocaleString() + ' per month' : ''}${J.grExp ? ', expiring ' + String(J.grExp).replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$2/$3/$1') : ''}, in addition to the association dues`, 1));
     const cond = { 'Well Kept': 'Common elements appear adequately maintained', 'Typical Wear and Tear': 'Common elements show typical wear and tear', 'Deferred Maintenance': 'Common elements show deferred maintenance', 'Under Renovation': 'Common elements are under renovation' }[J.projCond];
     if (cond) out.push(S(cond, 2));
     if (J.dues !== undefined) { const ut = (J.duesUtil || []).filter(x => x !== 'None').flatMap(x => x === 'Other' ? ([...(J.duesUtilOtherPick || []), J.duesUtilOther].filter(Boolean).map(lc).length ? [...(J.duesUtilOtherPick || []), J.duesUtilOther].filter(Boolean).map(lc) : ['other']) : [x === 'SanitarySewer' ? 'sewer' : lc(x)]); const inc = [...ut, ...(J.duesIncl || []).map(lc)];
@@ -2165,12 +2189,23 @@ const groupShown = (g, sec, ins) => tabShown(sec, ins) && (!g.showGroup || g.sho
 async function writeNow() { await DB.put('inspections', JSON.parse(JSON.stringify(app.ins))); }
 function save() {
   if (!app.ins) return;
+  deriveFromInterview(app.ins);
   app.ins.updated = Date.now();
   clearTimeout(app.saving); setSaved('Saving…');
   app.saving = setTimeout(async () => {
     try { await writeNow(); setSaved(DB.persistent ? 'Saved ✓' : 'Saved (session only)'); }
     catch (e) { setSaved('NOT SAVED – storage error'); }
   }, 200);
+}
+/* asked once: years the owner gives on the Interview tab fill the UAD time frames (only when still empty) */
+function deriveFromInterview(ins) {
+  const iv = ins.data.interview || {}; const base = parseInt(String(ins.data.property.inspDate || '').slice(0, 4), 10) || new Date().getFullYear();
+  const age = y => { const n = parseInt(String(y || ''), 10); return n && n <= base ? base - n : null; };
+  const tf = a => a === null ? undefined : a < 1 ? 'LessThanOneYear' : a < 5 ? 'OneToFiveYears' : a < 10 ? 'FiveToTenYears' : 'TenOrMoreYears';
+  const k0 = (ins.lists.kitchens || [])[0], ka = age(iv.kitYear), ba = age(iv.bathYear), ra = age(iv.roofYear);
+  if (k0 && ka !== null && k0.time === undefined && k0.upd && k0.upd !== 'NotUpdated') k0.time = tf(ka);
+  if (ba !== null) (ins.lists.baths || []).forEach(b => { if (b.time === undefined && b.upd && b.upd !== 'NotUpdated') b.time = tf(ba); });
+  if (ra !== null && ins.data.front.roofAge === undefined) ins.data.front.roofAge = ra < 1 ? 'LessThanOneYear' : ra < 10 ? 'OneToTenYears' : ra < 20 ? 'TenToTwentyYears' : 'TwentyOrMoreYears';
 }
 async function saveNow(announce) {
   if (!app.ins) return; clearTimeout(app.saving);
@@ -2224,6 +2259,7 @@ async function renderHome() {
     const ins = all.find(x => x.id === b.dataset.backup); if (!ins) return;
     app.ins = ins; try { await doExport('workfile', b); } finally { app.ins = null; }
   });
+  syncBar();
 }
 function safeCard(i) {
   try { if (i._broken) throw new Error(i._broken); return homeCard(i); }
@@ -2370,8 +2406,12 @@ function renderTab2() {
   else if (app.tab === 'export') main.innerHTML = renderExport();
   bind(main); fillThumbs(main); window.scrollTo(0, y);
   returnBar();
-  const bar = $('.bar'); if (bar) document.documentElement.style.setProperty('--barh', bar.offsetHeight + 'px');
+  syncBar();
 }
+/* the top bar is fixed: keep the page padded by its real height (it wraps on narrow screens) */
+function syncBar() { const bar = $('.bar'); if (!bar) return; document.documentElement.style.setProperty('--barh', bar.offsetHeight + 'px');
+  if (!syncBar.ro && window.ResizeObserver) { syncBar.ro = new ResizeObserver(() => { const b = $('.bar'); if (b) document.documentElement.style.setProperty('--barh', b.offsetHeight + 'px'); }); }
+  if (syncBar.ro && syncBar.watched !== bar) { syncBar.ro.disconnect(); syncBar.ro.observe(bar); syncBar.watched = bar; } }
 /* "Done – back to …" bar after jumping from a review list (Systems / Utilities / Counts confirmed) */
 function returnBar() {
   const r = app.returnTo; let bar = document.querySelector('.return-bar');
@@ -2503,14 +2543,16 @@ function renderField(f, d, ctx) {
       html += `<div class="chips yn">${[[true, 'Yes'], [false, 'No']].map(([val, l]) => `<button class="chip radio" ${attr} data-v="${val}" aria-pressed="${v === val}"><span class="box"></span>${l}</button>`).join('')}</div>`; break;
     case 'one': case 'multi': {
       const multi = f.t === 'multi'; const arr = multi ? (v || []) : [v];
-      html += `<div class="chips">${o.map(([c, l]) => `<button class="chip ${multi ? '' : 'radio'}" ${attr} data-v="${esc(c)}" aria-pressed="${arr.includes(c)}"><span class="box"></span>${esc(l)}</button>`).join('')}</div>`; break;
+      const ic = f.icons === 'roof' ? ROOF_ICONS : null;
+      html += `<div class="chips">${o.map(([c, l]) => `<button class="chip ${multi ? '' : 'radio'} ${ic && ic[c] ? 'withicon' : ''}" ${attr} data-v="${esc(c)}" aria-pressed="${arr.includes(c)}"><span class="box"></span>${ic && ic[c] ? `<svg class="chipicon" viewBox="0 0 64 40" aria-hidden="true">${ic[c]}</svg>` : ''}${esc(l)}</button>`).join('')}</div>`; break;
     }
     case 'sel': html += `<select class="txt" ${attr}><option value="">Choose…</option>${o.map(([c, l]) => `<option value="${esc(c)}" ${v === c ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`; break;
-    case 'money': // dollar fields get their own 10-key pad (the iPad keyboard has no number pad)
-      html += `<div class="padwrap"><input class="txt num" inputmode="none" data-tenkey="1" ${attr} value="${esc(v ?? '')}" placeholder="$"><div class="tenkey" hidden>${['7','8','9','4','5','6','1','2','3','.','0','⌫'].map(k => `<button type="button" class="tk" data-tk="${k}">${k}</button>`).join('')}<button type="button" class="tk done" data-tk="done">Done</button></div></div>`; break;
-    case 'num': case 'year':
-      html += `<input class="txt num" inputmode="${'numeric'}" ${attr} value="${esc(v ?? '')}" placeholder="${f.t === 'year' ? 'YYYY' : ''}">`; break;
-    case 'date': html += `<input class="txt num" type="date" ${attr} value="${esc(v || '')}">`; break;
+    // numbers, money, phone and dates get their own 10-key pad (the iPad keyboard has no number pad)
+    case 'money': html += tenkey(attr, v ?? '', '0', true, '$'); break;
+    case 'num': html += tenkey(attr, v ?? '', '', true); break;
+    case 'year': html += tenkey(attr, v ?? '', 'YYYY', false); break;
+    case 'phone': html += tenkey(attr, fmtPhone(v || ''), '(805) 555-1234', false); break;
+    case 'date': html += tenkey(attr, fmtDateUS(v || ''), 'MM/DD/YYYY', false); break;
     case 'month': html += `<input class="txt num" type="month" ${attr} value="${esc(v || '')}" placeholder="YYYY-MM">`; break;
     case 'text': html += `<input class="txt" spellcheck="true" autocorrect="on" autocapitalize="sentences" ${attr} value="${esc(v || '')}" ${f.lim ? `maxlength="${f.lim}"` : ''}>`; break;
     case 'note':
@@ -2527,6 +2569,25 @@ function renderField(f, d, ctx) {
   return html + '</div>';
 }
 
+/* roof style line sketches (front elevation, 64×40) */
+const ROOF_ICONS = (() => { const W = 'fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"', box = '<path d="M14 38V24h36v14" ' + W + '/>';
+  const r = d => `<path d="${d}" ${W}/>` + box;
+  return {
+    Gable: r('M10 24L32 6l22 18'), Hip: r('M10 24l12-14h20l12 14'), Flat: r('M11 24h42M11 21h42'), Shed: r('M10 24h44V10z'),
+    Mansard: r('M10 24l5-12h34l5 12M15 12l4-6h26l4 6'), Gambrel: r('M10 24l7-11 15-7 15 7 7 11'), 'Dutch Gable': r('M10 24l10-10h24l10 10M24 14l8-8 8 8'),
+    Butterfly: r('M10 10l22 10 22-10'), 'Multiple Ridges': r('M8 24l12-12 12 12 12-12 12 12'), 'Steep Pitch': r('M12 24L32 2l20 22'),
+    'Low Pitch': r('M9 24l23-10 23 10'), Dormers: r('M10 24L32 6l22 18M24 17v-6h8v6M40 19v-5h6v5') };
+})();
+function tenkey(attr, val, ph, dot, prefix) {
+  const keys = ['7','8','9','4','5','6','1','2','3', dot ? '.' : '', '0','⌫'];
+  return `<div class="padwrap">${prefix ? `<span class="pfx">${prefix}</span>` : ''}<input class="txt num${prefix ? ' haspfx' : ''}" inputmode="none" data-tenkey="1" ${attr} value="${esc(val)}" placeholder="${esc(ph)}"><div class="tenkey" hidden>${keys.map(k => k ? `<button type="button" class="tk" data-tk="${k}">${k}</button>` : '<span></span>').join('')}<button type="button" class="tk done" data-tk="done">Done</button></div></div>`;
+}
+const fmtPhone = v => { const d = String(v).replace(/\D/g, '').slice(0, 10); if (!d) return ''; if (d.length < 4) return '(' + d; if (d.length < 7) return `(${d.slice(0, 3)}) ${d.slice(3)}`; return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`; };
+const fmtDateUS = v => { v = String(v || ''); const iso = v.match(/^(\d{4})-(\d{2})-(\d{2})$/); if (iso) return `${iso[2]}/${iso[3]}/${iso[1]}`;
+  const d = v.replace(/\D/g, '').slice(0, 8); if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(v)) { const [m, dd, y] = v.split('/'); return `${m.padStart(2, '0')}/${dd.padStart(2, '0')}/${y}`; }
+  return d.length > 4 ? `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}` : d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d; };
+const usToIso = s => { const m = String(s).match(/^(\d{2})\/(\d{2})\/(\d{4})$/); if (!m) return undefined; const [mo, dd, y] = [+m[1], +m[2], +m[3]]; const t = new Date(y, mo - 1, dd);
+  return t.getFullYear() === y && t.getMonth() === mo - 1 && t.getDate() === dd ? `${m[3]}-${m[1]}-${m[2]}` : undefined; };
 /* Kitchen appliances: tap appliance -> quantity (if any) -> brand -> folds closed */
 function applianceWidget(d, ctx, f) {
   const val = d[f.k] || {}; const key = ctx.item + ':';
@@ -2724,7 +2785,8 @@ function renderList(key) {
         <div class="gfoot"><button class="btn sm done" data-toggle="${it.id}">Done with ${esc(name)} ▴</button></div></div>` : ''}
     </div>`;
   }).join('');
-  return `<div class="list-items">${items}</div><div class="add-row" id="add-${key}"><button class="btn primary" data-add="${key}">+ ${esc(def.addLabel)}</button>
+  const qa = def.quickAdd ? `<div class="flabel"><span class="lab">Tap each one this property has (tap again to add another of the same kind)</span></div><div class="chips">${def.quickAdd.o.map(t => { const n = list.filter(x => x[def.quickAdd.k] === t).length; return `<button class="chip ${n ? 'appl-on' : ''}" data-add="${key}" data-preset="${esc(t)}" aria-pressed="${n > 0}"><span class="box"></span>${esc(t)}${n > 1 ? ' ×' + n : ''}</button>`; }).join('')}</div>` : '';
+  return `<div class="list-items">${items}</div>${qa}<div class="add-row" id="add-${key}">${def.quickAdd ? '' : `<button class="btn primary" data-add="${key}">+ ${esc(def.addLabel)}</button>`}
     ${key === 'baths' ? '<button class="btn primary" data-add="baths" data-kind="HalfBathroom">+ Add half bath</button>' : ''}
     ${list.length > 1 ? `<button class="btn sm" data-expand="${key}">${list.every(x => app.open.has(x.id)) ? 'Collapse all' : 'Expand all'}</button>` : ''}</div>`;
 }
@@ -2747,8 +2809,9 @@ function qualityPreview(key, it) {
   const t = roomQualityComment(key, it);
   return `<div class="field wide"><div class="flabel"><span class="tag">Auto</span><span class="lab">Quality comment for SFREP (10.040)</span></div><div class="calc-text">${esc(t || 'Check cabinets, counters and features above to build this comment.')}</div><div class="limit">${t.length} characters</div></div>`;
 }
-function addItem(key, kind) {
+function addItem(key, kind, preset) {
   const ins = app.ins, list = ins.lists[key]; const it = { id: uid() };
+  if (preset && LISTS[key].quickAdd) it[LISTS[key].quickAdd.k] = preset;
   if (key === 'bedrooms') { it.label = 'Bedroom ' + (list.length + 1); it.level = 'LevelOne'; }
   if (key === 'baths') { it.kind = kind || 'FullBathroom'; const n = list.filter(b => b.kind === it.kind).length + 1; it.label = (it.kind === 'HalfBathroom' ? 'Half Bath ' : 'Bath ') + n; it.level = 'LevelOne'; }
   if (key === 'kitchens') it.level = 'LevelOne';
@@ -2806,7 +2869,9 @@ function bind(root) {
     let before = inp.value;
     const upd = () => {
       const { obj, f } = target(inp); let v = inp.value;
-      if (['num', 'money', 'year'].includes(f.t)) { v = v.replace(/[^0-9.]/g, ''); obj[f.k] = v === '' ? undefined : Number(v); }
+      if (f.t === 'phone') { inp.value = fmtPhone(v); obj[f.k] = inp.value || undefined; }
+      else if (f.t === 'date') { inp.value = fmtDateUS(v.replace(/\D/g, '')); obj[f.k] = usToIso(inp.value); inp.classList.toggle('bad', inp.value.length === 10 && !obj[f.k]); }
+      else if (['num', 'money', 'year'].includes(f.t)) { v = v.replace(/[^0-9.]/g, ''); if (f.t === 'year') v = v.replace(/\./g, '').slice(0, 4); obj[f.k] = v === '' ? undefined : Number(v); }
       else obj[f.k] = v === '' ? undefined : v;
       if (inp.tagName === 'TEXTAREA' && before.trim().length >= 15 && inp.value.trim() === '') offerUndo(obj, f.k, before);
       before = inp.value || before;
@@ -2848,7 +2913,7 @@ function bind(root) {
     if (!wasOpen) scrollToEl('item-' + id);
     else if (b.closest('.gfoot')) { const key = Object.keys(app.ins.lists).find(k => app.ins.lists[k].some(x => x.id === id)); const add = key && document.getElementById('add-' + key); if (add) { const top = add.getBoundingClientRect().top + window.scrollY - window.innerHeight / 2; window.scrollTo(0, Math.max(0, top)); add.classList.add('flash'); setTimeout(() => add.classList.remove('flash'), 1600); } } });
   root.querySelectorAll('[data-expand]').forEach(b => b.onclick = () => { const l = app.ins.lists[b.dataset.expand]; const all = l.every(x => app.open.has(x.id)); l.forEach(x => all ? app.open.delete(x.id) : app.open.add(x.id)); renderTab(); });
-  root.querySelectorAll('[data-add]').forEach(b => b.onclick = () => { if (Date.now() - (app.shiftAt || 0) < 700) return; addItem(b.dataset.add, b.dataset.kind); });
+  root.querySelectorAll('[data-add]').forEach(b => b.onclick = () => { if (Date.now() - (app.shiftAt || 0) < 700) return; addItem(b.dataset.add, b.dataset.kind, b.dataset.preset); });
   root.querySelectorAll('[data-rename]').forEach(b => b.onclick = () => { app.renaming = b.dataset.rename; renderTab(); const i = document.getElementById('rename-' + app.renaming); if (i) { i.focus(); i.select(); } });
   root.querySelectorAll('[data-renameno]').forEach(b => b.onclick = () => { app.renaming = null; renderTab(); });
   root.querySelectorAll('[data-renameform]').forEach(f => f.onsubmit = e => {
@@ -3062,7 +3127,7 @@ function measureReminders(ins) {
   const m = [];
   ins.lists.outdoorLiving.forEach(o => { if (['Deck', 'Balcony', 'Portico', 'Porch', 'Veranda', 'Roof Deck', 'Patio'].includes(o.type)) m.push(o.type); });
   if ((ins.data.amenities.outdoor || []).includes('Gazebo')) m.push('Gazebo');
-  if (ins.data.garage.hasGarage) m.push('Garage');
+  if (ins.data.garage.hasGarage && ins.data.garage.garShared !== true) m.push('Garage');
   ins.lists.outbuildings.forEach(o => m.push(LISTS.outbuildings.name(o)));
   ins.lists.adus.forEach((a, i) => m.push(LISTS.adus.name(a, i)));
   ins.lists.noncont.forEach((n, i) => m.push(LISTS.noncont.name(n, i)));
@@ -3206,7 +3271,8 @@ function buildMISMO(ins, imgName) {
 
   // CAR_STORAGES
   const cs = X(P, 'CAR_STORAGES');
-  if (d.garage.hasGarage) {
+  const privGar = d.garage.hasGarage && d.garage.garShared !== true; // a shared parking garage is sent as ParkingGarage spaces below
+  if (privGar) {
     const c = X(cs, 'CAR_STORAGE'); const det = X(c, 'CAR_STORAGE_DETAIL');
     V(det, 'CarStorageAreaMeasure', skGarage(ins, false), SQFT); V(det, 'CarStorageAttachmentType', d.garage.garAttach); V(det, 'CarStorageType', 'Garage'); V(det, 'ParkingSpacesCount', d.garage.garSpaces);
     imagesInto(c, take(p => p.sec === 'garage'));
@@ -3222,14 +3288,15 @@ function buildMISMO(ins, imgName) {
   if (d.garage.carport) { const det = X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'); V(det, 'CarStorageAreaMeasure', skGarage(ins, true), SQFT); V(det, 'CarStorageAttachmentType', d.garage.carportAttach); V(det, 'CarStorageType', 'Carport'); V(det, 'ParkingSpacesCount', d.garage.carport); }
   const projSpaces = isHoa ? [['ParkingGarage', 'pgSpaces', 'pgAssign'], ['CommonCarport', 'ccSpaces', 'ccAssign'], ['OpenLot', 'olSpaces', 'olAssign']].filter(([, n]) => (d.garage[n] || 0) > 0) : [];
   projSpaces.forEach(([type, n, a]) => { const det = X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'); V(det, 'CarStorageType', type); V(det, 'ParkingSpacesCount', d.garage[n]); V(det, 'ProjectParkingSpaceAssignmentType', d.garage[a]); });
-  if (!d.driveway.hasDrive && !d.garage.hasGarage && !d.garage.carport && !projSpaces.length) V(X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'), 'CarStorageType', 'None');
+  if (!d.driveway.hasDrive && !privGar && !d.garage.carport && !projSpaces.length) V(X(X(cs, 'CAR_STORAGE'), 'CAR_STORAGE_DETAIL'), 'CarStorageType', 'None');
 
   // DISASTER_MITIGATION_FEATURES
   const dm = X(P, 'DISASTER_MITIGATION_FEATURES'); (d.interview.disaster || []).forEach(t => V(X(dm, 'DISASTER_MITIGATION_FEATURE'), 'DisasterMitigationFeatureType', t));
 
   // ENCUMBRANCES: age restriction from the CC&Rs (e.g. 55+)
-  if (isHoa && PJ.ageRestr === true) { const en = X(X(P, 'ENCUMBRANCES'), 'ENCUMBRANCE'); const cr = X(X(en, 'CONDITION_COVENANT_RESTRICTIONS'), 'CONDITION_COVENANT_RESTRICTION');
-    V(cr, 'RestrictionDescription', PJ.ageDesc); V(cr, 'RestrictionType', 'Age'); V(cr, 'ValueMarketabilityImpactType', PJ.ageImpact); V(X(en, 'ENCUMBRANCE_DETAIL'), 'EncumbranceType', 'ConditionsCovenantsRestrictions'); }
+  const AG = d.site.ageRestr !== undefined ? d.site : PJ; // 6f: asked on the Site tab for every property type
+  if (AG.ageRestr === true) { const en = X(X(P, 'ENCUMBRANCES'), 'ENCUMBRANCE'); const cr = X(X(en, 'CONDITION_COVENANT_RESTRICTIONS'), 'CONDITION_COVENANT_RESTRICTION');
+    V(cr, 'RestrictionDescription', AG.ageDesc); V(cr, 'RestrictionType', 'Age'); V(cr, 'ValueMarketabilityImpactType', AG.ageImpact); V(X(en, 'ENCUMBRANCE_DETAIL'), 'EncumbranceType', 'ConditionsCovenantsRestrictions'); }
 
   // ENERGY_EFFICIENCY_AND_GREEN
   const s = d.systems; const eg = X(P, 'ENERGY_EFFICIENCY_AND_GREEN'); const egd = X(eg, 'ENERGY_EFFICIENCY_AND_GREEN_DETAIL');
@@ -3335,7 +3402,7 @@ function buildMISMO(ins, imgName) {
   V(X(X(ST, 'CONSTRUCTION_METHODS'), 'CONSTRUCTION_METHOD'), 'ConstructionMethodType', d.front.constr);
   const SC = hoExt ? X(ST, 'STRUCTURE_COMPONENTS') : new XN('STRUCTURE_COMPONENTS'); // not sent when the HOA maintains the exterior
   if ((d.front.walls || []).length) { const c = X(SC, 'STRUCTURE_COMPONENT'); const w = X(c, 'EXTERIOR_WALLS'); d.front.walls.forEach(m => V(X(w, 'EXTERIOR_WALL'), 'WallMaterialType', m)); const dt = X(c, 'STRUCTURE_COMPONENT_DETAIL'); V(dt, 'ImprovementComponentConditionStatusType', d.front.wallsCond); V(dt, 'ImprovementComponentType', 'ExteriorWallsAndTrim'); }
-  if ((d.front.foundType || []).length) { const c = X(SC, 'STRUCTURE_COMPONENT'); const f = X(X(c, 'FOUNDATIONS'), 'FOUNDATION'); const fm = X(f, 'FOUNDATION_MATERIALS'); (d.front.foundMat || []).forEach(m => V(X(fm, 'FOUNDATION_MATERIAL'), 'FoundationMaterialType', m)); const fs = X(f, 'FOUNDATION_STYLES'); d.front.foundType.forEach(t => V(X(fs, 'FOUNDATION_STYLE'), 'FoundationType', t)); const dt = X(c, 'STRUCTURE_COMPONENT_DETAIL'); V(dt, 'ImprovementComponentConditionStatusType', d.front.foundCond); V(dt, 'ImprovementComponentType', 'Foundation'); }
+  if ((d.front.foundType || []).length) { const c = X(SC, 'STRUCTURE_COMPONENT'); const f = X(X(c, 'FOUNDATIONS'), 'FOUNDATION'); const fm = X(f, 'FOUNDATION_MATERIALS'); const perim = d.front.foundType.includes('ConcretePerimeter'); [...new Set([...(d.front.foundMat || []), ...(perim ? ['PouredConcrete'] : [])])].forEach(m => V(X(fm, 'FOUNDATION_MATERIAL'), 'FoundationMaterialType', m)); const fs = X(f, 'FOUNDATION_STYLES'); [...new Set(d.front.foundType.map(t => t === 'ConcretePerimeter' ? 'CrawlSpace' : t))].forEach(t => V(X(fs, 'FOUNDATION_STYLE'), 'FoundationType', t)); const dt = X(c, 'STRUCTURE_COMPONENT_DETAIL'); V(dt, 'ImprovementComponentConditionStatusType', d.front.foundCond); V(dt, 'ImprovementComponentType', 'Foundation'); }
   if (d.front.roofObs !== undefined || (d.front.roofMat || []).length) { const c = X(SC, 'STRUCTURE_COMPONENT'); const r = X(c, 'ROOF'); const rd = X(r, 'ROOF_DETAIL'); V(rd, 'RoofEstimatedAgeRangeType', d.front.roofAge); V(rd, 'RoofObservableIndicator', yn(d.front.roofObs)); const rm = X(r, 'ROOF_MATERIALS'); (d.front.roofMat || []).forEach(m => V(X(rm, 'ROOF_MATERIAL'), 'RoofMaterialType', m)); const dt = X(c, 'STRUCTURE_COMPONENT_DETAIL'); if (d.front.roofObs !== false) V(dt, 'ImprovementComponentConditionStatusType', d.front.roofCond); V(dt, 'ImprovementComponentType', 'Roof'); }
   if ((d.front.windows || []).length) { const c = X(SC, 'STRUCTURE_COMPONENT'); const dt = X(c, 'STRUCTURE_COMPONENT_DETAIL'); V(dt, 'ImprovementComponentConditionStatusType', d.front.winCond); V(dt, 'ImprovementComponentType', 'Windows'); V(dt, 'ImprovementComponentTypeAdditionalDescription', d.front.windows.join(', ').slice(0, 100)); }
   const sd = X(ST, 'STRUCTURE_DETAIL'); if (hoExt) { V(sd, 'ExteriorConditionRatingCode', d.front.ec); V(sd, 'ExteriorQualityRatingCode', d.front.eq); } V(sd, 'FrontDoorApproximateElevationRangeType', d.front.frontElev);
@@ -3407,10 +3474,10 @@ function buildMISMO(ins, imgName) {
   if (crs.apn || d.site.apnDesc) { const pr = X(X(P, 'PARCELS'), 'PARCEL'); const pdd = X(pr, 'PARCEL_DETAIL'); V(pdd, 'ParcelAreaMeasure', crs.lotSf, SQFT); V(pdd, 'ParcelDescriptionClassificationType', d.site.apnDesc); if (d.site.apnDesc === 'Other') V(pdd, 'ParcelDescriptionClassificationTypeOtherDescription', (d.site.apnOther || '').slice(0, 50));
     if (crs.apn) { const pid = X(X(pr, 'PARCEL_IDENTIFICATIONS'), 'PARCEL_IDENTIFICATION'); V(pid, 'ParcelIdentificationType', 'AssessorUnformattedIdentifier'); V(pid, 'ParcelIdentifier', crs.apn); } }
   // PROPERTY_AMENITY
-  const CAT = { Fence: 'OutdoorAccessories', IrrigationSystem: 'OutdoorAccessories', OutdoorFireplace: 'OutdoorAccessories', OutdoorKitchen: 'OutdoorAccessories', SportsCourt: 'OutdoorAccessories', Deck: 'OutdoorLiving', Patio: 'OutdoorLiving', Porch: 'OutdoorLiving', Balcony: 'OutdoorLiving', Gazebo: 'OutdoorLiving', Portico: 'OutdoorLiving', IngroundPool: 'WaterFeatures', IngroundSpa: 'WaterFeatures', OutdoorShower: 'WaterFeatures', Elevator: 'WholeHome', FireSuppressionSystem: 'WholeHome', ElectricVehicleChargingStation: 'WholeHome', SmartHomeSystem: 'WholeHome', IndoorFireplace: 'WholeHome', MultipleZoneHeatingVentilationAndAirConditioning: 'WholeHome', WholeHouseVentilation: 'WholeHome', WoodStove: 'WholeHome', Sauna: 'Miscellaneous', OutdoorRidingRing: 'Miscellaneous', Other: 'Miscellaneous' };
+  const CAT = { Fence: 'OutdoorAccessories', IrrigationSystem: 'OutdoorAccessories', OutdoorFireplace: 'OutdoorAccessories', OutdoorKitchen: 'OutdoorAccessories', SportsCourt: 'OutdoorAccessories', Deck: 'OutdoorLiving', Patio: 'OutdoorLiving', Porch: 'OutdoorLiving', Balcony: 'OutdoorLiving', Gazebo: 'OutdoorLiving', Portico: 'OutdoorLiving', IngroundPool: 'WaterFeatures', IngroundSpa: 'WaterFeatures', OutdoorShower: 'WaterFeatures', Elevator: 'WholeHome', FireSuppressionSystem: 'WholeHome', ElectricVehicleChargingStation: 'WholeHome', SmartHomeSystem: 'WholeHome', IndoorFireplace: 'WholeHome', MultipleZoneHeatingVentilationAndAirConditioning: 'WholeHome', WholeHouseVentilation: 'WholeHome', WoodStove: 'WholeHome', Sauna: 'WaterFeatures', OutdoorRidingRing: 'Miscellaneous', Other: 'Miscellaneous' };
   const amen = []; // {type, other, mat, area, count, photos, pool:[]}
   Lx.outdoorLiving.forEach(o => { const t = ['Porch', 'Patio', 'Deck', 'Balcony', 'Portico'].includes(o.type) ? o.type : 'Other'; amen.push({ type: t, other: t === 'Other' ? o.type : null, mat: o.material, photos: take(p => p.list === 'outdoorLiving' && p.item === o.id) }); });
-  Lx.waterFeatures.filter(w => !/^Above-ground/.test(w.type || '')).forEach(w => { const t = ['IngroundPool', 'IngroundSpa', 'OutdoorShower'].includes(w.type) ? w.type : 'Other'; const pf = ['IngroundPool', 'IngroundSpa'].includes(t) ? (w.feat || []).filter(f => ['Heated', 'Caged', 'Indoor'].includes(f)) : []; amen.push({ type: t, other: t === 'Other' ? w.type : null, photos: take(p => p.list === 'waterFeatures' && p.item === w.id), pool: pf, cat: 'WaterFeatures' }); });
+  Lx.waterFeatures.filter(w => !/^Above-ground/.test(w.type || '')).forEach(w => { const t = ['IngroundPool', 'IngroundSpa', 'OutdoorShower', 'Sauna'].includes(w.type) ? w.type : 'Other'; const pf = ['IngroundPool', 'IngroundSpa'].includes(t) ? (w.feat || []).filter(f => ['Heated', 'Caged', 'Indoor'].includes(f)) : []; amen.push({ type: t, other: t === 'Other' ? w.type : null, photos: take(p => p.list === 'waterFeatures' && p.item === w.id), pool: pf, cat: 'WaterFeatures' }); });
   const a = d.amenities; const hs = a.hardscape || [], od = a.outdoor || [], rec = a.rec || [], sm = d.systems.smart || [], ie = d.interior.intFeat || [], eff = d.systems.eff || [];
   if (hs.includes('Fencing') || (a.fenceMat || []).length) amen.push({ type: 'Fence', other: null, mat: { Wood: 'Wood', Vinyl: 'Vinyl', 'Wrought Iron': 'Metal', 'Chain Link': 'Metal', 'Block / Masonry': 'Concrete' }[(a.fenceMat || [])[0]] });
   if ((a.landSys || []).some(x => /Irrigation/.test(x))) amen.push({ type: 'IrrigationSystem' });
@@ -3418,7 +3485,7 @@ function buildMISMO(ins, imgName) {
   if (od.includes('Outdoor Kitchen') || od.includes('Built-in BBQ Area')) amen.push({ type: 'OutdoorKitchen' });
   if (rec.some(x => /Court/.test(x))) amen.push({ type: 'SportsCourt', count: rec.filter(x => /Court/.test(x)).length });
   if (od.includes('Gazebo') || hs.includes('Gazebo')) amen.push({ type: 'Gazebo' });
-  if (od.includes('Sauna')) amen.push({ type: 'Sauna' });
+  if (od.includes('Sauna') && !amen.some(x => x.type === 'Sauna')) amen.push({ type: 'Sauna' });
   if (od.includes('Outdoor Shower') && !amen.some(x => x.type === 'OutdoorShower')) amen.push({ type: 'OutdoorShower' });
   if (ie.includes('Elevator')) amen.push({ type: 'Elevator' });
   if (ie.includes('Fire Sprinklers')) amen.push({ type: 'FireSuppressionSystem' });
