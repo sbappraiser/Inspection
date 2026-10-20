@@ -373,6 +373,59 @@ html.testcopy .bar { border-bottom-color: #7b2cbf; }
 .blur-wrap canvas { touch-action: none; display: block; background: #000; }
 .app-ver{text-align:center;color:#8a8a8a;font-size:13px;margin:28px 0 12px}
 
+/* ---- 🚶 Walk-through (6w) ---- */
+.wk { display: flex; flex-direction: column; gap: 14px; }
+.wk-route { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+.wk-stop { flex: 0 0 auto; border: 2px solid #000; background: #fff; border-radius: 999px; padding: 8px 14px; font: 700 15px var(--font); color: #000; }
+.wk-stop.on { background: #000; color: #fff; }
+.wk-stop.part { border-color: var(--tangerine); }
+.wk-stop.done { background: var(--req); border-color: var(--go); }
+.wk-stop.on.done { background: #0a4d27; color: #fff; }
+.wk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.wk-head small { font: 700 13px var(--font); text-transform: uppercase; letter-spacing: .05em; color: #555; }
+.wk-head h2 { margin: 2px 0 0; font-size: 30px; line-height: 1.1; }
+.wk-big { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.wk-b { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 120px; border: 3px solid #000; border-radius: 16px; background: #fff; font: 700 20px var(--font); color: #000; }
+.wk-b svg { width: 46px; height: 46px; }
+.wk-b.cam { background: #fff3e0; } .wk-b.sk { background: #eef4ff; }
+.wk-b.mic.on { background: #e00000; color: #fff; border-color: #900; animation: wkpulse 1.4s infinite; }
+@keyframes wkpulse { 50% { box-shadow: 0 0 0 10px rgba(224,0,0,.18); } }
+.wk-interim { margin: -4px 0 0; padding: 10px 12px; border-radius: 10px; background: #fff7d6; border: 2px dashed #b38600; font-size: 17px; }
+.wk-shots, .wk-lv { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; } .wk-shots span, .wk-lv span { font-weight: 700; }
+.wchip { border: 2px solid #000; border-radius: 999px; background: #fff; padding: 7px 14px; font: 700 15px var(--font); color: #000; }
+.wchip.on { background: var(--tangerine); }
+.wk-check { border: 2px solid #000; border-radius: 12px; padding: 10px 14px; background: #fafafa; display: flex; flex-direction: column; gap: 4px; }
+.wk-need { font-size: 16px; } .wk-need.ph { font-weight: 700; } .wk-need.ok { color: #0a4d27; font-weight: 700; } .wk-need small { font-weight: 400; color: #555; }
+.wk-notes label { display: flex; flex-direction: column; gap: 4px; } .wk-notes textarea { width: 100%; font-size: 18px; min-height: 110px; }
+.wk-heard { margin-top: 6px; font-size: 15px; color: #0a4d27; }
+.wk-strip { margin-top: 0; }
+.wk-add { display: flex; flex-wrap: wrap; gap: 8px; } .wk-add .btn { font-size: 16px; } .wk-add select { max-width: 260px; }
+.wk-kids { display: flex; flex-wrap: wrap; gap: 8px; }
+.wk-back { align-self: flex-start; }
+.wk-foot { border-top: 2px solid #000; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+/* camera inside the app */
+.wcam { position: fixed; inset: 0; z-index: 9000; background: #000; color: #fff; }
+.wcam video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.wcam-top { position: absolute; left: 0; right: 0; top: 0; padding: calc(10px + env(safe-area-inset-top)) 14px 10px; background: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,0)); }
+.wcam-to { font-size: 19px; } .wcam-to b { color: #ffb25c; }
+.wcam-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.wcam-msg { position: absolute; left: 20px; right: 20px; top: 35%; background: #222; border: 2px solid #ffb25c; border-radius: 12px; padding: 16px; font-size: 17px; line-height: 1.4; }
+.wcam-bot { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 18px calc(18px + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-between; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.75)); }
+.wcam-shut { width: 88px; height: 88px; border-radius: 50%; border: 5px solid #fff; background: transparent; padding: 6px; }
+.wcam-shut span { display: block; width: 100%; height: 100%; border-radius: 50%; background: #fff; }
+.wcam-shut:active span { background: #ffb25c; }
+.wcam.nocam .wcam-shut { opacity: .25; }
+.wcam-ipad, .wcam-done { min-width: 130px; font-size: 18px; }
+.wcam-flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.wcam-flash.go { animation: wcflash .35s; } @keyframes wcflash { 0% { opacity: .8; } 100% { opacity: 0; } }
+/* on the sketch */
+.wsk-bar { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: row-reverse; justify-content: flex-start; gap: 8px; align-items: center; z-index: 30; flex-wrap: wrap; max-width: calc(100% - 20px); }
+.wsk-b { display: flex; flex-direction: column; align-items: center; width: 74px; height: 66px; border: 3px solid #000; border-radius: 14px; background: #fff; font: 700 13px var(--font); color: #000; justify-content: center; gap: 2px; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.wsk-b svg { width: 30px; height: 30px; } .wsk-b.on { background: #e00000; color: #fff; }
+.wsk-place { border: 3px solid #000; border-radius: 999px; background: #fff3e0; padding: 10px 16px; font: 600 16px var(--font); color: #000; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.wsk-interim { flex-basis: 100%; background: #fff7d6; border: 2px dashed #b38600; border-radius: 10px; padding: 6px 10px; font-size: 15px; max-width: 520px; }
+.wk-how { border: 2px solid #000; border-radius: 12px; padding: 8px 14px; background: #fffbe6; } .wk-how summary { font-weight: 700; cursor: pointer; } .wk-how ol { margin: 8px 0 4px; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+
 /* ---------- Sketch page ---------- */
 html, body { height: 100%; margin: 0; overscroll-behavior: none; }
 body { background: #fff; color: #000; font-family: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif; -webkit-user-select: none; user-select: none; }
@@ -445,7 +498,7 @@ html.testcopy .skbar, html.testcopy .bar { border-bottom-color: #7b2cbf; }
 </style></head><body>
 <div id="app"><p style="font:700 22px system-ui,sans-serif;padding:32px">Opening the sketch…</p></div>
 <script>
-const BUILD='6v-1019-1544';
+const BUILD='6w-1020-0028';
 const UAD={"RoomType":[["Bedroom","Bedroom"],["BreakfastRoom","Breakfast Room"],["Den","Den"],["DiningRoom","Dining Room"],["FamilyRoom","Family Room"],["FullBathroom","Bath - Full"],["HalfBathroom","Bath - Half"],["Kitchen","Kitchen"],["LaundryRoom","Laundry Room"],["LivingRoom","Living Room"],["Loft","Loft"],["MediaRoom","Media Room"],["Mudroom","Mudroom"],["RecreationRoom","Recreation Room"],["Sunroom","Sunroom"],["UtilityRoom","Utility Room"],["WalkInPantry","Walk-In Pantry"],["Workshop","Workshop"],["Other","Other"]],"AmenityType":[["Airstrip","Airstrip"],["Beach","Beach"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["BuildingMaintenance","Building Maintenance"],["BuiltInPool","Built-in Pool"],["BusinessCenter","Business Center"],["CaregiverServices","Caregiver Services"],["Clubhouse","Clubhouse"],["ClubMembership","Club Membership"],["CommunityPier","Community Pier"],["ConciergeServiceCoordination","Concierge Service Coordination"],["Cooling","Cooling"],["Deck","Deck"],["DoorAttendant","Door Attendant"],["ElectricVehicleChargingStation","EV Station"],["Elevator","Elevator"],["FitnessArea","Fitness Area"],["GatedCommunity","Gated Community"],["GroundsMaintenance","Grounds Maintenance"],["Heating","Heating"],["IngroundPool","Inground Pool"],["IngroundSpa","Inground Spa"],["Lobby","Lobby"],["None","None"],["OngoingCleaningServices","Ongoing Cleaning Services"],["OutdoorRidingRing","Outdoor Riding Ring"],["OutdoorShower","Outdoor Shower"],["Patio","Patio"],["Playground","Playground"],["RecreationArea","Recreation Area"],["RegistrationServices","Registration Services"],["Sauna","Sauna"],["SharedLaundryFacilities","Shared Laundry Facilities"],["ShortTermRentalServices","Short Term Rental Services"],["SportsCourt","Sports Court"],["TelevisionOrInternetServices","Television or Internet Services"],["TrashRemoval","Trash Removal"],["UnitStorage","Unit Storage"],["WaterAccess","Water Access"],["WaterFrontage","Water Frontage"],["Other","Other"],["Fence","Fence"],["IrrigationSystem","Irrigation System"],["OutdoorFireplace","Outdoor Fireplace"],["OutdoorKitchen","Outdoor Kitchen"],["Balcony","Balcony"],["Gazebo","Gazebo"],["Porch","Porch"],["Portico","Portico"],["FireSuppressionSystem","Fire Suppression System"],["IndoorFireplace","Indoor Fireplace"],["MultipleZoneHeatingVentilationAndAirConditioning","Multi-Zone HVAC"],["SmartHomeSystem","Smart Home System"],["WholeHouseVentilation","Whole House Ventilation"],["WoodStove","Wood Stove"]],"FlooringType":[["Carpet","Carpet"],["CeramicTile","Ceramic Tile"],["EngineeredWood","Engineered Wood"],["FinishedConcrete","Finished Concrete"],["Hardwood","Hardwood"],["Laminate","Laminate"],["Marble","Marble"],["SubflooringOnly","Subflooring Only"],["Vinyl","Vinyl"],["Other","Other"]],"ViewType":[["Bay","Bay"],["Canal","Canal"],["CityStreet","City Street"],["Commercial","Commercial"],["Cove","Cove"],["Creek","Creek"],["GolfCourse","Golf Course"],["Gulf","Gulf"],["HighDensityResidential","High Density Residential"],["Highway","Highway"],["Industrial","Industrial"],["Lake","Lake"],["Marsh","Marsh"],["Mountain","Mountain"],["Ocean","Ocean"],["Park","Park"],["ParkingLot","Parking Lot"],["Pastoral","Pastoral"],["Pond","Pond"],["Reservoir","Reservoir"],["Residential","Residential"],["River","River"],["School","School"],["Skyline","Skyline"],["Sound","Sound"],["TrafficWallBarriers","Traffic Wall Barriers"],["Valley","Valley"],["Woods","Woods"],["Other","Other"]],"SiteInfluenceType":[["Agricultural","Agricultural"],["Airport","Airport"],["BusyRoadway","Busy Roadway"],["CommercialArea","Commercial Area"],["GolfCourse","Golf Course"],["GreenSpace","Green Space"],["HighDensityResidential","High Density Residential"],["HighPressureGasLine","High Pressure Gas Line"],["HistoricDistrict","Historic District"],["IndustrialArea","Industrial Area"],["LocalDistributionLine","Local Distribution Line"],["OilOrGasWell","Oil or Gas Well"],["OverheadElectricPowerTransmissionLine","Overhead Electric Power Transmission Line"],["Park","Park"],["PublicTransportationHub","Public Transportation Hub"],["RailLine","Rail Line"],["Residential","Residential"],["School","School"],["StormwaterRetention","Stormwater Retention"],["BodyOfWater","Body Of Water"],["Other","Other"]],"SiteFeatureType":[["None","None"],["CoastalBarrierResourcesSystem","Coastal Barrier Resources System"],["Drainage","Drainage"],["ExcessLand","Excess Land"],["Landlocked","Landlocked"],["Landscaping","Landscaping"],["RoadFrontage","Road Frontage"],["Shape","Shape"],["SoilSuitability","Soil Suitability"],["SurplusLand","Surplus Land"],["Topography","Topography"],["Wetlands","Wetlands"],["ZeroLotLine","Zero Lot Line"],["Other","Other"]],"TopographyType":[["Flat","Flat"],["Rocky","Rocky"],["Rolling","Rolling"],["Sloping","Sloping"],["Other","Other"]],"ArchitecturalDesignCategoryType":[["AFrame","A-Frame"],["Barn","Barn"],["BiLevel","Bi-Level"],["Bungalow","Bungalow"],["CapeCod","Cape Cod"],["Chalet","Chalet"],["Colonial","Colonial"],["Contemporary","Contemporary"],["Cottage","Cottage"],["Craftsman","Craftsman"],["EarthBerm","Earth / Berm"],["Farmhouse","Farmhouse"],["GeodesicDome","Geodesic Dome"],["Georgian","Georgian"],["Log","Log"],["Mediterranean","Mediterranean"],["Modern","Modern"],["NeoEclectic","Neo-Eclectic"],["RaisedRanch","Raised Ranch"],["Rambler","Rambler"],["Ranch","Ranch"],["Southwest","Southwest"],["Spanish","Spanish"],["SplitFoyerOrEntry","Split Foyer or Entry"],["SplitLevel","Split Level"],["Stilt","Stilt"],["Traditional","Traditional"],["Tudor","Tudor"],["Victorian","Victorian"],["Other","Other"]],"WallMaterialType":[["Adobe","Adobe"],["Aluminum","Aluminum"],["Asbestos","Asbestos"],["Brick","Brick"],["CementBoard","Cement Board"],["ConcreteBlock","Concrete Block"],["EngineeredWood","Engineered Wood"],["Glass","Glass"],["Log","Log"],["PouredConcrete","Poured Concrete"],["Steel","Steel"],["Stone","Stone"],["Stucco","Stucco"],["SyntheticStone","Synthetic Stone"],["SyntheticStucco","Synthetic Stucco"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"RoofMaterialType":[["Asbestos","Asbestos"],["Asphalt","Asphalt"],["CeramicTile","Ceramic Tile"],["Clay","Clay"],["Composition","Composition"],["Concrete","Concrete"],["Copper","Copper"],["Metal","Metal"],["Rubber","Rubber"],["Slate","Slate"],["SolarShingles","Solar Shingles"],["Synthetic","Synthetic"],["TarAndGravel","Tar / Gravel"],["Wood","Wood"],["Other","Other"]],"FoundationType":[["Basement","Basement"],["CrawlSpace","Crawl Space"],["PostAndPier","Post and Pier"],["Runner","Runner"],["Slab","Slab"],["Other","Other"]],"FoundationMaterialType":[["Brick","Brick"],["ConcreteBlock","Concrete Block"],["Metal","Metal"],["PouredConcrete","Poured Concrete"],["Stone","Stone"],["Wood","Wood"],["Other","Other"]],"HeatingSystemType":[["Baseboard","Baseboard"],["Fireplace","Fireplace"],["ForcedWarmAir","Forced Warm Air"],["GravityAir","Gravity Air"],["MiniSplit","Mini Split"],["None","None"],["PassiveSolar","Passive Solar"],["Radiant","Radiant"],["Radiators","Radiators"],["Stove","Stove"],["Other","Other"]],"HeatingFuelType":[["Coal","Coal"],["Electric","Electric"],["Geothermal","Geothermal"],["NaturalGas","Natural Gas"],["Oil","Oil"],["Propane","Propane"],["Solar","Solar"],["Wood","Wood"],["Other","Other"]],"CoolingSystemType":[["Centralized","Centralized"],["Individual","Individual"],["Other","Other"]],"MechanicalSystemType":[["RadonMitigation","Radon Mitigation"],["SumpPump","Sump Pump"],["WaterHeater","Water Heater"],["WholeHouseWaterTreatment","Whole House Water Treatment"],["Other","Other"]],"CarStorageType":[["Carport","Carport"],["CommonCarport","Common Carport"],["Driveway","Driveway"],["Garage","Garage"],["OpenLot","Open Lot"],["ParkingGarage","Parking Garage"],["SharedDriveway","Shared Driveway"],["None","None"],["Other","Other"]],"CarStorageAttachmentType":[["Attached","Attached"],["BuiltIn","Built-in"],["Detached","Detached"]],"ImprovedSurfaceMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Cobblestone","Cobblestone"],["Concrete","Concrete"],["Dirt","Dirt"],["Gravel","Gravel"],["Other","Other"]],"OutbuildingType":[["Barn","Barn"],["Boathouse","Boathouse"],["Bunkhouse","Bunkhouse"],["EnclosedKennel","Enclosed Kennel"],["Greenhouse","Greenhouse"],["GuestHouse","Guest House"],["IndoorRidingArena","Indoor Riding Arena"],["ManufacturedHome","Manufactured Home"],["Office","Office"],["PoolHouse","Pool House"],["Shed","Shed"],["Silo","Silo"],["Stable","Stable"],["StandaloneADU","Standalone ADU"],["Studio","Studio"],["Workshop","Workshop"],["Other","Other"]],"FunctionalIssueType":[["CeilingHeight","Ceiling Height"],["FloorPlan","Floor Plan"],["NonConformity","Nonconformity"],["None","None"],["Overimprovement","Overimprovement"],["Underimprovement","Underimprovement"],["Other","Other"]],"DisasterMitigationFeatureType":[["EnclosedSoffits","Enclosed Soffits"],["FireResistantDecking","Fire Resistant Decking"],["FireResistantExteriorWalls","Fire Resistant Exterior Walls"],["FloodVents","Flood Vents"],["FortifiedRoof","Fortified Roof"],["FramingAnchorageOrBracing","Framing Anchorage or Bracing"],["ImpactResistantGlass","Impact Resistant Glass"],["ImpactResistantShingles","Impact Resistant Shingles"],["NoncombustiblePerimeter","Noncombustible Perimeter"],["None","None"],["StormShelter","Storm Shelter"],["StormShutters","Storm Shutters"],["WaterHeaterStrapping","Water Heater Strapping"],["Other","Other"]],"RenewableEnergyComponentType":[["Geothermal","Geothermal"],["Solar","Solar"],["WindTurbine","Wind Turbine"],["Other","Other"]],"RenewableEnergyComponentOwnershipType":[["Leased","Leased"],["Owned","Owned"],["PowerPurchaseAgreement","Power Purchase Agreement"],["Other","Other"]],"CeilingStyleType":[["Barrel","Barrel"],["Beams","Beams"],["Cathedral","Cathedral"],["Coffered","Coffered"],["Drop","Drop"],["Flat","Flat"],["Tray","Tray"],["Vaulted","Vaulted"],["Other","Other"]],"ApproximateCeilingHeightType":[["EightFeet","8 Ft."],["LessThanSevenFeet","Less than 7 feet"],["NineFeet","9 Ft."],["SevenFeet","7 Ft."],["TenFeetAndAbove","10 or more feet"],["TwoOrMoreStories","2 or more stories"]],"RoomUpdateStatusType":[["FullyUpdated","Fully Updated"],["NotUpdated","Not Updated"],["PartiallyUpdated","Partially Updated"]],"RoomUpdatedTimeframeType":[["FiveToTenYears","5-10 years"],["LessThanOneYear","Less than 1 year"],["OneToFiveYears","1-5 years"],["TenOrMoreYears","10 or more years"]],"RoomConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["TypicalWearAndTear","Typical Wear and Tear"]],"DefectComponentLabelType":[["ExteriorWallsAndTrim","Exterior Walls and Trim"],["Foundation","Foundation"],["MechanicalSystem","Mechanical System"],["Roof","Roof"],["Windows","Windows"],["Other","Other"],["Flooring","Flooring"],["WallsAndCeiling","Walls and Ceiling"]],"DefectItemRecommendedActionType":[["Completion","Completion"],["Inspection","Inspection"],["None","None"],["Repair","Repair"]],"LevelType":[["BelowGradeFive","Level B5"],["BelowGradeFour","Level B4"],["BelowGradeOne","Level B1"],["BelowGradeThree","Level B3"],["BelowGradeTwo","Level B2"],["LevelEight","Level 8"],["LevelFive","Level 5"],["LevelFour","Level 4"],["LevelNine","Level 9"],["LevelOne","Level 1"],["LevelSeven","Level 7"],["LevelSix","Level 6"],["LevelTen","Level 10"],["LevelThree","Level 3"],["LevelTwo","Level 2"]],"GradeLevelType":[["AboveGrade","Above Grade"],["FullyBelowGrade","Below Grade"],["PartiallyBelowGrade","Partially Below Grade"]],"AccessType":[["ExteriorAccessOnly","Exterior Access Only"],["InteriorAccessOnly","Interior Access Only"],["InteriorAndExteriorAccess","Interior and Exterior Access"]],"UnitOccupancyType":[["OwnerOccupied","Owner"],["Tenant","Tenant"],["Vacant","Vacant"]],"AmenityMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Composite","Composite"],["Concrete","Concrete"],["Fiberglass","Fiberglass"],["Metal","Metal"],["NaturalStone","Natural Stone"],["Pavers","Pavers"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"HazardZoneType":[["FEMASpecialFloodHazardArea","FEMA Special Flood Hazard Area"],["None","No Hazard Zone Noted"],["USGSLavaFlowZone","USGS Lava Flow Zone"],["Other","Other"]],"AccessibilityFeatureType":[["Appliances","Appliances"],["Auditory","Auditory"],["Bathtub","Bathtub"],["Cabinets","Cabinets"],["Counters","Counters"],["Doorways","Doorways"],["ElectricalSwitches","Electrical Switches"],["GrabBars","Grab Bars"],["Handrails","Handrails"],["Hardware","Hardware"],["Lighting","Lighting"],["None","None"],["Ramps","Ramps"],["Shower","Shower"],["Sink","Sink"],["Toilet","Toilet"],["Other","Other"]],"ValueMarketabilityImpactType":[["Adverse","Adverse"],["Beneficial","Beneficial"],["Neutral","Neutral"]],"ViewRangeType":[["Full","Full"],["Partial","Partial"],["Seasonal","Seasonal"],["Other","Other"]],"SiteInfluenceProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"StreetAccessType":[["Alley","Alley"],["Arterial","Arterial Street"],["Collector","Collector Street"],["CulDeSac","Cul-de-sac"],["DeadEnd","Dead End"],["Local","Local Road"],["Rural","Rural Road"],["Other","Other"]],"PropertyPrimaryEntryExitMethodType":[["PedestrianOnlyAccess","Pedestrian Only Access"],["PrivateAirstrip","Private Airstrip"],["PrivateStreet","Private Street"],["PublicStreet","Public Street"],["Waterway","Waterway"],["Other","Other"]],"ConstructionMethodType":[["Container","Container"],["Manufactured","Manufactured"],["Modular","Modular"],["OnFrameModular","On-Frame Modular"],["SiteBuilt","Site Built"],["ThreeDimensionalPrintingTechnology","3D Technology"],["Other","Other"]],"AttachmentType":[["Attached","Attached"],["Detached","Detached"]],"FrontDoorApproximateElevationRangeType":[["EightToNineFeet","8-9 Ft."],["FiveToSixFeet","5-6 Ft."],["FourToFiveFeet","4-5 Ft."],["GroundLevel","Ground Level"],["NineToTenFeet","9-10 Ft."],["OneToTwoFeet","1-2 Ft."],["SevenToEightFeet","7-8 Ft."],["SixToSevenFeet","6-7 Ft."],["TenOrMoreFeet","10 or more feet"],["ThreeToFourFeet","3-4 Ft."],["TwoToThreeFeet","2-3 Ft."],["UpToOneFoot","Up to 1 foot"]],"ImprovementComponentConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["NoFinish","No Finish"],["TypicalWearAndTear","Typical Wear and Tear"]],"OverallBathroomsUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"OverallFlooringUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"BelowGradeExteriorAccessType":[["CellarDoor","Cellar Door"],["WalkOut","Walk Out"],["WalkUp","Walk Up"],["Other","Other"]],"EnvironmentalConditionType":[["HazardousAboveGroundStorageTank","Hazardous Above Ground Storage Tank"],["HazardousSubstances","Hazardous Substances"],["Landfill","Landfill"],["None","None"],["Radon","Radon"],["SlushPit","Slush Pit"],["SoilContamination","Soil Contamination"],["SuperfundSite","Superfund Site"],["UndergroundStorageTank","Underground Storage Tank"],["WaterContamination","Water Contamination"],["Other","Other"]],"ConvertedAreaOriginalUseType":[["Garage","Garage"],["Patio","Patio"],["Porch","Porch"],["Other","Other"]],"ConvertedAreaFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"RoofEstimatedAgeRangeType":[["LessThanOneYear","Less than 1 year"],["OneToTenYears","1-10 years"],["TenToTwentyYears","10-20 years"],["TwentyOrMoreYears","20 or more years"]],"SewerSystemType":[["Cesspool","Cesspool"],["Septic","Septic"],["Other","Other"]],"WaterSourceType":[["Cistern","Cistern"],["HauledWaterHoldingTank","Hauled Water Holding Tank"],["LakeOrSpring","Lake or Spring"],["Well","Well"],["Other","Other"]],"WaterWellType":[["Artesian","Artesian"],["Drilled","Drilled"],["Dug","Dug"],["Other","Other"]],"BodyOfWaterType":[["Bay","Bay"],["Canal","Canal"],["Cove","Cove"],["Creek","Creek"],["Gulf","Gulf"],["Lake","Lake"],["Marsh","Marsh"],["Ocean","Ocean"],["Pond","Pond"],["Reservoir","Reservoir"],["River","River"],["Sound","Sound"],["Other","Other"]],"WaterfrontFeatureType":[["Beach","Beach"],["BoatLift","Boat Lift"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["Dock","Dock"],["None","None"],["Pier","Pier"],["Riprap","Riprap"],["SeawallOrBulkhead","Seawall or Bulkhead"],["Other","Other"]],"WaterAccessRightType":[["Deeded","Deeded Access"],["Permitted","By Permit"],["PrivatelyOwned","Privately Owned"],["Other","Other"]],"WaterAccessDepthType":[["DeepWater","Deep Water"],["NonNavigable","Non-Navigable"],["ShallowWater","Shallow Water"],["Other","Other"]],"BodyOfWaterProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"UnitBelowGradeFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"EncroachmentType":[["Building","Building"],["Driveway","Driveway"],["Fence","Fence"],["Overhang","Overhang"],["Other","Other"]],"EasementType":[["Conservation","Conservation"],["Drainage","Drainage"],["IngressOrEgress","Ingress / Egress"],["Utility","Utility"],["Other","Other"]],"RestrictionType":[["Age","Age"],["HistoricPreservation","Historic Preservation"],["Income","Income"],["LandUse","Land Use"],["Rental","Rental"],["SalePrice","Sale Price"],["Other","Other"]],"SiteZoningComplianceType":[["Illegal","Illegal"],["Legal","Legal"],["LegalNonConforming","Legal Nonconforming"],["NoZoning","No Zoning"]],"PropertyEstateType":[["FeeSimple","Fee Simple"],["Leasehold","Leasehold"],["Other","Other"]],"StructuralDesignType":[["Highrise","High-rise"],["Lowrise","Low-rise"],["Midrise","Mid-rise"],["RowhouseTownhouse","Rowhouse / Townhouse"],["SemiDetached","Semi-Detached"],["Other","Other"]],"SwimmingPoolFeatureType":[["Caged","Caged"],["Heated","Heated"],["Indoor","Indoor"],["Other","Other"]],"SiteDrainageReasonType":[["EvidenceOfErosion","Evidence of Erosion"],["ImproperGrading","Improper Grading"],["StandingWater","Standing Water"],["Other","Other"]]};
 
 /* ============================================================
@@ -2272,7 +2325,9 @@ function dimText(a, p, q, hi, i) {
   if (a.closed && a.pts.length > 2) { const tp = toFt(mx + nx * 6, my + ny * 6); if (inPoly(tp, shape(a))) { nx = -nx; ny = -ny; } if ([10, 18, 26].some(k => inNeighbour(a, toFt(mx + nx * k, my + ny * k)))) { nx = -nx; ny = -ny; } }
   let ang = Math.atan2(Y2 - Y1, X2 - X1); if (ang > Math.PI / 2 || ang < -Math.PI / 2) ang += Math.PI;
   ctx.save(); ctx.translate(mx + nx * 12, my + ny * 12); ctx.rotate(ang); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.font = `${hi ? 700 : 500} ${(hi ? 15 : 12) * DS()}px system-ui,sans-serif`; ctx.fillStyle = hi ? '#c75b00' : '#333'; ctx.fillText(r1(L).toFixed(1) + "'", 0, 0); ctx.restore();
+  const calc = a.calc && a.calc[i], ins = a.inside && a.inside[i];
+  ctx.font = `${hi ? 700 : 500} ${(hi ? 15 : 12) * DS()}px system-ui,sans-serif`; ctx.fillStyle = hi ? '#c75b00' : calc ? '#1e5bd8' : '#333'; ctx.fillText((calc ? '≈ ' : '') + r1(L).toFixed(1) + "'" + (calc ? ' calc' : '') + (ins ? ' (in)' : ''), 0, 0); ctx.restore();
+  if (calc) { ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#1e5bd8'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(X1, Y1); ctx.lineTo(X2, Y2); ctx.stroke(); ctx.restore(); }
 }
 
 /* ---------- hit testing ---------- */
@@ -2349,12 +2404,37 @@ function addWall(dx, dy) {
   const a = curArea(); if (!a) return toast('Tap “New area” first');
   const L = parseFloat(SK.entry); if (!(L > 0)) return toast('Type the wall length first');
   const len = Math.hypot(dx, dy); const last = a.pts[a.pts.length - 1];
-  pushUndo(); a.pts.push([r3(last[0] + dx / len * L), r3(last[1] + dy / len * L)]); SK.entry = ''; SK.angle = null;
+  pushUndo(); const add = SK.insideOn ? 2 * wallT() : 0; if (add) { a.inside = a.inside || {}; a.inside[a.pts.length - 1] = true; }
+  a.pts.push([r3(last[0] + dx / len * (L + add)), r3(last[1] + dy / len * (L + add))]); SK.entry = ''; SK.angle = null;
+  if (add) toast(`Measured inside ${L.toFixed(1)}' + 2 walls of ${Math.round(wallT() * 12)} in = ${(L + add).toFixed(1)}'`);
   if (a.pts.length >= 4 && Math.hypot(a.pts[a.pts.length - 1][0] - a.pts[0][0], a.pts[a.pts.length - 1][1] - a.pts[0][1]) < 0.06) { a.pts.pop(); finishArea(true); return; }
   markDirty(); draw(); renderPanel();
 }
 function angleWall() { const deg = SK.angle; if (deg === null || isNaN(deg)) return; const t = deg * Math.PI / 180; addWall(Math.cos(t), -Math.sin(t)); }
-function closeArea() { const a = curArea(); if (!a) return; if (a.pts.length < 3) return toast('Draw at least two walls first'); pushUndo(); finishArea(true); }
+function closeArea() { const a = curArea(); if (!a) return; if (a.pts.length < 3) return toast('Draw at least two walls first'); pushUndo();
+  const f = a.pts[0], l = a.pts[a.pts.length - 1]; if (Math.hypot(f[0] - l[0], f[1] - l[1]) > 0.05) { a.calc = a.calc || {}; a.calc[a.pts.length - 1] = true; }
+  finishArea(true); }
+const wallT = () => (SK.lib && SK.lib.wallT) || 0.5;   // her exterior wall thickness in feet (6 in. unless she changes it)
+/* the last one or two walls she could not measure (gate, wall, hedge): square corner + closing wall, both marked "calculated" */
+function closeSquare() { const a = curArea(); if (!a) return; if (a.pts.length < 3) return toast('Draw at least two walls first');
+  const n = a.pts.length, f = a.pts[0], l = a.pts[n - 1], p = a.pts[n - 2]; const dx = f[0] - l[0], dy = f[1] - l[1];
+  if (Math.hypot(dx, dy) < 0.05) return closeArea();
+  pushUndo(); a.calc = a.calc || {};
+  if (Math.abs(dx) < 0.05 || Math.abs(dy) < 0.05) { a.calc[n - 1] = true; setTimeout(() => toast('One wall filled in – marked “calc”. Check it with your tape.'), 2700); return finishArea(true); }
+  const lastHoriz = Math.abs(l[0] - p[0]) >= Math.abs(l[1] - p[1]);   // turn 90° from the last wall …
+  const back = (u, v) => { const cr = u[0] * v[1] - u[1] * v[0], dt = u[0] * v[0] + u[1] * v[1]; return Math.abs(cr) < 1e-6 * (Math.hypot(...u) * Math.hypot(...v) + 1) && dt < 0; };
+  const sub = (x, y) => [x[0] - y[0], x[1] - y[1]], f1 = a.pts[1];
+  const ok = c => !back(sub(c, l), sub(l, p)) && !back(sub(f, c), sub(f1, f));   // … unless that doubles back along a wall already drawn
+  const cA = lastHoriz ? [l[0], f[1]] : [f[0], l[1]], cB = lastHoriz ? [f[0], l[1]] : [l[0], f[1]];
+  const c = ok(cA) || !ok(cB) ? cA : cB;
+  const k = a.pts.length; a.pts.push([r3(c[0]), r3(c[1])]); a.calc[k - 1] = true; a.calc[k] = true;
+  setTimeout(() => toast('Two walls filled in at a square corner – marked “calc”. Check them with your tape.'), 2700); finishArea(true); }
+/* she hit a gate: keep drawing from the corner where she started */
+function flipEnds() { const a = curArea(); if (!a || a.pts.length < 2) return toast('Draw a wall first'); pushUndo(); const n = a.pts.length; a.pts.reverse();
+  const remap = o => { if (!o) return o; const r = {}; Object.keys(o).forEach(i => { const j = n - 2 - +i; if (j >= 0) r[j] = o[i]; }); return r; };
+  if (a.arcs) { const r = remap(a.arcs); Object.values(r).forEach(v => { if (v && v.side) v.side = v.side === 'L' ? 'R' : 'L'; }); a.arcs = r; }
+  a.calc = remap(a.calc); a.inside = remap(a.inside); SK.entry = ''; SK.dial = null;
+  toast('Now drawing from your starting corner – go the other way'); markDirty(); draw(); renderPanel(); }
 function finishArea(closed) {
   const a = curArea(); if (!a) return; a.closed = closed && a.pts.length >= 3;
   if (a.pts.length < 2) SK.sk.areas = SK.sk.areas.filter(x => x !== a);
@@ -2369,13 +2449,13 @@ function backspace() {
   if (!a && SK.sel && SK.sel.type === 'area') { a = SK.sk.areas.find(x => x.id === SK.sel.id); if (a) { pushUndo(); a.closed = false; SK.drawId = a.id; SK.mode = 'draw'; SK.sel = null; toast('Area reopened – keep pressing ⌫ to remove walls'); markDirty(); draw(); renderPanel(); return; } }
   if (!a) return toast('Nothing to remove');
   pushUndo();
-  if (a.closed) a.closed = false; else if (a.pts.length > 1) { a.pts.pop(); if (a.arcs) { delete a.arcs[a.pts.length - 1]; delete a.arcs[a.pts.length]; } } else { SK.sk.areas = SK.sk.areas.filter(x => x !== a); SK.drawId = null; SK.mode = 'select'; toast('Area removed'); }
+  if (a.closed) a.closed = false; else if (a.pts.length > 1) { a.pts.pop(); ['arcs', 'calc', 'inside'].forEach(k => { if (a[k]) { delete a[k][a.pts.length - 1]; delete a[k][a.pts.length]; } }); } else { SK.sk.areas = SK.sk.areas.filter(x => x !== a); SK.drawId = null; SK.mode = 'select'; toast('Area removed'); }
   markDirty(); draw(); renderPanel();
 }
 function setWallLength(a, i, L) {
   const n = a.pts.length; if (a.closed && i === n - 1) return toast('The closing wall adjusts by itself – change the other walls');
   const p = a.pts[i], q = a.pts[i + 1]; const cur = wallLen(p, q); if (!(L > 0) || cur < 1e-6) return;
-  pushUndo(); const dx = (q[0] - p[0]) * (L / cur - 1), dy = (q[1] - p[1]) * (L / cur - 1);
+  pushUndo(); if (a.calc) delete a.calc[i]; const dx = (q[0] - p[0]) * (L / cur - 1), dy = (q[1] - p[1]) * (L / cur - 1);
   for (let j = i + 1; j < n; j++) a.pts[j] = [r3(a.pts[j][0] + dx), r3(a.pts[j][1] + dy)];
   markDirty(); draw(); renderPanel();
 }
@@ -2642,11 +2722,13 @@ function renderPanel() {
   else if (SK.mode === 'uscale') ctxHtml = `<div class="ctx"><b>Set the scale:</b> ${SK.us && SK.us.a ? 'now tap the other end.' : 'tap one end of the scale bar, or of a wall whose length is printed on the plan.'} <button class="btn sm" id="skCancelLabel">Cancel</button></div>`;
   else if (SK.mode === 'umove') ctxHtml = `<div class="ctx"><b>Move the floor plan:</b> drag it until it lines up with your walls. <button class="btn primary sm" id="skCancelLabel">Done</button></div>`;
   else if (SK.mode === 'label') ctxHtml = `<div class="ctx"><b>Tap where “${esc(SK.pendingLabel.text)}” goes.</b> <button class="btn sm" id="skCancelLabel">Cancel</button></div>`;
-  else if (a) ctxHtml = `<div class="ctx"><b>Drawing: ${esc(a.name || defOf(a.def).name)}</b> · ${a.pts.length - 1} wall${a.pts.length === 2 ? '' : 's'} · type a length + arrow, drag from the orange point, or tap a blue dot to line up with another corner. Tap the green start to close.${a.pts.length >= 2 ? ' <button class="btn sm" id="skCurveLast">⌒ Curve last wall</button>' : ''}</div>`;
+  else if (a) ctxHtml = `<div class="ctx"><b>Drawing: ${esc(a.name || defOf(a.def).name)}</b> · ${a.pts.length - 1} wall${a.pts.length === 2 ? '' : 's'} · type a length + arrow, drag from the orange point, or tap a blue dot to line up with another corner. Tap the green start to close.${a.pts.length >= 2 ? ' <button class="btn sm" id="skCurveLast">⌒ Curve last wall</button> <button class="btn sm" id="skFlip" title="Blocked by a gate or wall? Keep going from your starting corner">⇄ Other end</button>' : ''}${a.pts.length >= 3 ? ' <button class="btn sm" id="skSquare" title="Fill the last one or two walls you could not measure (square corner)">⌐ Fill missing walls</button>' : ''}
+      <button class="btn sm ${SK.insideOn ? 'primary' : ''}" id="skInside" title="The next walls were measured inside: two wall thicknesses are added">${SK.insideOn ? `✓ Measured inside (+${Math.round(wallT() * 12)} in × 2)` : 'Measured inside?'}</button>${SK.insideOn ? '<button class="btn sm" id="skWallT">wall thickness</button>' : ''}</div>`;
   else if (sel && sel.type === 'wall') { const ar = SK.sk.areas.find(x => x.id === sel.id); const ws = walls(ar).find(w => w[0] === sel.i); const L = ws ? r1(wallLen(ws[1], ws[2])) : 0; const closing = ar.closed && sel.i === ar.pts.length - 1;
     ctxHtml = `<div class="ctx"><b>Wall: ${L.toFixed(1)} ft</b>${closing ? ' · closing wall (adjusts by itself)' : ''} of ${esc(ar.name || defOf(ar.def).name)}
       ${closing ? '' : `<label class="inl">New length <input id="skWallLen" class="txt num" inputmode="decimal" value="${L.toFixed(1)}"></label><button class="btn primary sm" id="skWallSet">Apply</button>`}
-      <button class="btn sm" id="skCurve">⌒ ${ar.arcs && ar.arcs[sel.i] ? 'Edit curve' : 'Curve this wall'}</button><button class="btn sm" id="skWallArea">Select the area</button></div>`; }
+      <button class="btn sm" id="skCurve">⌒ ${ar.arcs && ar.arcs[sel.i] ? 'Edit curve' : 'Curve this wall'}</button><button class="btn sm" id="skWallArea">Select the area</button>${ar.closed ? '' : '<button class="btn primary sm" id="skContinue">✎ Continue drawing this area</button>'}
+      ${ar.calc && ar.calc[sel.i] ? '<span class="help">≈ calculated, not measured. <button class="btn sm" id="skCalcOk">I measured it</button></span>' : ''}</div>`; }
   else if (sel && sel.type === 'all') ctxHtml = `<div class="ctx"><b>Turn the whole sketch</b> (all levels, labels and symbols) <div class="nmpos">${rotBar('all')}<button class="btn primary sm" id="rotDone">Done</button></div></div>`;
   else if (sel && sel.type === 'area') { const ar = SK.sk.areas.find(x => x.id === sel.id); const C = computeAreas(); const d = defOf(ar.def);
     ctxHtml = `<div class="ctx"><b>${esc(ar.name || d.name)}</b> · ${Math.round(C.net.get(ar.id) || 0).toLocaleString()} sf${C.net.get(ar.id) !== C.gross.get(ar.id) ? ` net (${Math.round(C.gross.get(ar.id)).toLocaleString()} gross)` : ''} · ${esc(BUCKETS[d.bucket].l)}
@@ -2733,6 +2815,11 @@ function renderPanel() {
     }
   on('skCurve', () => startCurve(SK.sk.areas.find(x => x.id === sel.id), sel.i));
   on('skCurveLast', () => { const ca = curArea(); startCurve(ca, ca.pts.length - 2); });
+  on('skFlip', flipEnds); on('skSquare', closeSquare);
+  on('skInside', () => { SK.insideOn = !SK.insideOn; renderPanel(); toast(SK.insideOn ? `Inside measurements: ${Math.round(wallT() * 24)} in added to each wall until you turn it off` : 'Back to outside measurements'); });
+  on('skWallT', () => askNumber('Wall thickness (inches)', 'Added at each end of a wall you measured inside. Stucco on wood frame is about 6 in.', String(Math.round(wallT() * 12)), v => { if (v > 0 && v < 30) { SK.lib.wallT = v / 12; saveLib(); renderPanel(); } }));
+  on('skContinue', () => { const ar = SK.sk.areas.find(x => x.id === sel.id); SK.drawId = ar.id; SK.mode = 'draw'; SK.sel = null; toast('Keep drawing from the orange end – ⇄ Other end switches ends'); draw(); renderPanel(); });
+  on('skCalcOk', () => { const ar = SK.sk.areas.find(x => x.id === sel.id); pushUndo(); delete ar.calc[sel.i]; markDirty(); draw(); renderPanel(); });
   if (SK.dial) wireDial(el); if (SK.curve) wireCurve(el);
   renderLevels();
 }
@@ -3101,6 +3188,195 @@ const skWatch = setTimeout(() => { if (!document.getElementById('skCanvas')) skF
   if (!DB.persistent) toast('Warning: this page cannot save to the iPad. Open the app from its Home Screen icon.');
   if (SK.sk.view && SK.sk.view.s) { SK.view = SK.sk.view; draw(); } else { fitView(); draw(); }
 })().catch(e => skFatal(e.message || String(e)));
+
+/* =====================================================================
+   Walk-through (6w, Oct 2026) – shared by the inspection page and the sketch page.
+   WCAM: a camera inside the app (the iPad camera app would take the microphone away), shutter as often as she likes,
+         "iPad camera" fallback when the in-app camera is not allowed.
+   WSR:  listening. Safari's speech recognition stops after pauses and sometimes never marks a result final, so
+         a pause of 2 s commits what was heard and listening restarts by itself while it is on.
+   ===================================================================== */
+const WK_COLON = /\s*\b(?:colon|colin|collin|cologne|coal in)\b\s*[:.]?/gi;
+function wkClean(t) {
+  let s = String(t || '');
+  try { if (typeof dkTeachApply === 'function') s = dkTeachApply(s); else { const L = JSON.parse(localStorage.getItem('uad-dk-teach') || '[]'); (L || []).forEach(x => { if (x && x.heard) s = s.replace(new RegExp('\\b' + x.heard.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi'), x.meant || ''); }); } } catch (e) {}
+  return s.replace(WK_COLON, ': ').replace(/\s+:/g, ':').replace(/:\s*/g, ': ').replace(/\s{2,}/g, ' ').trim();
+}
+
+/* ---------------- camera ---------------- */
+const WCAM = { stream: null, el: null, o: null, n: 0, busy: false };
+const wcamIsOpen = () => !!WCAM.el;
+async function wcamOpen(o) {   // o: { to(): label, chips(): [{k, t, on}], onChip(k), onShot(file) -> Promise, onClose() }
+  wcamClose(true); WCAM.o = o; WCAM.n = 0;
+  const el = document.createElement('div'); el.className = 'wcam'; el.innerHTML = `
+    <video playsinline muted autoplay></video>
+    <div class="wcam-top"><div class="wcam-to">Photo goes to: <b class="wcam-lbl"></b></div><div class="wcam-chips"></div></div>
+    <div class="wcam-msg" hidden></div>
+    <div class="wcam-bot">
+      <label class="btn wcam-ipad">iPad camera<input type="file" accept="image/*" capture="environment" hidden></label>
+      <button class="wcam-shut" aria-label="Take the photo"><span></span></button>
+      <button class="btn primary wcam-done">Done <small class="wcam-n"></small></button>
+    </div><div class="wcam-flash"></div>`;
+  document.body.appendChild(el); WCAM.el = el; wcamLabels();
+  el.querySelector('.wcam-done').onclick = () => wcamClose();
+  el.querySelector('.wcam-shut').onclick = () => wcamShoot();
+  el.querySelector('.wcam-ipad input').onchange = async e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) { await wcamSave(f); } };
+  const msg = t => { const m = el.querySelector('.wcam-msg'); m.hidden = !t; m.innerHTML = t || ''; };
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('no camera here');
+    WCAM.stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 4032 }, height: { ideal: 3024 } } });
+    if (!WCAM.el) { WCAM.stream.getTracks().forEach(t => t.stop()); WCAM.stream = null; return; }
+    const v = el.querySelector('video'); v.srcObject = WCAM.stream; try { await v.play(); } catch (e) {}
+  } catch (e) {
+    el.classList.add('nocam'); msg(`<b>The camera inside the app is not available</b> (${esc(e.name || e.message || e)}).<br>Tap <b>iPad camera</b> below – the photo still goes to the right place. To allow the camera here: iPad Settings › Safari › Camera › Allow.`);
+  }
+}
+function wcamLabels() {
+  const el = WCAM.el, o = WCAM.o; if (!el || !o) return;
+  el.querySelector('.wcam-lbl').textContent = o.to ? o.to() : '';
+  const ch = o.chips ? o.chips() : []; const box = el.querySelector('.wcam-chips');
+  box.innerHTML = ch.map(c => `<button class="wchip ${c.on ? 'on' : ''}" data-ck="${esc(c.k)}">${esc(c.t)}</button>`).join('');
+  box.querySelectorAll('[data-ck]').forEach(b => b.onclick = () => { if (o.onChip) o.onChip(b.dataset.ck); wcamLabels(); });
+  el.querySelector('.wcam-n').textContent = WCAM.n ? `(${WCAM.n} taken)` : '';
+}
+async function wcamShoot() {
+  const el = WCAM.el; if (!el || WCAM.busy) return; const v = el.querySelector('video');
+  if (!v || !v.videoWidth) { toast('The camera is not ready – tap iPad camera instead'); return; }
+  WCAM.busy = true; const fl = el.querySelector('.wcam-flash'); fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
+  try { const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight; c.getContext('2d').drawImage(v, 0, 0);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.92)); await wcamSave(new File([blob], 'photo.jpg', { type: 'image/jpeg' })); }
+  catch (e) { toast('Photo not saved: ' + (e.message || e)); }
+  WCAM.busy = false;
+}
+async function wcamSave(file) { if (!WCAM.o || !WCAM.o.onShot) return; await WCAM.o.onShot(file); WCAM.n++; wcamLabels(); }
+function wcamClose(quiet) {
+  if (WCAM.stream) { try { WCAM.stream.getTracks().forEach(t => t.stop()); } catch (e) {} WCAM.stream = null; }
+  if (WCAM.el) { WCAM.el.remove(); WCAM.el = null; }
+  const o = WCAM.o; WCAM.o = null; if (!quiet && o && o.onClose) o.onClose();
+}
+
+/* ---------------- listening ---------------- */
+const WSR = { rec: null, on: false, interim: '', timer: null, sent: '', onText: null, onState: null, err: '' };
+const wsrAvail = () => typeof window !== 'undefined' && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+function wsrStart(onText, onState) {
+  WSR.onText = onText; WSR.onState = onState; WSR.err = '';
+  if (!wsrAvail()) { WSR.err = 'none'; onState && onState(); return false; }
+  WSR.on = true; wsrBegin(); onState && onState(); return true;
+}
+function wsrBegin() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition; let r;
+  try { r = new SR(); } catch (e) { WSR.on = false; WSR.err = String(e.message || e); WSR.onState && WSR.onState(); return; }
+  r.lang = 'en-US'; r.continuous = true; r.interimResults = true; WSR.rec = r; WSR.sent = ''; WSR.interim = '';
+  r.onresult = e => {
+    let fin = '', mid = '';
+    for (let i = 0; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) fin += t + ' '; else mid += t; }
+    fin = fin.trim();
+    if (fin.length > WSR.sent.length && fin.startsWith(WSR.sent)) { const add = fin.slice(WSR.sent.length).trim(); WSR.sent = fin; if (add) wsrEmit(add); }
+    else if (fin && !fin.startsWith(WSR.sent)) { WSR.sent = fin; }
+    WSR.interim = mid.trim(); WSR.onState && WSR.onState();
+    clearTimeout(WSR.timer); if (WSR.interim) WSR.timer = setTimeout(wsrFlush, 2000);
+  };
+  r.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { WSR.on = false; WSR.err = 'not allowed'; } else if (e.error !== 'no-speech' && e.error !== 'aborted') WSR.err = e.error || 'error'; WSR.onState && WSR.onState(); };
+  r.onend = () => { clearTimeout(WSR.timer); if (WSR.interim) { const t = WSR.interim; WSR.interim = ''; wsrEmit(t); }
+    WSR.rec = null; if (WSR.on) setTimeout(() => { if (WSR.on && !WSR.rec) wsrBegin(); }, 250); WSR.onState && WSR.onState(); };
+  try { r.start(); } catch (e) { WSR.rec = null; if (WSR.on) setTimeout(() => { if (WSR.on && !WSR.rec) wsrBegin(); }, 800); }
+}
+function wsrFlush() {   // a pause: what was heard counts, then listening starts fresh
+  const t = WSR.interim; if (!t) return; WSR.interim = ''; wsrEmit(t); try { WSR.rec && WSR.rec.stop(); } catch (e) {}
+}
+function wsrEmit(t) { t = String(t || '').trim(); if (t && WSR.onText) WSR.onText(t); }
+function wsrStop() { WSR.on = false; clearTimeout(WSR.timer); const t = WSR.interim; WSR.interim = ''; if (t) wsrEmit(t); try { WSR.rec && WSR.rec.stop(); } catch (e) {} WSR.onState && WSR.onState(); }
+/* spoken commands inside what she said: "take a photo", "next place", "scratch that", "stop listening" */
+const WK_CMD = [[/\b(?:take (?:a |the |another )?(?:photo|picture|pic)|snap(?: it)?|shoot)\b[.!]?/i, 'photo'], [/\bnext place\b[.!]?/i, 'next'], [/\bscratch that\b[.!]?/i, 'scratch'], [/\bstop listening\b[.!]?/i, 'stop']];
+function wkCommands(text) { const cmds = []; let t = ' ' + text + ' '; WK_CMD.forEach(([rx, c]) => { const g = new RegExp(rx.source, 'gi'); if (g.test(t)) { cmds.push(c); t = t.replace(g, ' '); } }); return { text: t.replace(/\s{2,}/g, ' ').trim(), cmds }; }
+
+/* =====================================================================
+   Walk-through on the sketch page (6w): when the sketch is opened from the 🚶 Walk-through tab, a photo button,
+   a talk button and the place she is in float over the drawing, so she can draw, photograph and talk without
+   leaving the sketch. Starting a new area of an ADU / outbuilding / garage type moves her to that building.
+   Photos are saved here with the place; the inspection page files them in their UAD photo slot when she goes back.
+   ===================================================================== */
+const WSK = { on: false, place: 'exterior', shot: null };
+const WSK_OUT = [['front', 'Front of dwelling', 'fr'], ['exterior', 'Exterior of dwelling', 'ex'], ['rear', 'Rear of dwelling', 'rr'], ['garage', 'Garage', 'ext']];
+function wskPlaces() {
+  const ins = SK.ins || {}; const L = ins.lists || {}; const out = WSK_OUT.map(([k, t, s]) => ({ k, t, s }));
+  (L.adus || []).forEach((it, i) => out.push({ k: 'L:adus:' + it.id, t: (it.ident || 'ADU ' + (i + 1)) + ' – exterior', s: 'main' }));
+  (L.outbuildings || []).forEach(it => out.push({ k: 'L:outbuildings:' + it.id, t: (it.label || it.type || 'Outbuilding') + ' – exterior', s: 'main' }));
+  return out;
+}
+function wskTitle() { const p = wskPlaces().find(x => x.k === WSK.place); return p ? p.t : 'Exterior of dwelling'; }
+function wskMount() {
+  if (!WSK.on || document.getElementById('wskBar')) return;
+  const wrap = document.querySelector('.skwrap'); if (!wrap) return;
+  const bar = document.createElement('div'); bar.id = 'wskBar'; bar.className = 'wsk-bar';
+  bar.innerHTML = `<button class="wsk-b" id="wskCam" aria-label="Photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Photo</span></button>
+    <button class="wsk-b" id="wskMic" aria-label="Talk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Talk</span></button>
+    <button class="wsk-place" id="wskPlace"></button><div class="wsk-interim" id="wskInterim" hidden></div>`;
+  wrap.appendChild(bar);
+  document.getElementById('wskCam').onclick = wskCam; document.getElementById('wskMic').onclick = () => { if (WSR.on) wsrStop(); else if (!wsrStart(wskHear, wskState)) wskType(); wskState(); };
+  document.getElementById('wskPlace').onclick = wskPick; wskState();
+}
+function wskState() {
+  const p = document.getElementById('wskPlace'); if (p) p.innerHTML = `📍 <b>${esc(wskTitle())}</b> ▾`;
+  const m = document.getElementById('wskMic'); if (m) { m.classList.toggle('on', !!WSR.on); m.querySelector('span').textContent = WSR.on ? 'Listening' : 'Talk'; }
+  const it = document.getElementById('wskInterim'); if (it) { it.textContent = WSR.on ? (WSR.interim || '…') : ''; it.hidden = !WSR.on; }
+}
+function wskPick() {
+  openSheet(`<h3>Where are you?</h3><p class="help">Photos and notes go here until you pick another place.</p><div class="grid-btns col">${wskPlaces().map(p => `<button class="btn ${p.k === WSK.place ? 'primary' : ''}" data-wp="${esc(p.k)}">${esc(p.t)}</button>`).join('')}</div><div class="row"><button class="btn" data-close>Close</button></div>`,
+    sh => sh.querySelectorAll('[data-wp]').forEach(b => b.onclick = () => { WSK.place = b.dataset.wp; closeSheet(); wskState(); if (wcamIsOpen()) wcamLabels(); }));
+}
+/* fresh copy of the inspection, change it, save; checked once more because the sketch saves the inspection too */
+async function wskUpdate(fn) {
+  for (let k = 0; k < 3; k++) { const ins = await DB.get('inspections', SK.ins.id); if (!ins) return; const tag = fn(ins); ins.updated = Date.now(); await DB.put('inspections', ins); SK.ins = ins;
+    await new Promise(r => setTimeout(r, 700)); const chk = await DB.get('inspections', SK.ins.id); if (!tag || !tag.check || tag.check(chk)) { SK.ins = chk || ins; return; } }
+}
+async function wskShot(file) {
+  const { blob, thumb, w, h } = await processImage(file); const id = uid(); const p = wskPlaces().find(x => x.k === WSK.place) || { k: 'exterior', t: 'Exterior of dwelling', s: 'ex' };
+  await DB.put('photos', { id, insId: SK.ins.id, blob, thumb });
+  const meta = { id, sec: 'exterior', field: null, list: null, item: null, slot: null, extra: true, label: p.t, cat: 'DwellingExteriorExhibit', roomType: null, required: false, ts: Date.now(), w, h, autoLabel: true, walkPend: p.k, walkShot: p.s };
+  await wskUpdate(ins => { ins.photos = ins.photos || []; if (!ins.photos.some(x => x.id === id)) ins.photos.push(meta); return { check: c => c && (c.photos || []).some(x => x.id === id) }; });
+  toast('Photo saved – ' + p.t);
+}
+function wskCam() {
+  wcamOpen({ to: () => wskTitle(), chips: () => wskPlaces().slice(0, 4).map(p => ({ k: p.k, t: p.t.replace(' of dwelling', ''), on: p.k === WSK.place })),
+    onChip: k => { WSK.place = k; wskState(); }, onShot: wskShot, onClose: () => wskState() });
+}
+function wskHear(t) {
+  const { text, cmds } = wkCommands(wkClean(t));
+  if (cmds.includes('photo') && wcamIsOpen()) wcamShoot(); if (cmds.includes('stop')) wsrStop();
+  let place = WSK.place, body = text; const m = /^\s*([a-z ]{3,40}):\s*(.*)$/i.exec(text);
+  if (m) { const h = m[1].toLowerCase().trim(); const hit = wskPlaces().find(p => p.t.toLowerCase().startsWith(h) || p.t.toLowerCase().replace(' – exterior', '') === h) || (/^(rear|back)/.test(h) ? { k: 'rear' } : /^front/.test(h) ? { k: 'front' } : /^(exterior|side)/.test(h) ? { k: 'exterior' } : /^garage/.test(h) ? { k: 'garage' } : null);
+    if (hit) { place = WSK.place = hit.k; body = m[2]; wskState(); } }
+  if (body) wskNote(place, body); wskState();
+}
+async function wskNote(place, body) {
+  await wskUpdate(ins => { const w = ins.walk = ins.walk || {}; w.notes = w.notes || {}; const old = w.notes[place] || ''; const add = body.trim(); w.notes[place] = old ? old.replace(/\s*$/, '') + (/[.!?]$/.test(old.trim()) ? ' ' : '. ') + add : add; const want = w.notes[place];
+    return { check: c => c && c.walk && c.walk.notes && c.walk.notes[place] === want }; });
+  toast('Note saved – ' + wskTitle());
+}
+function wskType() {   // no listening in this browser: a box for the keyboard microphone
+  openSheet(`<h3>Note – ${esc(wskTitle())}</h3><p class="help">Tap the microphone on the keyboard and talk.</p><textarea class="txt" id="wskTxt" rows="4" style="width:100%"></textarea><div class="row"><button class="btn primary" id="wskSave">Save note</button><button class="btn" data-close>Cancel</button></div>`,
+    sh => { const ta = sh.querySelector('#wskTxt'); setTimeout(() => ta.focus(), 50); sh.querySelector('#wskSave').onclick = () => { const v = ta.value.trim(); closeSheet(); if (v) wskHear(v); }; });
+}
+/* a new area of a building type moves her to that building (creates it in the inspection if it is new) */
+function wskAreaPlace(defId) {
+  const d = defOf(defId); if (!d) return; const ins = SK.ins; const L = ins.lists || {};
+  if (d.bucket === 'ADU') { let it = (L.adus || [])[0]; if (!it) { it = { id: uid(), dkPhoto: true }; wskNewItem('adus', it); } WSK.place = 'L:adus:' + it.id; }
+  else if (d.bucket === 'OB') { const types = (LISTS.outbuildings.fields[0].o || []).map(x => x[0]); const type = types.includes(d.name) ? d.name : types.find(t => d.name.startsWith(t)) || null;
+    let it = (L.outbuildings || []).find(x => (x.type && x.type === type) || x.label === d.name); if (!it) { it = { id: uid(), dkPhoto: true }; if (type) it.type = type; else it.label = d.name; wskNewItem('outbuildings', it); } WSK.place = 'L:outbuildings:' + it.id; }
+  else if (d.bucket === 'GAR') WSK.place = 'garage';
+  else if (['LIV', 'LIVN', 'UNF'].includes(d.bucket)) WSK.place = 'exterior';
+  wskState();
+}
+function wskNewItem(list, it) { SK.ins.lists = SK.ins.lists || {}; (SK.ins.lists[list] = SK.ins.lists[list] || []).push(it);
+  wskUpdate(ins => { ins.lists[list] = ins.lists[list] || []; if (!ins.lists[list].some(x => x.id === it.id)) ins.lists[list].push(it); return { check: c => c && (c.lists[list] || []).some(x => x.id === it.id) }; }); }
+(function wskInit() {
+  const q = new URLSearchParams(location.search); if (!q.get('walk')) return; WSK.on = true; WSK.place = q.get('place') || 'exterior';
+  if (!/^(front|exterior|rear|garage|L:(adus|outbuildings):)/.test(WSK.place)) WSK.place = 'exterior';
+  const rs = renderShell; renderShell = function () { rs(); wskMount(); };
+  const ps = placeStart; placeStart = function (ft, exact) { const def = SK.pendingDef; ps(ft, exact); try { wskAreaPlace(def); } catch (e) {} };
+  const gb = goBack; goBack = async function () { wsrStop(); wcamClose(true); return gb(); };
+})();
 
 </script>
 </body></html>
