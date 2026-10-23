@@ -424,6 +424,34 @@ input.txt:focus, select.txt:focus, textarea.txt:focus { background: #fff4b0 !imp
 .brandLogo { width: 32px; height: 32px; border-radius: 7px; vertical-align: middle; margin-right: 8px; flex: none; }
 .bar .title { display: flex; align-items: center; flex-wrap: wrap; }
 
+/* ===== the button page and home buttons (her layout, Oct 23 2026) ===== */
+.ov { display: grid; gap: 18px; padding-bottom: 30px; }
+.ov-lead { margin: 4px 0 0; color: #4f5b6e; }
+.ov-group h2 { margin: 0 0 10px; font-size: 1.2rem; color: #1f3f66; }
+.ov-group h2 small { font-weight: 400; font-size: .8rem; color: #4f5b6e; }
+.ov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.ov-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 140px; padding: 18px 10px 12px; background: #fff; border: 2px solid #cfe3d6; border-radius: 14px; font: inherit; color: #14213a; cursor: pointer; text-align: center; -webkit-appearance: none; appearance: none; }
+.ov-tile.miss { border-color: #e7b3ae; }
+.ov-tile.off { background: #eef1f5; border: 2px dashed #b8c1ce; color: #5d6776; cursor: default; }
+.ov-tile.add { border-style: dashed; border-color: #1f3f66; }
+.ov-tile svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ov-tile b { font-size: 1.05rem; line-height: 1.2; }
+.ov-tile small { font-size: .82rem; color: #4f5b6e; }
+.ov-tile.miss small { color: #9b2019; }
+.ov-badge, .ov-ok { position: absolute; top: 8px; right: 8px; min-width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; padding: 0 7px; box-sizing: border-box; }
+.ov-badge { background: #b3261e; } .ov-ok { background: #1f7a45; }
+.ov-tile:focus-visible { outline: 3px solid #c9a400; outline-offset: 2px; }
+.ov-classic { margin: 6px 0 0; }
+.ov-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0 10px; }
+.ov-head h2 { flex: 1; margin: 0; display: flex; align-items: center; gap: 8px; color: #1f3f66; font-size: 1.3rem; }
+.ov-head h2 svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hbig { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 8px 0 18px; }
+.hbig-b { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 22px 16px; min-height: 160px; border-radius: 16px; border: 2px solid #1f3f66; background: #fff; color: #1f3f66; font: inherit; cursor: pointer; text-align: center; -webkit-appearance: none; appearance: none; }
+.hbig-b.primary { background: #1f3f66; color: #fff; }
+.hbig-b svg { width: 52px; height: 52px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hbig-b b { font-size: 1.4rem; } .hbig-b small { font-size: .9rem; opacity: .85; }
+.hbig-b input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
 /* ---- 🚶 Walk-through (6w) ---- */
 .wk { display: flex; flex-direction: column; gap: 14px; }
 .wk-route { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
@@ -496,7 +524,7 @@ input.txt:focus, select.txt:focus, textarea.txt:focus { background: #fff4b0 !imp
 </head><body><div id="app"><p id="bootMsg" style="font:700 22px system-ui,sans-serif;padding:32px">Starting Octopus Mobile…</p></div>
 <script>window.onerror=function(m,s,l){var b=document.getElementById('bootMsg');if(b){b.style.color='#c00';b.textContent='The app could not start: '+m+' (line '+l+'). Your inspections are still saved. Do not delete the app icon. Send a screenshot to Claude.';}};</script>
 <script>
-const BUILD='6x-1023-1450';
+const BUILD='6x-1023-1614';
 const UAD={"RoomType":[["Bedroom","Bedroom"],["BreakfastRoom","Breakfast Room"],["Den","Den"],["DiningRoom","Dining Room"],["FamilyRoom","Family Room"],["FullBathroom","Bath - Full"],["HalfBathroom","Bath - Half"],["Kitchen","Kitchen"],["LaundryRoom","Laundry Room"],["LivingRoom","Living Room"],["Loft","Loft"],["MediaRoom","Media Room"],["Mudroom","Mudroom"],["RecreationRoom","Recreation Room"],["Sunroom","Sunroom"],["UtilityRoom","Utility Room"],["WalkInPantry","Walk-In Pantry"],["Workshop","Workshop"],["Other","Other"]],"AmenityType":[["Airstrip","Airstrip"],["Beach","Beach"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["BuildingMaintenance","Building Maintenance"],["BuiltInPool","Built-in Pool"],["BusinessCenter","Business Center"],["CaregiverServices","Caregiver Services"],["Clubhouse","Clubhouse"],["ClubMembership","Club Membership"],["CommunityPier","Community Pier"],["ConciergeServiceCoordination","Concierge Service Coordination"],["Cooling","Cooling"],["Deck","Deck"],["DoorAttendant","Door Attendant"],["ElectricVehicleChargingStation","EV Station"],["Elevator","Elevator"],["FitnessArea","Fitness Area"],["GatedCommunity","Gated Community"],["GroundsMaintenance","Grounds Maintenance"],["Heating","Heating"],["IngroundPool","Inground Pool"],["IngroundSpa","Inground Spa"],["Lobby","Lobby"],["None","None"],["OngoingCleaningServices","Ongoing Cleaning Services"],["OutdoorRidingRing","Outdoor Riding Ring"],["OutdoorShower","Outdoor Shower"],["Patio","Patio"],["Playground","Playground"],["RecreationArea","Recreation Area"],["RegistrationServices","Registration Services"],["Sauna","Sauna"],["SharedLaundryFacilities","Shared Laundry Facilities"],["ShortTermRentalServices","Short Term Rental Services"],["SportsCourt","Sports Court"],["TelevisionOrInternetServices","Television or Internet Services"],["TrashRemoval","Trash Removal"],["UnitStorage","Unit Storage"],["WaterAccess","Water Access"],["WaterFrontage","Water Frontage"],["Other","Other"],["Fence","Fence"],["IrrigationSystem","Irrigation System"],["OutdoorFireplace","Outdoor Fireplace"],["OutdoorKitchen","Outdoor Kitchen"],["Balcony","Balcony"],["Gazebo","Gazebo"],["Porch","Porch"],["Portico","Portico"],["FireSuppressionSystem","Fire Suppression System"],["IndoorFireplace","Indoor Fireplace"],["MultipleZoneHeatingVentilationAndAirConditioning","Multi-Zone HVAC"],["SmartHomeSystem","Smart Home System"],["WholeHouseVentilation","Whole House Ventilation"],["WoodStove","Wood Stove"]],"FlooringType":[["Carpet","Carpet"],["CeramicTile","Ceramic Tile"],["EngineeredWood","Engineered Wood"],["FinishedConcrete","Finished Concrete"],["Hardwood","Hardwood"],["Laminate","Laminate"],["Marble","Marble"],["SubflooringOnly","Subflooring Only"],["Vinyl","Vinyl"],["Other","Other"]],"ViewType":[["Bay","Bay"],["Canal","Canal"],["CityStreet","City Street"],["Commercial","Commercial"],["Cove","Cove"],["Creek","Creek"],["GolfCourse","Golf Course"],["Gulf","Gulf"],["HighDensityResidential","High Density Residential"],["Highway","Highway"],["Industrial","Industrial"],["Lake","Lake"],["Marsh","Marsh"],["Mountain","Mountain"],["Ocean","Ocean"],["Park","Park"],["ParkingLot","Parking Lot"],["Pastoral","Pastoral"],["Pond","Pond"],["Reservoir","Reservoir"],["Residential","Residential"],["River","River"],["School","School"],["Skyline","Skyline"],["Sound","Sound"],["TrafficWallBarriers","Traffic Wall Barriers"],["Valley","Valley"],["Woods","Woods"],["Other","Other"]],"SiteInfluenceType":[["Agricultural","Agricultural"],["Airport","Airport"],["BusyRoadway","Busy Roadway"],["CommercialArea","Commercial Area"],["GolfCourse","Golf Course"],["GreenSpace","Green Space"],["HighDensityResidential","High Density Residential"],["HighPressureGasLine","High Pressure Gas Line"],["HistoricDistrict","Historic District"],["IndustrialArea","Industrial Area"],["LocalDistributionLine","Local Distribution Line"],["OilOrGasWell","Oil or Gas Well"],["OverheadElectricPowerTransmissionLine","Overhead Electric Power Transmission Line"],["Park","Park"],["PublicTransportationHub","Public Transportation Hub"],["RailLine","Rail Line"],["Residential","Residential"],["School","School"],["StormwaterRetention","Stormwater Retention"],["BodyOfWater","Body Of Water"],["Other","Other"]],"SiteFeatureType":[["None","None"],["CoastalBarrierResourcesSystem","Coastal Barrier Resources System"],["Drainage","Drainage"],["ExcessLand","Excess Land"],["Landlocked","Landlocked"],["Landscaping","Landscaping"],["RoadFrontage","Road Frontage"],["Shape","Shape"],["SoilSuitability","Soil Suitability"],["SurplusLand","Surplus Land"],["Topography","Topography"],["Wetlands","Wetlands"],["ZeroLotLine","Zero Lot Line"],["Other","Other"]],"TopographyType":[["Flat","Flat"],["Rocky","Rocky"],["Rolling","Rolling"],["Sloping","Sloping"],["Other","Other"]],"ArchitecturalDesignCategoryType":[["AFrame","A-Frame"],["Barn","Barn"],["BiLevel","Bi-Level"],["Bungalow","Bungalow"],["CapeCod","Cape Cod"],["Chalet","Chalet"],["Colonial","Colonial"],["Contemporary","Contemporary"],["Cottage","Cottage"],["Craftsman","Craftsman"],["EarthBerm","Earth / Berm"],["Farmhouse","Farmhouse"],["GeodesicDome","Geodesic Dome"],["Georgian","Georgian"],["Log","Log"],["Mediterranean","Mediterranean"],["Modern","Modern"],["NeoEclectic","Neo-Eclectic"],["RaisedRanch","Raised Ranch"],["Rambler","Rambler"],["Ranch","Ranch"],["Southwest","Southwest"],["Spanish","Spanish"],["SplitFoyerOrEntry","Split Foyer or Entry"],["SplitLevel","Split Level"],["Stilt","Stilt"],["Traditional","Traditional"],["Tudor","Tudor"],["Victorian","Victorian"],["Other","Other"]],"WallMaterialType":[["Adobe","Adobe"],["Aluminum","Aluminum"],["Asbestos","Asbestos"],["Brick","Brick"],["CementBoard","Cement Board"],["ConcreteBlock","Concrete Block"],["EngineeredWood","Engineered Wood"],["Glass","Glass"],["Log","Log"],["PouredConcrete","Poured Concrete"],["Steel","Steel"],["Stone","Stone"],["Stucco","Stucco"],["SyntheticStone","Synthetic Stone"],["SyntheticStucco","Synthetic Stucco"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"RoofMaterialType":[["Asbestos","Asbestos"],["Asphalt","Asphalt"],["CeramicTile","Ceramic Tile"],["Clay","Clay"],["Composition","Composition"],["Concrete","Concrete"],["Copper","Copper"],["Metal","Metal"],["Rubber","Rubber"],["Slate","Slate"],["SolarShingles","Solar Shingles"],["Synthetic","Synthetic"],["TarAndGravel","Tar / Gravel"],["Wood","Wood"],["Other","Other"]],"FoundationType":[["Basement","Basement"],["CrawlSpace","Crawl Space"],["PostAndPier","Post and Pier"],["Runner","Runner"],["Slab","Slab"],["Other","Other"]],"FoundationMaterialType":[["Brick","Brick"],["ConcreteBlock","Concrete Block"],["Metal","Metal"],["PouredConcrete","Poured Concrete"],["Stone","Stone"],["Wood","Wood"],["Other","Other"]],"HeatingSystemType":[["Baseboard","Baseboard"],["Fireplace","Fireplace"],["ForcedWarmAir","Forced Warm Air"],["GravityAir","Gravity Air"],["MiniSplit","Mini Split"],["None","None"],["PassiveSolar","Passive Solar"],["Radiant","Radiant"],["Radiators","Radiators"],["Stove","Stove"],["Other","Other"]],"HeatingFuelType":[["Coal","Coal"],["Electric","Electric"],["Geothermal","Geothermal"],["NaturalGas","Natural Gas"],["Oil","Oil"],["Propane","Propane"],["Solar","Solar"],["Wood","Wood"],["Other","Other"]],"CoolingSystemType":[["Centralized","Centralized"],["Individual","Individual"],["Other","Other"]],"MechanicalSystemType":[["RadonMitigation","Radon Mitigation"],["SumpPump","Sump Pump"],["WaterHeater","Water Heater"],["WholeHouseWaterTreatment","Whole House Water Treatment"],["Other","Other"]],"CarStorageType":[["Carport","Carport"],["CommonCarport","Common Carport"],["Driveway","Driveway"],["Garage","Garage"],["OpenLot","Open Lot"],["ParkingGarage","Parking Garage"],["SharedDriveway","Shared Driveway"],["None","None"],["Other","Other"]],"CarStorageAttachmentType":[["Attached","Attached"],["BuiltIn","Built-in"],["Detached","Detached"]],"ImprovedSurfaceMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Cobblestone","Cobblestone"],["Concrete","Concrete"],["Dirt","Dirt"],["Gravel","Gravel"],["Other","Other"]],"OutbuildingType":[["Barn","Barn"],["Boathouse","Boathouse"],["Bunkhouse","Bunkhouse"],["EnclosedKennel","Enclosed Kennel"],["Greenhouse","Greenhouse"],["GuestHouse","Guest House"],["IndoorRidingArena","Indoor Riding Arena"],["ManufacturedHome","Manufactured Home"],["Office","Office"],["PoolHouse","Pool House"],["Shed","Shed"],["Silo","Silo"],["Stable","Stable"],["StandaloneADU","Standalone ADU"],["Studio","Studio"],["Workshop","Workshop"],["Other","Other"]],"FunctionalIssueType":[["CeilingHeight","Ceiling Height"],["FloorPlan","Floor Plan"],["NonConformity","Nonconformity"],["None","None"],["Overimprovement","Overimprovement"],["Underimprovement","Underimprovement"],["Other","Other"]],"DisasterMitigationFeatureType":[["EnclosedSoffits","Enclosed Soffits"],["FireResistantDecking","Fire Resistant Decking"],["FireResistantExteriorWalls","Fire Resistant Exterior Walls"],["FloodVents","Flood Vents"],["FortifiedRoof","Fortified Roof"],["FramingAnchorageOrBracing","Framing Anchorage or Bracing"],["ImpactResistantGlass","Impact Resistant Glass"],["ImpactResistantShingles","Impact Resistant Shingles"],["NoncombustiblePerimeter","Noncombustible Perimeter"],["None","None"],["StormShelter","Storm Shelter"],["StormShutters","Storm Shutters"],["WaterHeaterStrapping","Water Heater Strapping"],["Other","Other"]],"RenewableEnergyComponentType":[["Geothermal","Geothermal"],["Solar","Solar"],["WindTurbine","Wind Turbine"],["Other","Other"]],"RenewableEnergyComponentOwnershipType":[["Leased","Leased"],["Owned","Owned"],["PowerPurchaseAgreement","Power Purchase Agreement"],["Other","Other"]],"CeilingStyleType":[["Barrel","Barrel"],["Beams","Beams"],["Cathedral","Cathedral"],["Coffered","Coffered"],["Drop","Drop"],["Flat","Flat"],["Tray","Tray"],["Vaulted","Vaulted"],["Other","Other"]],"ApproximateCeilingHeightType":[["EightFeet","8 Ft."],["LessThanSevenFeet","Less than 7 feet"],["NineFeet","9 Ft."],["SevenFeet","7 Ft."],["TenFeetAndAbove","10 or more feet"],["TwoOrMoreStories","2 or more stories"]],"RoomUpdateStatusType":[["FullyUpdated","Fully Updated"],["NotUpdated","Not Updated"],["PartiallyUpdated","Partially Updated"]],"RoomUpdatedTimeframeType":[["FiveToTenYears","5-10 years"],["LessThanOneYear","Less than 1 year"],["OneToFiveYears","1-5 years"],["TenOrMoreYears","10 or more years"]],"RoomConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["TypicalWearAndTear","Typical Wear and Tear"]],"DefectComponentLabelType":[["ExteriorWallsAndTrim","Exterior Walls and Trim"],["Foundation","Foundation"],["MechanicalSystem","Mechanical System"],["Roof","Roof"],["Windows","Windows"],["Other","Other"],["Flooring","Flooring"],["WallsAndCeiling","Walls and Ceiling"]],"DefectItemRecommendedActionType":[["Completion","Completion"],["Inspection","Inspection"],["None","None"],["Repair","Repair"]],"LevelType":[["BelowGradeFive","Level B5"],["BelowGradeFour","Level B4"],["BelowGradeOne","Level B1"],["BelowGradeThree","Level B3"],["BelowGradeTwo","Level B2"],["LevelEight","Level 8"],["LevelFive","Level 5"],["LevelFour","Level 4"],["LevelNine","Level 9"],["LevelOne","Level 1"],["LevelSeven","Level 7"],["LevelSix","Level 6"],["LevelTen","Level 10"],["LevelThree","Level 3"],["LevelTwo","Level 2"]],"GradeLevelType":[["AboveGrade","Above Grade"],["FullyBelowGrade","Below Grade"],["PartiallyBelowGrade","Partially Below Grade"]],"AccessType":[["ExteriorAccessOnly","Exterior Access Only"],["InteriorAccessOnly","Interior Access Only"],["InteriorAndExteriorAccess","Interior and Exterior Access"]],"UnitOccupancyType":[["OwnerOccupied","Owner"],["Tenant","Tenant"],["Vacant","Vacant"]],"AmenityMaterialType":[["Asphalt","Asphalt"],["Brick","Brick"],["Composite","Composite"],["Concrete","Concrete"],["Fiberglass","Fiberglass"],["Metal","Metal"],["NaturalStone","Natural Stone"],["Pavers","Pavers"],["Vinyl","Vinyl"],["Wood","Wood"],["Other","Other"]],"HazardZoneType":[["FEMASpecialFloodHazardArea","FEMA Special Flood Hazard Area"],["None","No Hazard Zone Noted"],["USGSLavaFlowZone","USGS Lava Flow Zone"],["Other","Other"]],"AccessibilityFeatureType":[["Appliances","Appliances"],["Auditory","Auditory"],["Bathtub","Bathtub"],["Cabinets","Cabinets"],["Counters","Counters"],["Doorways","Doorways"],["ElectricalSwitches","Electrical Switches"],["GrabBars","Grab Bars"],["Handrails","Handrails"],["Hardware","Hardware"],["Lighting","Lighting"],["None","None"],["Ramps","Ramps"],["Shower","Shower"],["Sink","Sink"],["Toilet","Toilet"],["Other","Other"]],"ValueMarketabilityImpactType":[["Adverse","Adverse"],["Beneficial","Beneficial"],["Neutral","Neutral"]],"ViewRangeType":[["Full","Full"],["Partial","Partial"],["Seasonal","Seasonal"],["Other","Other"]],"SiteInfluenceProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"StreetAccessType":[["Alley","Alley"],["Arterial","Arterial Street"],["Collector","Collector Street"],["CulDeSac","Cul-de-sac"],["DeadEnd","Dead End"],["Local","Local Road"],["Rural","Rural Road"],["Other","Other"]],"PropertyPrimaryEntryExitMethodType":[["PedestrianOnlyAccess","Pedestrian Only Access"],["PrivateAirstrip","Private Airstrip"],["PrivateStreet","Private Street"],["PublicStreet","Public Street"],["Waterway","Waterway"],["Other","Other"]],"ConstructionMethodType":[["Container","Container"],["Manufactured","Manufactured"],["Modular","Modular"],["OnFrameModular","On-Frame Modular"],["SiteBuilt","Site Built"],["ThreeDimensionalPrintingTechnology","3D Technology"],["Other","Other"]],"AttachmentType":[["Attached","Attached"],["Detached","Detached"]],"FrontDoorApproximateElevationRangeType":[["EightToNineFeet","8-9 Ft."],["FiveToSixFeet","5-6 Ft."],["FourToFiveFeet","4-5 Ft."],["GroundLevel","Ground Level"],["NineToTenFeet","9-10 Ft."],["OneToTwoFeet","1-2 Ft."],["SevenToEightFeet","7-8 Ft."],["SixToSevenFeet","6-7 Ft."],["TenOrMoreFeet","10 or more feet"],["ThreeToFourFeet","3-4 Ft."],["TwoToThreeFeet","2-3 Ft."],["UpToOneFoot","Up to 1 foot"]],"ImprovementComponentConditionStatusType":[["DamagedAndFunctional","Damaged and Functional"],["DamagedAndNonfunctional","Damaged and Nonfunctional"],["NewOrLikeNew","New or Like New"],["NoFinish","No Finish"],["TypicalWearAndTear","Typical Wear and Tear"]],"OverallBathroomsUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"OverallFlooringUpdateStatusType":[["FullyUpdated","Fully Updated"],["ModeratelyUpdated","Moderately Updated"],["NotUpdated","Not Updated"],["SignificantlyUpdated","Significantly Updated"]],"BelowGradeExteriorAccessType":[["CellarDoor","Cellar Door"],["WalkOut","Walk Out"],["WalkUp","Walk Up"],["Other","Other"]],"EnvironmentalConditionType":[["HazardousAboveGroundStorageTank","Hazardous Above Ground Storage Tank"],["HazardousSubstances","Hazardous Substances"],["Landfill","Landfill"],["None","None"],["Radon","Radon"],["SlushPit","Slush Pit"],["SoilContamination","Soil Contamination"],["SuperfundSite","Superfund Site"],["UndergroundStorageTank","Underground Storage Tank"],["WaterContamination","Water Contamination"],["Other","Other"]],"ConvertedAreaOriginalUseType":[["Garage","Garage"],["Patio","Patio"],["Porch","Porch"],["Other","Other"]],"ConvertedAreaFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"RoofEstimatedAgeRangeType":[["LessThanOneYear","Less than 1 year"],["OneToTenYears","1-10 years"],["TenToTwentyYears","10-20 years"],["TwentyOrMoreYears","20 or more years"]],"SewerSystemType":[["Cesspool","Cesspool"],["Septic","Septic"],["Other","Other"]],"WaterSourceType":[["Cistern","Cistern"],["HauledWaterHoldingTank","Hauled Water Holding Tank"],["LakeOrSpring","Lake or Spring"],["Well","Well"],["Other","Other"]],"WaterWellType":[["Artesian","Artesian"],["Drilled","Drilled"],["Dug","Dug"],["Other","Other"]],"BodyOfWaterType":[["Bay","Bay"],["Canal","Canal"],["Cove","Cove"],["Creek","Creek"],["Gulf","Gulf"],["Lake","Lake"],["Marsh","Marsh"],["Ocean","Ocean"],["Pond","Pond"],["Reservoir","Reservoir"],["River","River"],["Sound","Sound"],["Other","Other"]],"WaterfrontFeatureType":[["Beach","Beach"],["BoatLift","Boat Lift"],["BoatRamp","Boat Ramp"],["BoatSlip","Boat Slip"],["Dock","Dock"],["None","None"],["Pier","Pier"],["Riprap","Riprap"],["SeawallOrBulkhead","Seawall or Bulkhead"],["Other","Other"]],"WaterAccessRightType":[["Deeded","Deeded Access"],["Permitted","By Permit"],["PrivatelyOwned","Privately Owned"],["Other","Other"]],"WaterAccessDepthType":[["DeepWater","Deep Water"],["NonNavigable","Non-Navigable"],["ShallowWater","Shallow Water"],["Other","Other"]],"BodyOfWaterProximityType":[["Bordering","Bordering"],["Offsite","Offsite"],["Onsite","Onsite"]],"UnitBelowGradeFinishComparisonType":[["Inferior","Inferior"],["Similar","Similar"],["Superior","Superior"]],"EncroachmentType":[["Building","Building"],["Driveway","Driveway"],["Fence","Fence"],["Overhang","Overhang"],["Other","Other"]],"EasementType":[["Conservation","Conservation"],["Drainage","Drainage"],["IngressOrEgress","Ingress / Egress"],["Utility","Utility"],["Other","Other"]],"RestrictionType":[["Age","Age"],["HistoricPreservation","Historic Preservation"],["Income","Income"],["LandUse","Land Use"],["Rental","Rental"],["SalePrice","Sale Price"],["Other","Other"]],"SiteZoningComplianceType":[["Illegal","Illegal"],["Legal","Legal"],["LegalNonConforming","Legal Nonconforming"],["NoZoning","No Zoning"]],"PropertyEstateType":[["FeeSimple","Fee Simple"],["Leasehold","Leasehold"],["Other","Other"]],"StructuralDesignType":[["Highrise","High-rise"],["Lowrise","Low-rise"],["Midrise","Mid-rise"],["RowhouseTownhouse","Rowhouse / Townhouse"],["SemiDetached","Semi-Detached"],["Other","Other"]],"SwimmingPoolFeatureType":[["Caged","Caged"],["Heated","Heated"],["Indoor","Indoor"],["Other","Other"]],"SiteDrainageReasonType":[["EvidenceOfErosion","Evidence of Erosion"],["ImproperGrading","Improper Grading"],["StandingWater","Standing Water"],["Other","Other"]]};
 
 /* ============================================================
@@ -2577,7 +2605,7 @@ const CMT36 = [
 const app = { ins: null, tab: 'property', open: new Set(), groups: {}, cur: null, confirm: null, saving: null, ovrOpen: null, appl: null, missIdx: 0, undo: null };
 const EXTRA_TABS = [{ id: 'photos', title: 'Photos' }, { id: 'summaries', title: 'Summaries' }, { id: 'attention', title: 'Needs Attention' }, { id: 'export', title: 'Save & Export' }];
 const tabShown = (sec, ins) => !sec.showTab || !!sec.showTab(ins || app.ins);
-const ALL_TABS_FULL = () => [{ id: 'walk', title: '🚶 Walk-through' }, { id: 'dictate', title: '🎤 Dictate' }, ...SECTIONS.filter(s => tabShown(s)).map(s => ({ id: s.id, title: s.title })), ...EXTRA_TABS];
+const ALL_TABS_FULL = () => [{ id: 'overview', title: '▦ Buttons' }, { id: 'walk', title: '🚶 Walk-through' }, { id: 'dictate', title: '🎤 Dictate' }, ...SECTIONS.filter(s => tabShown(s)).map(s => ({ id: s.id, title: s.title })), ...EXTRA_TABS];
 const ALL_TABS = () => { const T = ALL_TABS_FULL(); if (typeof dkWalk !== 'function' || !dkWalk()) return T;   // walk-through mode (6r)
   const keep = new Set(['walk', 'dictate', 'photos', 'attention', app.tab]); return [...T.filter(t => keep.has(t.id)), { id: 'alltabs', title: '☰ All tabs' }]; };
 const CAM_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
@@ -2631,6 +2659,8 @@ async function renderHome() {
     ${hcBtn()}<button class="icon-btn" id="storeBtn">Storage check</button><label class="icon-btn" style="position:relative;overflow:hidden">Restore backup<input id="restoreFile" type="file" accept=".zip,application/zip" style="position:absolute;inset:0;opacity:0"></label></div></header>
   <main>
     ${(navigator.standalone || matchMedia('(display-mode: standalone)').matches) ? '' : '<p class="warn-box">You are in Safari. Inspections made here are kept separately from the Home Screen app – use the Home Screen icon for real work.</p>'}
+    <div class="hbig"><button class="hbig-b primary" id="bigNew"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M7.5 12h9"/></svg><b>New inspection</b><small>From an order sent from the Octopus, or start blank</small></button>
+      <label class="hbig-b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h6l2 2h10v9.5H3z"/><path d="M3 7.5V5h6l2 2.5"/></svg><b>Open existing</b><small>Below, or import a Workfile or orders file from OneDrive</small><input id="bigOpen" type="file" accept=".zip,.json,application/zip,application/json"></label></div>
     ${await homeList(all)}
     ${!DB.persistent ? '<p class="warn-box">This browser is not letting the app save to the iPad. Open the app from its Home Screen icon so inspections are kept.</p>' : ''}
     <p class="app-ver">Version ${typeof BUILD !== 'undefined' ? esc(BUILD) : '?'}</p>
@@ -2652,6 +2682,7 @@ async function renderHome() {
   root.querySelectorAll('[data-ostart]').forEach(b => b.onclick = () => startFromOrder(b.dataset.ostart));
   root.querySelectorAll('[data-oclear]').forEach(b => b.onclick = async () => { if (!b.dataset.armed) { b.dataset.armed = 1; b.textContent = 'Tap again to clear the list'; return; } await clearOrders(); toast('Orders list cleared (your inspections are kept)'); renderHome(); });
   $('#storeBtn').onclick = storageCheck;
+  { const bn = $('#bigNew'); if (bn) bn.onclick = () => { const f = $('#newForm'); if (f) { f.hidden = false; f.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => $('#nAddr') && $('#nAddr').focus(), 300); } }; const bo = $('#bigOpen'); if (bo) bo.onchange = e => { const f = e.target.files[0]; if (f) loadOrdersFile(f); }; }
   root.querySelectorAll('[data-backup]').forEach(b => b.onclick = async () => {
     const ins = all.find(x => x.id === b.dataset.backup); if (!ins) return;
     app.ins = ins; try { await doExport('workfile', b); } finally { app.ins = null; }
@@ -2732,17 +2763,20 @@ async function openInspection(id, tab) {
 }
 async function openInspection2(id, tab) {
   const ins = normalize(await DB.get('inspections', id)); app.ins = ins;
-  app.tab = (tab && (SECTIONS.some(x => x.id === tab) || EXTRA_TABS.some(x => x.id === tab) || tab === 'walk' || tab === 'dictate')) ? tab : 'property';
+  app.tab = (tab && (SECTIONS.some(x => x.id === tab) || EXTRA_TABS.some(x => x.id === tab) || tab === 'walk' || tab === 'dictate' || tab === 'overview' || String(tab).startsWith('b:'))) ? tab : 'overview';
   if (typeof wkResolvePending === 'function' && wkResolvePending(ins)) { ins.updated = Date.now(); try { await DB.put('inspections', JSON.parse(JSON.stringify(ins))); } catch (e) {} } app.open = new Set(); app.groups = {}; app.cur = null; app.confirm = null; app.appl = null;
   const root = $('#app');
   root.innerHTML = `<header class="bar"><div class="bar-row">
-      <button class="icon-btn" id="homeBtn" aria-label="All inspections">‹ All</button>
+      <button class="icon-btn" id="homeBtn" aria-label="Home – all inspections">‹ Home</button>
       <div class="title"><b id="tTitle"></b> <i class="tent" title="Tentacle 2 of the Octopus – the subject">2 · Subject</i><span id="tAddr"></span></div>
       <span class="saved" id="saved">Saved ✓</span>
       <button class="icon-btn" id="saveBtn">Save</button>
+      <button class="icon-btn" id="ovWalk" aria-label="Walk-through">🚶<span class="bl"> Walk-through</span></button>
+      <button class="icon-btn" id="ovDict" aria-label="Dictate">🎤<span class="bl"> Dictate</span></button>
+      <button class="icon-btn" id="ovBtns" aria-label="All buttons">▦<span class="bl"> Buttons</span></button>
       <button class="icon-btn" id="jumpBtn" aria-label="Search">🔍<span class="bl"> Search</span></button>
       <button class="icon-btn sk-btn" id="sketchBtn" aria-label="Sketch">✏️<span class="bl"> OctoSketch</span></button>
-      ${hcBtn()}
+      ${hcBtn()}<button class="icon-btn" id="insStore">Storage check</button>
       <button class="attn-pill" id="attnPill"></button></div>
     <nav class="tabs" id="tabs" role="tablist"></nav></header>
   <main id="main"></main>`;
@@ -2751,6 +2785,8 @@ async function openInspection2(id, tab) {
   $('#jumpBtn').onclick = openJump;
   $('#sketchBtn').onclick = async () => { const b = $('#sketchBtn'); b.textContent = 'Saving…'; const url = 'sketch.html?ins=' + encodeURIComponent(app.ins.id) + '&tab=' + encodeURIComponent(app.tab || 'interior'); try { await saveNow(); } catch (e) {} app.leaving = true; clearTimeout(app.saving); DB.close(); b.textContent = 'Opening…'; location.href = url; };
   $('#attnPill').onclick = () => goTab('attention');
+  $('#insStore').onclick = storageCheck;
+  $('#ovWalk').onclick = () => goTab('walk'); $('#ovDict').onclick = () => goTab('dictate'); $('#ovBtns').onclick = () => { goTab('overview'); window.scrollTo(0, 0); };
   renderTab();
 }
 function refreshChrome() {
@@ -2762,6 +2798,7 @@ function refreshChrome() {
   const byTab = {}; issues.forEach(x => { if (x.sev === 'Required' || x.sev === 'Photo') byTab[x.tab] = (byTab[x.tab] || 0) + 1; });
   $('#tabs').innerHTML = ALL_TABS().map(t => `<button class="tab" role="tab" aria-selected="${t.id === app.tab}" data-tab="${t.id}">${esc(t.title)}${byTab[t.id] ? `<span class="dot">${byTab[t.id]}</span>` : (SECTIONS.some(s => s.id === t.id) ? '<span class="dot done">✓</span>' : '')}</button>`).join('');
   $('#tabs').querySelectorAll('[data-tab]').forEach(b => b.onclick = () => goTab(b.dataset.tab));
+  { const hide = !app.classic && (app.tab === 'overview' || String(app.tab).startsWith('b:')); $('#tabs').hidden = hide; $('#tabs').style.display = hide ? 'none' : ''; }
   const sel = $('#tabs [aria-selected="true"]');
   if (sel) { const nav = $('#tabs'); nav.scrollLeft = sel.offsetLeft - nav.clientWidth / 2 + sel.offsetWidth / 2; }
 }
@@ -2784,9 +2821,9 @@ function scrollToEl(id) {
 
 /* Subsection (group) open state, per tab */
 function groupIssues(sec, g, ins = app.ins) { return computeIssues(ins).filter(x => !ins.overrides[x.key] && x.tab === sec.id && x.group === g.id && (x.sev === 'Required' || x.sev === 'Photo')); }
-function ensureGroups(sec) {
-  if (app.groups[sec.id]) return app.groups[sec.id];
-  const set = new Set(); const vis = sec.groups.filter(g => groupShown(g, sec, app.ins));
+function ensureGroups(sec, only) {
+  if (app.groups[sec.id]) { const S = app.groups[sec.id]; if (only && ![...S].some(id => only.includes(id))) { const f = sec.groups.find(g => only.includes(g.id) && groupShown(g, sec, app.ins)); if (f) { S.add(f.id); app.cur = f.id; } } return S; }
+  const set = new Set(); const vis = sec.groups.filter(g => groupShown(g, sec, app.ins) && (!only || only.includes(g.id)));
   const first = vis[0]; // first visit to a tab: start at its first subsection
   if (first) { set.add(first.id); app.cur = first.id; }
   app.groups[sec.id] = set; return set;
@@ -2801,13 +2838,15 @@ function renderTab2() {
   const y = window.scrollY; refreshChrome(); const main = $('#main');
   const sec = SECTIONS.find(s => s.id === app.tab);
   if (sec) main.innerHTML = legend() + renderSection(sec) + extraPhotos(sec);
+  else if (app.tab === 'overview') main.innerHTML = renderOverview();
+  else if (String(app.tab).startsWith('b:')) main.innerHTML = renderOvButton(app.tab.slice(2));
   else if (app.tab === 'dictate') main.innerHTML = renderDictate();
   else if (app.tab === 'walk') main.innerHTML = renderWalk();
   else if (app.tab === 'photos') main.innerHTML = renderGallery();
   else if (app.tab === 'summaries') main.innerHTML = renderSummaries();
   else if (app.tab === 'attention') main.innerHTML = renderAttention();
   else if (app.tab === 'export') main.innerHTML = renderExport();
-  bind(main); if (app.tab === 'dictate') bindDictate(main); if (app.tab === 'walk') { bindWalk(main); setTimeout(wkMicState, 0); } fillThumbs(main); window.scrollTo(0, y);
+  bind(main); if (app.tab === 'overview' || String(app.tab).startsWith('b:')) bindOverview(main); if (app.tab === 'dictate') bindDictate(main); if (app.tab === 'walk') { bindWalk(main); setTimeout(wkMicState, 0); } fillThumbs(main); window.scrollTo(0, y);
   returnBar();
   syncBar();
 }
@@ -2891,9 +2930,9 @@ function openJump() {
 }
 
 /* ---------------- Sections ---------------- */
-function renderSection(sec) {
-  const ins = app.ins; const openSet = ensureGroups(sec);
-  const vis = sec.groups.filter(g => groupShown(g, sec, ins));
+function renderSection(sec, only) {
+  const ins = app.ins; const openSet = ensureGroups(sec, only);
+  const vis = sec.groups.filter(g => groupShown(g, sec, ins) && (!only || only.includes(g.id)));
   return vis.map((g, gi) => {
     const open = openSet.has(g.id); const miss = groupIssues(sec, g).length;
     const n = g.list ? ins.lists[g.list].length : 0;
@@ -2908,7 +2947,7 @@ function renderSection(sec) {
       body = `${fieldsHtml ? `<div class="fields two">${fieldsHtml}</div>` : ''}${showList ? renderList(g.list) : ''}
         <div class="gfoot"><button class="btn donecheck" data-donegroup="${g.id}" data-next="${next ? next.id : ''}"><span class="gcheck sm ${green ? 'on' : ''}" aria-hidden="true">✓</span><span>Done with ${esc(g.title)}</span></button></div>`;
     }
-    return `<section class="group ${open ? 'open' : 'closed'} ${app.cur === g.id && open ? 'current' : ''}" id="grp-${g.id}">
+    return `<section data-secid="${sec.id}" class="group ${open ? 'open' : 'closed'} ${app.cur === g.id && open ? 'current' : ''}" id="grp-${g.id}">
       <div class="ghead-row"><button class="gcheck ${green ? 'on' : ''}" data-check="${g.id}" aria-pressed="${green}" aria-label="${green ? 'Reviewed' : 'Mark reviewed'}">✓</button><button class="ghead" data-group="${g.id}" aria-expanded="${open}"><span class="chev">${open ? '▾' : '▸'}</span><span class="gtitle">${esc(g.title)}</span>${g.list ? `<span class="count">${n} added</span>` : ''}${status}</button></div>
       ${body}</section>`;
   }).join('');
@@ -3276,25 +3315,25 @@ function itemOf(el) { return app.ins.lists[el.dataset.list].find(x => x.id === e
 function bind(root) {
   const nm = $('#nextMiss'); if (nm) nm.onclick = nextMissing;
   root.querySelectorAll('[data-group]').forEach(b => b.onclick = () => {
-    const sec = SECTIONS.find(s => s.id === app.tab); const set = ensureGroups(sec); const id = b.dataset.group;
+    const sec = secOfEl(b); const set = ensureGroups(sec); const id = b.dataset.group;
     if (set.has(id)) set.delete(id); else { set.add(id); app.cur = id; }
     saveNow(); renderTab(); if (set.has(id)) scrollToEl('grp-' + id);
   });
   root.querySelectorAll('[data-check]').forEach(b => b.onclick = () => {
-    const ins = app.ins; ins.reviewed = ins.reviewed || {}; const k = app.tab + ':' + b.dataset.check;
-    const sec = SECTIONS.find(s => s.id === app.tab); const g = sec.groups.find(x => x.id === b.dataset.check); const miss = groupIssues(sec, g).length;
+    const ins = app.ins; ins.reviewed = ins.reviewed || {}; const sec = secOfEl(b); const k = sec.id + ':' + b.dataset.check; const g = sec.groups.find(x => x.id === b.dataset.check); const miss = groupIssues(sec, g).length;
     if (ins.reviewed[k] && !miss) delete ins.reviewed[k]; else ins.reviewed[k] = true;
     if (miss) toast(`${miss} item${miss > 1 ? 's' : ''} still missing – the check turns green when ${miss > 1 ? 'they are' : 'it is'} filled`);
     save(); renderTab();
   });
   root.querySelectorAll('[data-donegroup]').forEach(b => b.onclick = () => {
-    const mark = b.querySelector('.gcheck'); const miss = groupIssues(SECTIONS.find(s => s.id === app.tab), SECTIONS.find(s => s.id === app.tab).groups.find(x => x.id === b.dataset.donegroup)).length;
+    const mark = b.querySelector('.gcheck'); const miss = groupIssues(secOfEl(b), secOfEl(b).groups.find(x => x.id === b.dataset.donegroup)).length;
     if (mark && !miss) mark.classList.add('on'); b.disabled = true;
     setTimeout(() => doneGroup(b), miss ? 0 : 280);
   });
   function doneGroup(b) {
-    const sec = SECTIONS.find(s => s.id === app.tab); const set = ensureGroups(sec);
-    set.delete(b.dataset.donegroup); app.ins.reviewed = app.ins.reviewed || {}; app.ins.reviewed[app.tab + ':' + b.dataset.donegroup] = true; saveNow();
+    const sec = secOfEl(b); const set = ensureGroups(sec);
+    set.delete(b.dataset.donegroup); app.ins.reviewed = app.ins.reviewed || {}; app.ins.reviewed[sec.id + ':' + b.dataset.donegroup] = true; saveNow();
+    if (String(app.tab).startsWith('b:') && !b.dataset.next) { toast('Done with ' + ((ovBtn(app.tab.slice(2)) || {}).t || 'this button')); goTab('overview'); window.scrollTo(0, 0); return; }
     if (b.dataset.next) { set.add(b.dataset.next); app.cur = b.dataset.next; renderTab(); scrollToEl('grp-' + b.dataset.next); }
     else { const i = SECTIONS.findIndex(s => s.id === app.tab); goTab(SECTIONS[i + 1] ? SECTIONS[i + 1].id : 'attention'); }
   }
@@ -3720,6 +3759,104 @@ const STARTER_FID = { accessDesc: ['4.024'], siteFeatures: ['4.066'], siteInflue
   outbuilding: ['12.025'], functional: ['11.001'], vehicle: ['13.010'], amenities: ['14.011'], assignment: ['2.061'], qc: ['15.010'] };
 function starterChips(id) { const F = STARTER_FID[id]; if (!F || typeof CMT36 === 'undefined') return ''; const L = CMT36.map((c, k) => [c, k]).filter(([c]) => F.includes(c[2])); if (!L.length) return '';
   return `<div class="starters"><span class="stlab">3.6 starter comments – tap to add:</span>${L.map(([c, k]) => `<button type="button" class="chip starter" data-starter="${id}|${k}" title="${esc(c[4])}">${esc(c[1])}</button>`).join('')}</div>`; }
+
+/* =====================================================================
+   The button page (her layout, Oct 23 2026 – mockup "Octopus Mobile Sections Page").
+   Opening an inspection shows buttons by what she is looking for; tapping one slides in
+   its questions (the same groups and fields as the tabs – every answer keeps ONE home).
+   The walk-through keeps her own order. Classic tabs stay one tap away.
+   ===================================================================== */
+const OV_ICON = {
+  setup: '<path d="M4 7h10M18 7h2M4 12h4M12 12h8M4 17h12"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="17" r="2"/>',
+  project: '<rect x="5" y="3" width="14" height="18"/><path d="M8.5 7h2M13.5 7h2M8.5 11h2M13.5 11h2M8.5 15h2M13.5 15h2M10.5 21v-3h3v3"/>',
+  street: '<path d="M7 21 10 3M17 21 14 3M12 6v2M12 11v2M12 16v2"/>',
+  driveway: '<path d="M5 21 9 9h6l4 12"/><path d="M8.5 13h7"/><rect x="9" y="3" width="6" height="4" rx="1"/>',
+  site: '<path d="M3 18.5 8 16l8 3 5-2.5V5L16 7.5 8 4.5 3 7z"/><path d="M8 4.5v11.5M16 7.5V19"/>',
+  pool: '<path d="M3 15.5c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1M3 19.5c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1"/><path d="M8 13V5.5a1.8 1.8 0 0 1 3.6 0M16 13V5.5a1.8 1.8 0 0 0-3.6 0M8 8.5h8"/>',
+  front: '<path d="M3 11 12 4l9 7"/><rect x="5.5" y="10" width="13" height="10"/><rect x="10.3" y="14" width="3.4" height="6"/><rect x="7" y="12.5" width="2.2" height="2.2"/><rect x="14.8" y="12.5" width="2.2" height="2.2"/>',
+  interior: '<path d="M5 12V9.5A2.5 2.5 0 0 1 7.5 7h9A2.5 2.5 0 0 1 19 9.5V12"/><path d="M3.5 12.5a1.5 1.5 0 0 1 3 0V15h11v-2.5a1.5 1.5 0 0 1 3 0V18h-17z"/><path d="M5.5 18v2M18.5 18v2"/>',
+  systems: '<circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>',
+  energy: '<path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14Z"/><path d="M5 19 13 11"/><path d="m12 7-2 4h3l-2 4"/>',
+  disaster: '<ellipse cx="12" cy="4.6" rx="9" ry="2.1"/><path d="M3.8 7.6C5.5 9.6 18 9.9 20 7.7"/><path d="M5.4 10.6C7.2 12.4 16.8 12.5 18.4 10.5"/><path d="M7.4 13.4C8.9 14.9 15.6 14.9 16.8 13.3"/><path d="M9.2 16C10.3 17.2 14.4 17.2 15.3 15.9"/><path d="M10.8 18.3C11.5 19 13.3 19 13.9 18.2"/><path d="M12.6 19.4C12.8 20.6 12 21.5 10.4 22.2"/>',
+  garage: '<path d="M5 16.5V12l1.8-4.6A1.5 1.5 0 0 1 8.2 6.5h7.6a1.5 1.5 0 0 1 1.4.9L19 12v4.5z"/><path d="M5 12h14"/><path d="M6 16.5V19M18 16.5V19"/><circle cx="8.3" cy="14.3" r="0.9"/><circle cx="15.7" cy="14.3" r="0.9"/>',
+  defects: '<path d="M12 4 21 19.5H3z"/><path d="M12 10v4.5M12 17v.3"/>',
+  wrapup: '<circle cx="12" cy="10" r="6"/><path d="m9.3 10 1.9 1.9L15 8.2"/><path d="M8.5 15 7 21l5-2.5 5 2.5-1.5-6"/>',
+  adu: '<path d="M2.5 13 8 8.5l5.5 4.5V20h-11z"/><path d="M13.5 15 17.5 11.5 21.5 15v5h-8"/><path d="M6.5 20v-3h3v3"/>',
+  outb: '<path d="M3 12 10 6l7 6"/><path d="M5 11v8h10v-8"/><path d="M19.5 19v-5"/><circle cx="19.5" cy="11.5" r="2.6"/><path d="M8 19v-3.5h4V19"/>',
+  add: '<circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/>',
+  sketch: '<path d="M4 20V4h9"/><path d="M4 20h16v-9"/><path d="m11 13 7.5-7.5a1.8 1.8 0 0 1 2.5 2.5L13.5 15.5 10 16.5z"/>',
+  photos: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  interview: '<path d="M4 5h11v8H9l-4 3v-3H4z"/><path d="M15 9h5v7h-1v3l-3.5-3H11v-3"/>',
+  permit: '<path d="M6 3h9l4 4v14H6z"/><path d="M14.5 3v4.5H19"/><circle cx="12" cy="14" r="3.2"/><path d="m10.6 14 1 1 1.8-1.9"/>',
+  attention: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5M12 16.2v.3"/>',
+  desktop: '<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4M12 7v5.5M9.5 10l2.5 2.5 2.5-2.5"/>',
+};
+/* each button: the groups it shows ([section, [group ids] | null = the whole section]) */
+const OV_BTNS = [
+  { id: 'setup', grp: 'Assignment', t: 'Report setup', icon: 'setup', sub: 'Type · buildings · Quick/Complex', parts: [['property', ['assign', 'ptype']]] },
+  { id: 'hoa', grp: 'Assignment', t: 'HOA / Project', icon: 'project', parts: [['project', null]], show: ins => tabShown(SECTIONS.find(s => s.id === 'project'), ins), off: 'Appears for condo, PUD or co-op' },
+  { id: 'street', grp: 'Inspection', t: 'Street', icon: 'street', parts: [['street', null]] },
+  { id: 'drive', grp: 'Inspection', t: 'Driveway', icon: 'driveway', parts: [['driveway', null]] },
+  { id: 'site', grp: 'Inspection', t: 'Site, topography & view', icon: 'site', sub: 'Hazards · utilities', parts: [['site', null]] },
+  { id: 'outdoor', grp: 'Inspection', t: 'Landscaping & outdoor living', icon: 'pool', sub: 'Pool · spa · courts', parts: [['amenities', null]] },
+  { id: 'ext', grp: 'Main dwelling', t: 'Exterior', icon: 'front', sub: 'Rear & side photos too', parts: [['front', null], ['exterior', null]] },
+  { id: 'int', grp: 'Main dwelling', t: 'Interior', icon: 'interior', sub: 'Smoke & CO · attic', parts: [['interior', null]] },
+  { id: 'sys', grp: 'Main dwelling', t: 'Systems & features', icon: 'systems', sub: 'Heating · cooling · water heater · smart home', parts: [['systems', ['hvac', 'wh', 'mech', 'smart']]] },
+  { id: 'energy', grp: 'Main dwelling', t: 'Green & energy efficiency', icon: 'energy', sub: 'Solar · battery · ratings', parts: [['systems', ['energy']]] },
+  { id: 'disaster', grp: 'Main dwelling', t: 'Disaster mitigation', icon: 'disaster', sub: 'Water heater strapping · retrofit', parts: [['interview', ['disaster']], ['systems', ['wh']]] },
+  { id: 'garage', grp: 'Main dwelling', t: 'Garage & parking', icon: 'garage', parts: [['garage', null]] },
+  { id: 'defects', grp: 'Main dwelling', t: 'Defects', icon: 'defects', parts: [['defects', null]] },
+  { id: 'qc', grp: 'Main dwelling', t: 'Quality & condition', icon: 'wrapup', sub: 'Functional obsolescence · notes', parts: [['condition', null]] },
+  { id: 'adu', grp: 'Other buildings', t: 'ADUs', icon: 'adu', parts: [['buildings', ['adu']]], count: ins => ins.lists.adus.length },
+  { id: 'outb', grp: 'Other buildings', t: 'Outbuildings', icon: 'outb', parts: [['buildings', ['outb']]], count: ins => ins.lists.outbuildings.length },
+  { id: 'sketch', grp: 'Other', t: 'OctoSketch', icon: 'sketch', act: 'sketch' },
+  { id: 'photos', grp: 'Other', t: 'Photos', icon: 'photos', tab: 'photos' },
+  { id: 'interview', grp: 'Other', t: 'Interview', icon: 'interview', sub: 'Remodels · EAs · sale & rent', parts: [['interview', ['updates', 'sysConf', 'utilConf', 'ea', 'confirm']]] },
+  { id: 'permits', grp: 'Other', t: 'Permits & public records', icon: 'permit', sub: 'From the order', parts: [['property', ['crs', 'pubrec']]] },
+  { id: 'attention', grp: 'Other', t: 'Needs attention', icon: 'attention', tab: 'attention' },
+  { id: 'desktop', grp: 'Other', t: 'Send to desktop', icon: 'desktop', sub: 'Summaries · export', tab: 'export' },
+];
+const OV_GROUPS = ['Assignment', 'Inspection', 'Main dwelling', 'Other buildings', 'Other'];
+const ovBtn = id => OV_BTNS.find(b => b.id === id);
+const ovIn = (b, x) => (b.parts || []).some(([s, g]) => x.tab === s && (!g || g.includes(x.group)));
+function ovMissing(b, issues) {
+  if (b.tab === 'attention') return issues.length;
+  if (b.tab === 'photos') return issues.filter(x => x.photo).length;
+  if (b.act === 'sketch') return issues.filter(x => /^sk/.test(x.key)).length;
+  return issues.filter(x => ovIn(b, x)).length;
+}
+function ovSketchSf(ins) { const T = ins.sketch && ins.sketch.totals; return T && T.agFin ? T.agFin.toLocaleString() + ' sq ft' : ''; }
+function renderOverview() {
+  const ins = app.ins; const issues = computeIssues(ins).filter(x => !ins.overrides[x.key] && (x.sev === 'Required' || x.sev === 'Photo'));
+  const P = ins.data.property || {};
+  const tile = b => { const shown = !b.show || b.show(ins); const miss = shown ? ovMissing(b, issues) : 0;
+    const n = b.count ? b.count(ins) : null; const title = b.t + (n !== null ? ` (${n})` : '');
+    const sub = !shown ? b.off : b.act === 'sketch' ? (ovSketchSf(ins) || 'Not drawn yet') : n === 0 ? 'None yet – tap Add a building' : (b.sub || '');
+    const st = !shown ? '' : miss ? `<span class="ov-badge" aria-label="${miss} missing">${miss}</span>` : (b.tab === 'photos' || b.tab === 'export' || b.act || n === 0) ? '' : '<span class="ov-ok" aria-label="Complete">✓</span>';
+    return `<button class="ov-tile${shown ? '' : ' off'}${miss ? ' miss' : ''}" data-ov="${b.id}"${shown ? '' : ' disabled'}>${st}<svg viewBox="0 0 24 24" aria-hidden="true">${OV_ICON[b.icon]}</svg><b>${esc(title)}</b><small>${esc(shown ? (miss ? miss + ' missing' + (sub ? ' · ' + sub : '') : sub) : sub)}</small></button>`; };
+  const add = `<button class="ov-tile add" data-ovadd="1"><svg viewBox="0 0 24 24" aria-hidden="true">${OV_ICON.add}</svg><b>Add a building</b><small>ADU · outbuilding</small></button>`;
+  const type = [P.legal && P.legal !== 'None' ? P.legal : (P.pud ? 'PUD' : 'Single family'), P.attach, P.mode].filter(Boolean).join(' · ');
+  return `<div class="ov"><p class="ov-lead">Tap a button and its questions slide in. ${esc(type)}. The 🚶 walk-through keeps your own order.</p>
+    ${OV_GROUPS.map(g => `<section class="ov-group"><h2>${esc(g)}${g === 'Assignment' ? ' <small>answer first – it sets up the rest</small>' : ''}</h2><div class="ov-grid">${OV_BTNS.filter(b => b.grp === g).map(tile).join('')}${g === 'Other buildings' ? add : ''}</div></section>`).join('')}
+    <p class="ov-classic"><button class="btn sm" data-ovclassic="1">Show the classic tabs</button></p></div>`;
+}
+function renderOvButton(id) {
+  const b = ovBtn(id); if (!b || !b.parts) return renderOverview();
+  const i = OV_BTNS.indexOf(b); const next = OV_BTNS.slice(i + 1).find(x => x.parts && (!x.show || x.show(app.ins)));
+  const body = b.parts.map(([s, g]) => { const sec = SECTIONS.find(x => x.id === s); return sec ? renderSection(sec, g) + (!g ? extraPhotos(sec) : '') : ''; }).join('');
+  return `<div class="ov-head"><button class="btn" data-ovback="1">‹ All buttons</button><h2><svg viewBox="0 0 24 24" aria-hidden="true">${OV_ICON[b.icon]}</svg>${esc(b.t)}</h2>${next ? `<button class="btn" data-ov="${next.id}">Next: ${esc(next.t)} ›</button>` : ''}</div>${legend()}${body}`;
+}
+function bindOverview(root) {
+  root.querySelectorAll('[data-ov]').forEach(el => el.onclick = () => { const b = ovBtn(el.dataset.ov); if (!b) return;
+    if (b.act === 'sketch') { const s = document.getElementById('sketchBtn'); if (s) s.click(); return; }
+    if (b.tab) { goTab(b.tab); return; }
+    goTab('b:' + b.id); window.scrollTo(0, 0); });
+  root.querySelectorAll('[data-ovback]').forEach(el => el.onclick = () => { goTab('overview'); window.scrollTo(0, 0); });
+  root.querySelectorAll('[data-ovclassic]').forEach(el => el.onclick = () => { app.classic = true; goTab('property'); });
+  root.querySelectorAll('[data-ovadd]').forEach(el => el.onclick = () => { goTab('b:adu'); window.scrollTo(0, 0); toast('Add an ADU here, or tap Next for outbuildings'); });
+}
+/* the section a group button belongs to (a button page shows groups from several sections) */
+function secOfEl(el) { const s = el.closest && el.closest('[data-secid]'); return SECTIONS.find(x => x.id === (s ? s.dataset.secid : app.tab)); }
 
 /* =====================================================================
    Dictate (6h, Oct 2026): she speaks her notes the way she walks the property,
